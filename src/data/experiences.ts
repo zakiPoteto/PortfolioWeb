@@ -1,4 +1,4 @@
-export type Category = "ハッカソン" | "イベント" | "インターン";
+export type Category = "ハッカソン" | "イベント" | "インターン" | "課外活動";
 
 export type Experience = {
   title: string;
@@ -6,7 +6,7 @@ export type Experience = {
   category: Category;
   techs: string[];
   role: string;
-  teamSize: number;
+  teamSize?: number;
   award?: string;
   summary: string;
   noteUrl: string;
@@ -66,10 +66,9 @@ export const experiences: Experience[] = [
   {
     title: "大学支援アプリ「Dotto」",
     date: "2024年4月〜現在",
-    category: "イベント",
+    category: "課外活動",
     techs: ["Flutter", "Dart", "Firebase", "Riverpod"],
     role: "フロントエンドエンジニア",
-    teamSize: 5,
     summary:
       "未来大生向け支援アプリ。学内の約75%の学生が利用する実用アプリケーション。翌日の学食メニュー閲覧機能の実装やUI改善を担当。モブプログラミング・ペアプログラミングを中心とした実践的なチーム開発を1年5ヶ月継続して経験。",
     noteUrl: "#",

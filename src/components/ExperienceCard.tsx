@@ -26,7 +26,7 @@ export default function ExperienceCard({ exp }: { exp: Experience }) {
 
       <div className="flex flex-wrap gap-x-4 gap-y-1 text-sm text-slate-400">
         <span>{exp.role}</span>
-        <span>{exp.teamSize}人チーム</span>
+        {exp.teamSize && <span>{exp.teamSize}人チーム</span>}
       </div>
 
       <div className="flex flex-wrap gap-1.5">

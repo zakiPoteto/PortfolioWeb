@@ -1,13 +1,13 @@
 export default function Header() {
   return (
-    <header className="sticky top-0 z-10 bg-white/90 backdrop-blur border-b border-gray-100">
+    <header className="sticky top-0 z-10 bg-slate-950/90 backdrop-blur border-b border-slate-800">
       <div className="max-w-5xl mx-auto px-6 py-4 flex justify-between items-center">
         <span className="font-bold text-lg tracking-tight">zakiPoteto</span>
         <a
           href="https://github.com/zakiPoteto"
           target="_blank"
           rel="noopener noreferrer"
-          className="flex items-center gap-2 text-sm text-gray-600 hover:text-indigo-600 transition-colors"
+          className="flex items-center gap-2 text-sm text-slate-400 hover:text-blue-400 transition-colors"
         >
           <GitHubIcon />
           GitHub

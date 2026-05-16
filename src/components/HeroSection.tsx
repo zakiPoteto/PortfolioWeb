@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { TechIcon } from "./Icons";
 
 const languages = ["Dart", "Go", "TypeScript"];
 const frameworks = ["Flutter", "React Native"];
@@ -63,8 +64,9 @@ export default function HeroSection() {
             {languages.map((lang) => (
               <span
                 key={lang}
-                className="px-4 py-1.5 bg-white/5 border border-white/10 backdrop-blur-md text-slate-300 text-sm rounded-full font-mono hover:bg-white/10 transition-colors"
+                className="flex items-center gap-1.5 px-4 py-1.5 bg-white/5 border border-white/10 backdrop-blur-md text-slate-300 text-sm rounded-full font-mono hover:bg-white/10 transition-colors"
               >
+                <TechIcon name={lang} />
                 {lang}
               </span>
             ))}
@@ -73,16 +75,18 @@ export default function HeroSection() {
             {frameworks.map((fw) => (
               <span
                 key={fw}
-                className="px-4 py-1.5 bg-blue-500/10 border border-blue-500/20 backdrop-blur-md text-blue-300 text-sm rounded-full font-medium hover:bg-blue-500/20 transition-colors"
+                className="flex items-center gap-1.5 px-4 py-1.5 bg-blue-500/10 border border-blue-500/20 backdrop-blur-md text-blue-300 text-sm rounded-full font-medium hover:bg-blue-500/20 transition-colors"
               >
+                <TechIcon name={fw} />
                 {fw}
               </span>
             ))}
             {services.map((svc) => (
               <span
                 key={svc}
-                className="px-4 py-1.5 bg-violet-500/10 border border-violet-500/20 backdrop-blur-md text-violet-300 text-sm rounded-full font-medium hover:bg-violet-500/20 transition-colors"
+                className="flex items-center gap-1.5 px-4 py-1.5 bg-violet-500/10 border border-violet-500/20 backdrop-blur-md text-violet-300 text-sm rounded-full font-medium hover:bg-violet-500/20 transition-colors"
               >
+                <TechIcon name={svc} />
                 {svc}
               </span>
             ))}

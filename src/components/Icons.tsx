@@ -1,3 +1,46 @@
+import {
+  siDart,
+  siGo,
+  siTypescript,
+  siFlutter,
+  siReact,
+  siFirebase,
+} from "simple-icons";
+
+const techIconMap: Record<string, { path: string; hex: string }> = {
+  Dart: siDart,
+  Go: siGo,
+  TypeScript: siTypescript,
+  Flutter: siFlutter,
+  "React Native": siReact,
+  Firebase: siFirebase,
+};
+
+export function TechIcon({
+  name,
+  size = 14,
+  className,
+}: {
+  name: string;
+  size?: number;
+  className?: string;
+}) {
+  const icon = techIconMap[name];
+  if (!icon) return null;
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      width={size}
+      height={size}
+      fill={`#${icon.hex}`}
+      className={className}
+      aria-hidden
+    >
+      <path d={icon.path} />
+    </svg>
+  );
+}
+
 export function GitHubIcon({ className, size = 20 }: { className?: string; size?: number }) {
   return (
     <svg 

@@ -5,9 +5,6 @@ export default function Footer() {
         <p className="text-slate-500 text-sm">
           © {new Date().getFullYear()} zakiPoteto. All rights reserved.
         </p>
-        <p className="text-slate-600 text-xs">
-          Built with Next.js, Tailwind CSS and Framer Motion.
-        </p>
       </div>
     </footer>
   );

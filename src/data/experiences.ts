@@ -9,7 +9,6 @@ export type Experience = {
   teamSize?: number;
   award?: string;
   summary: string;
-  noteUrl: string;
   githubUrl?: string;
   officialUrl?: string;
 };
@@ -23,8 +22,8 @@ export const experiences: Experience[] = [
     role: "フロントエンドエンジニア",
     teamSize: 4,
     summary:
-      "P2HACKS2025にて創作者向け交流プラットフォームを開発。ホーム画面・登録画面・プロフィール修正画面などのUI実装に加え、GoバックエンドのAPIをFlutter（Dart）から繋ぎ込む通信層の設計・実装を担当。キャッシュ戦略によるUX最適化やGitHub運用整備も行った。",
-    noteUrl: "#",
+      "UI実装からGoバックエンドとの通信層設計まで担当。キャッシュ戦略によるUX最適化も行った。",
+
     githubUrl: "https://github.com/p2hacks2025/pre-12",
     officialUrl: "https://p2hacks2025.github.io/pregroup/",
   },
@@ -35,20 +34,20 @@ export const experiences: Experience[] = [
     techs: ["Flutter", "Dart"],
     role: "モバイルエンジニア（インターン）",
     summary:
-      "10日間のサマーインターンで実践的な開発業務を経験。デザイナーからのUI修正対応、Web版APIとの連携によるデータ取得・加工処理の実装を担当。VRT（Visual Regression Testing）やコンポーネント設計・ステートマシン実装など、企業レベルの開発手法を学んだ。",
-    noteUrl: "#",
+      "UI修正対応・Web版API連携を担当。VRTやコンポーネント設計など企業レベルの開発手法を習得した。",
+
   },
   {
     title: "価値観交流アプリ「Touch new」",
     date: "2025年8〜9月",
     category: "ハッカソン",
     techs: ["React Native", "TypeScript", "Firebase", "Spotify API", "Google Maps API"],
-    role: "エンジニア / エンジニアリーダー的役割",
+    role: "エンジニア / テックリード",
     teamSize: 6,
     award: "優秀賞受賞",
     summary:
-      "tornado2025にて「偶然のすれ違いを価値観の交換に変える」位置情報ベースの交流アプリを開発（1ヶ月間の長期ハッカソン）。React Native初挑戦で位置情報機能・すれ違い機能・Firebase Storage活用の画像交換機能を実装。コードマージ担当や技術方針相談など、エンジニアリーダー的役割も担い優秀賞を受賞。",
-    noteUrl: "#",
+      "React Native初挑戦で位置情報・すれ違い・画像交換機能を実装。コードマージや技術方針決定も担当した。",
+
     githubUrl: "https://github.com/tornado2025-05-momentum/Touch-new",
     officialUrl: "https://tornado-official.jp/tornado2025/",
   },
@@ -61,8 +60,8 @@ export const experiences: Experience[] = [
     teamSize: 4,
     award: "KDDIアジャイル賞受賞",
     summary:
-      "P2HACKS2024にて新成人向けアルコール摂取管理アプリを開発。チームリーダーとしてプロジェクト全体を統括しながら、アルコール摂取量計算・通知機能などコア機能の実装を担当。GitHubでのブランチ・コミット命名規則策定でチーム開発フローを整備し、KDDIアジャイル賞を受賞。",
-    noteUrl: "#",
+      "チームリーダーとしてプロジェクトを統括しながらコア機能を実装。GitHub運用ルール策定でチーム開発フローを整備した。",
+
     githubUrl: "https://github.com/p2hacks2024/pre-17",
     officialUrl: "https://p2hacks2024.github.io/pregroup/",
   },
@@ -73,8 +72,8 @@ export const experiences: Experience[] = [
     techs: ["Flutter", "Dart", "Firebase", "Riverpod"],
     role: "フロントエンドエンジニア",
     summary:
-      "未来大生向け支援アプリ。学内の約75%の学生が利用する実用アプリケーション。翌日の学食メニュー閲覧機能の実装やUI改善を担当。モブプログラミング・ペアプログラミングを中心とした実践的なチーム開発を現在まで継続して経験中。",
-    noteUrl: "#",
+      "学内約75%が利用する実用アプリ。学食メニュー機能の実装・UI改善を担当し、モブプロ中心のチーム開発を継続中。",
+
     githubUrl: "https://github.com/fun-dotto/dotto",
   },
 ];

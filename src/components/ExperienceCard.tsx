@@ -68,6 +68,7 @@ export default function ExperienceCard({ exp }: { exp: Experience }) {
         {exp.summary}
       </p>
 
+      {(exp.officialUrl || exp.githubUrl) && (
       <div className="flex flex-col sm:flex-row gap-3 pt-2">
         {exp.officialUrl && exp.officialUrl !== "#" && (
           <a
@@ -92,6 +93,7 @@ export default function ExperienceCard({ exp }: { exp: Experience }) {
           </a>
         )}
       </div>
+      )}
     </article>
   );
 }

@@ -58,7 +58,6 @@ export const experiences: Experience[] = [
     category: "インターン",
     techs: ["Flutter", "Dart"],
     role: "モバイルエンジニア（インターン）",
-    teamSize: 1,
     summary:
       "10日間のサマーインターンで実践的な開発業務を経験。デザイナーからのUI修正対応、Web版APIとの連携によるデータ取得・加工処理の実装を担当。VRT（Visual Regression Testing）やコンポーネント設計・ステートマシン実装など、企業レベルの開発手法を学んだ。",
     noteUrl: "#",

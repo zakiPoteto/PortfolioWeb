@@ -5,6 +5,10 @@ import {
   siFlutter,
   siReact,
   siFirebase,
+  siSupabase,
+  siGithubactions,
+  siSpotify,
+  siGooglemaps,
 } from "simple-icons";
 
 const techIconMap: Record<string, { path: string; hex: string }> = {
@@ -14,6 +18,10 @@ const techIconMap: Record<string, { path: string; hex: string }> = {
   Flutter: siFlutter,
   "React Native": siReact,
   Firebase: siFirebase,
+  Supabase: siSupabase,
+  "GitHub Actions": siGithubactions,
+  "Spotify API": siSpotify,
+  "Google Maps API": siGooglemaps,
 };
 
 export function TechIcon({

@@ -1,6 +1,6 @@
 import { type Experience } from "@/data/experiences";
 import { Calendar, Users, Trophy, ExternalLink, UserCircle } from "lucide-react";
-import { GitHubIcon } from "./Icons";
+import { GitHubIcon, TechIcon } from "./Icons";
 
 const categoryStyle: Record<string, string> = {
   ハッカソン: "bg-orange-500/10 text-orange-400 border-orange-500/20",
@@ -56,8 +56,9 @@ export default function ExperienceCard({ exp }: { exp: Experience }) {
         {exp.techs.map((tech) => (
           <span
             key={tech}
-            className="px-2.5 py-1 bg-white/5 text-slate-400 text-xs rounded-md border border-white/5 font-mono"
+            className="flex items-center gap-1.5 px-2.5 py-1 bg-white/5 text-slate-400 text-xs rounded-md border border-white/5 font-mono"
           >
+            <TechIcon name={tech} size={12} />
             {tech}
           </span>
         ))}

@@ -1,5 +1,5 @@
 import { type Experience } from "@/data/experiences";
-import { Calendar, Users, Trophy, ExternalLink, UserCircle, Globe } from "lucide-react";
+import { Calendar, Users, Trophy, UserCircle, Globe } from "lucide-react";
 import { GitHubIcon, TechIcon } from "./Icons";
 
 const categoryStyle: Record<string, string> = {
@@ -69,17 +69,6 @@ export default function ExperienceCard({ exp }: { exp: Experience }) {
       </p>
 
       <div className="flex flex-col sm:flex-row gap-3 pt-2">
-        {exp.noteUrl !== "#" && (
-          <a
-            href={exp.noteUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex-1 flex items-center justify-center gap-2 py-2.5 bg-blue-600 text-white text-sm font-bold rounded-xl hover:bg-blue-500 hover:shadow-lg hover:shadow-blue-600/20 transition-all active:scale-[0.98]"
-          >
-            <ExternalLink size={16} />
-            詳しく読む
-          </a>
-        )}
         {exp.officialUrl && exp.officialUrl !== "#" && (
           <a
             href={exp.officialUrl}

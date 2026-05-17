@@ -27,6 +27,16 @@ export const experiences: Experience[] = [
     githubUrl: "https://github.com/p2hacks2025/pre-12",
   },
   {
+    title: "企業インターンシップ（チームラボ株式会社）",
+    date: "2025年9月1日〜9月10日",
+    category: "インターン",
+    techs: ["Flutter", "Dart"],
+    role: "モバイルエンジニア（インターン）",
+    summary:
+      "10日間のサマーインターンで実践的な開発業務を経験。デザイナーからのUI修正対応、Web版APIとの連携によるデータ取得・加工処理の実装を担当。VRT（Visual Regression Testing）やコンポーネント設計・ステートマシン実装など、企業レベルの開発手法を学んだ。",
+    noteUrl: "#",
+  },
+  {
     title: "価値観交流アプリ「Touch new」",
     date: "2025年8〜9月",
     category: "ハッカソン",
@@ -51,16 +61,6 @@ export const experiences: Experience[] = [
       "P2HACKS2024にて新成人向けアルコール摂取管理アプリを開発。チームリーダーとしてプロジェクト全体を統括しながら、アルコール摂取量計算・通知機能などコア機能の実装を担当。GitHubでのブランチ・コミット命名規則策定でチーム開発フローを整備し、KDDIアジャイル賞を受賞。",
     noteUrl: "#",
     githubUrl: "https://github.com/p2hacks2024/pre-17",
-  },
-  {
-    title: "企業インターンシップ（チームラボ株式会社）",
-    date: "2024年9月",
-    category: "インターン",
-    techs: ["Flutter", "Dart"],
-    role: "モバイルエンジニア（インターン）",
-    summary:
-      "10日間のサマーインターンで実践的な開発業務を経験。デザイナーからのUI修正対応、Web版APIとの連携によるデータ取得・加工処理の実装を担当。VRT（Visual Regression Testing）やコンポーネント設計・ステートマシン実装など、企業レベルの開発手法を学んだ。",
-    noteUrl: "#",
   },
   {
     title: "大学支援アプリ「Dotto」",

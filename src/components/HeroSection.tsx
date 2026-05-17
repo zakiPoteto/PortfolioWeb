@@ -40,14 +40,6 @@ export default function HeroSection() {
           公立はこだて未来大学 システム情報科学部 3年
         </motion.p>
 
-        <motion.p
-          variants={item}
-          className="text-slate-300 max-w-2xl leading-relaxed mx-auto text-lg"
-        >
-          モバイルアプリ開発（Flutter）を中心に、ハッカソン・インターン・チーム開発を通じて成長してきたエンジニアです。
-          実用アプリの継続開発から企業インターン、複数のハッカソン受賞まで幅広く経験しています。
-        </motion.p>
-
       </motion.div>
     </section>
   );

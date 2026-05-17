@@ -13,7 +13,7 @@ export default function ExperiencesSection() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="text-center mb-16 space-y-3"
+          className="text-center mb-16"
         >
           <h2 className="text-3xl font-bold tracking-tight text-white sm:text-4xl">
             経験・実績

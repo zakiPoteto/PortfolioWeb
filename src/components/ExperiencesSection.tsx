@@ -18,9 +18,6 @@ export default function ExperiencesSection() {
           <h2 className="text-3xl font-bold tracking-tight text-white sm:text-4xl">
             経験・実績
           </h2>
-          <p className="text-slate-400 max-w-lg mx-auto">
-            これまでの活動やプロジェクト、受賞歴などをまとめています。
-          </p>
         </motion.div>
 
         <div className="relative">

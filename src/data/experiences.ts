@@ -11,6 +11,7 @@ export type Experience = {
   summary: string;
   noteUrl: string;
   githubUrl?: string;
+  officialUrl?: string;
 };
 
 export const experiences: Experience[] = [
@@ -25,6 +26,7 @@ export const experiences: Experience[] = [
       "P2HACKS2025にて創作者向け交流プラットフォームを開発。ホーム画面・登録画面・プロフィール修正画面などのUI実装に加え、GoバックエンドのAPIをFlutter（Dart）から繋ぎ込む通信層の設計・実装を担当。キャッシュ戦略によるUX最適化やGitHub運用整備も行った。",
     noteUrl: "#",
     githubUrl: "https://github.com/p2hacks2025/pre-12",
+    officialUrl: "https://p2hacks2025.github.io/pregroup/",
   },
   {
     title: "企業インターンシップ（チームラボ株式会社）",
@@ -48,6 +50,7 @@ export const experiences: Experience[] = [
       "tornado2025にて「偶然のすれ違いを価値観の交換に変える」位置情報ベースの交流アプリを開発（1ヶ月間の長期ハッカソン）。React Native初挑戦で位置情報機能・すれ違い機能・Firebase Storage活用の画像交換機能を実装。コードマージ担当や技術方針相談など、エンジニアリーダー的役割も担い優秀賞を受賞。",
     noteUrl: "#",
     githubUrl: "https://github.com/tornado2025-05-momentum/Touch-new",
+    officialUrl: "https://tornado-official.jp/tornado2025/",
   },
   {
     title: "アルコール摂取管理アプリ「Callaco」",
@@ -61,6 +64,7 @@ export const experiences: Experience[] = [
       "P2HACKS2024にて新成人向けアルコール摂取管理アプリを開発。チームリーダーとしてプロジェクト全体を統括しながら、アルコール摂取量計算・通知機能などコア機能の実装を担当。GitHubでのブランチ・コミット命名規則策定でチーム開発フローを整備し、KDDIアジャイル賞を受賞。",
     noteUrl: "#",
     githubUrl: "https://github.com/p2hacks2024/pre-17",
+    officialUrl: "https://p2hacks2024.github.io/pregroup/",
   },
   {
     title: "大学支援アプリ「Dotto」",

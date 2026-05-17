@@ -1,5 +1,5 @@
 import { type Experience } from "@/data/experiences";
-import { Calendar, Users, Trophy, ExternalLink, UserCircle } from "lucide-react";
+import { Calendar, Users, Trophy, ExternalLink, UserCircle, Globe } from "lucide-react";
 import { GitHubIcon, TechIcon } from "./Icons";
 
 const categoryStyle: Record<string, string> = {
@@ -78,6 +78,17 @@ export default function ExperienceCard({ exp }: { exp: Experience }) {
           >
             <ExternalLink size={16} />
             詳しく読む
+          </a>
+        )}
+        {exp.officialUrl && exp.officialUrl !== "#" && (
+          <a
+            href={exp.officialUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex-1 sm:flex-none px-6 py-2.5 bg-white/5 border border-slate-700 text-slate-300 text-sm font-bold rounded-xl hover:bg-white/10 hover:border-slate-500 transition-all flex items-center justify-center gap-2 active:scale-[0.98]"
+          >
+            <Globe size={16} />
+            公式サイト
           </a>
         )}
         {exp.githubUrl && (

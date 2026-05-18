@@ -35,7 +35,7 @@ export default function ExperiencesSection() {
                 className="relative pl-12"
               >
                 {/* Timeline dot on the left */}
-                <div className="absolute left-4 top-10 w-3.5 h-3.5 rounded-full bg-blue-500 border-4 border-slate-950 shadow-[0_0_10px_rgba(59,130,246,0.5)] -translate-x-1/2 z-10" />
+                <div className="absolute left-4 top-8 w-3.5 h-3.5 rounded-full bg-blue-500 border-4 border-slate-950 shadow-[0_0_10px_rgba(59,130,246,0.5)] -translate-x-1/2 z-10" />
                 
                 <ExperienceCard exp={exp} />
               </motion.div>

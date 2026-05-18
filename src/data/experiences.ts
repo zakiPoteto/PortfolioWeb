@@ -18,7 +18,7 @@ export const experiences: Experience[] = [
     title: "創作者向け交流プラットフォーム「Kiratto（キラット）」",
     date: "2025年12月",
     category: "ハッカソン",
-    techs: ["Flutter", "Dart", "Go", "Supabase", "GitHub Actions"],
+    techs: ["Flutter", "Dart", "Go", "Supabase"],
     role: "フロントエンドエンジニア",
     teamSize: 4,
     summary:
@@ -39,7 +39,7 @@ export const experiences: Experience[] = [
     title: "価値観交流アプリ「Touch new」",
     date: "2025年8〜9月",
     category: "ハッカソン",
-    techs: ["React Native", "TypeScript", "Firebase", "Spotify API", "Google Maps API"],
+    techs: ["React Native", "TypeScript", "Firebase"],
     role: "エンジニア / テックリード",
     teamSize: 6,
     award: "優秀賞受賞",
@@ -65,7 +65,7 @@ export const experiences: Experience[] = [
     title: "大学支援アプリ「Dotto」",
     date: "2024年4月〜現在",
     category: "課外活動",
-    techs: ["Flutter", "Dart", "Firebase", "Riverpod"],
+    techs: ["Flutter", "Dart", "Firebase",],
     role: "フロントエンドエンジニア",
     summary:
       "学内約75%が利用する実用アプリ。学食メニュー機能の実装・UI改善を担当し、モブプロ中心のチーム開発を継続中。",

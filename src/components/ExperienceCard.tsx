@@ -69,30 +69,30 @@ export default function ExperienceCard({ exp }: { exp: Experience }) {
       </p>
 
       {(exp.officialUrl || exp.githubUrl) && (
-      <div className="flex flex-col sm:flex-row gap-3 pt-2">
-        {exp.officialUrl && exp.officialUrl !== "#" && (
-          <a
-            href={exp.officialUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex-1 sm:flex-none px-6 py-2.5 bg-white/5 border border-slate-700 text-slate-300 text-sm font-bold rounded-xl hover:bg-white/10 hover:border-slate-500 transition-all flex items-center justify-center gap-2 active:scale-[0.98]"
-          >
-            <Globe size={16} />
-            公式サイト
-          </a>
-        )}
-        {exp.githubUrl && (
-          <a
-            href={exp.githubUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex-1 sm:flex-none px-6 py-2.5 bg-white/5 border border-slate-700 text-slate-300 text-sm font-bold rounded-xl hover:bg-white/10 hover:border-slate-500 transition-all flex items-center justify-center gap-2 active:scale-[0.98]"
-          >
-            <GitHubIcon size={16} />
-            GitHub
-          </a>
-        )}
-      </div>
+        <div className="flex flex-col sm:flex-row gap-3 pt-2">
+          {exp.officialUrl && exp.officialUrl !== "#" && (
+            <a
+              href={exp.officialUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex-1 sm:flex-none px-6 py-2.5 bg-white/5 border border-slate-700 text-slate-300 text-sm font-bold rounded-xl hover:bg-white/10 hover:border-slate-500 transition-all flex items-center justify-center gap-2 active:scale-[0.98]"
+            >
+              <Globe size={16} />
+              公式サイト
+            </a>
+          )}
+          {exp.githubUrl && (
+            <a
+              href={exp.githubUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex-1 sm:flex-none px-6 py-2.5 bg-white/5 border border-slate-700 text-slate-300 text-sm font-bold rounded-xl hover:bg-white/10 hover:border-slate-500 transition-all flex items-center justify-center gap-2 active:scale-[0.98]"
+            >
+              <GitHubIcon size={16} />
+              GitHub
+            </a>
+          )}
+        </div>
       )}
     </article>
   );

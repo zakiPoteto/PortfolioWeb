@@ -65,7 +65,7 @@ export const experiences: Experience[] = [
     title: "大学支援アプリ「Dotto」",
     date: "2024年4月〜現在",
     category: "課外活動",
-    techs: ["Flutter", "Dart", "Firebase",],
+    techs: ["Flutter", "Dart", "Firebase"],
     role: "フロントエンドエンジニア",
     summary:
       "学内約75%が利用する実用アプリ。学食メニュー機能の実装・UI改善を担当し、モブプロ中心のチーム開発を継続中。",

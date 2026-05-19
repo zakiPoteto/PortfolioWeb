@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import { experiences, type Experience } from "@/data/experiences";
 import ExperienceCard from "./ExperienceCard";
 import Modal from "./Modal";
+import ExperienceDetailModal from "./ExperienceDetailModal";
 
 export default function ExperiencesSection() {
   const [selectedExp, setSelectedExp] = useState<Experience | null>(null);
@@ -49,7 +50,7 @@ export default function ExperiencesSection() {
       </div>
 
       <Modal isOpen={selectedExp !== null} onClose={() => setSelectedExp(null)}>
-        <p className="text-slate-300 pt-2">詳細を表示中...</p>
+        {selectedExp && <ExperienceDetailModal exp={selectedExp} />}
       </Modal>
     </section>
   );

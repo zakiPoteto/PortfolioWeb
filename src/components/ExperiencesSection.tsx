@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { motion } from "framer-motion";
 import { experiences, type Experience } from "@/data/experiences";
 import ExperienceCard from "./ExperienceCard";
@@ -9,6 +9,7 @@ import ExperienceDetailModal from "./ExperienceDetailModal";
 
 export default function ExperiencesSection() {
   const [selectedExp, setSelectedExp] = useState<Experience | null>(null);
+  const handleClose = useCallback(() => setSelectedExp(null), []);
 
   return (
     <section className="max-w-3xl mx-auto px-6 pb-32">
@@ -49,7 +50,7 @@ export default function ExperiencesSection() {
         </div>
       </div>
 
-      <Modal isOpen={selectedExp !== null} onClose={() => setSelectedExp(null)}>
+      <Modal isOpen={selectedExp !== null} onClose={handleClose}>
         {selectedExp && <ExperienceDetailModal exp={selectedExp} />}
       </Modal>
     </section>

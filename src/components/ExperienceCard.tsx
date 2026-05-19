@@ -1,3 +1,5 @@
+"use client";
+
 import { type Category, type Experience } from "@/data/experiences";
 import { Calendar, Users, Trophy, UserCircle, Globe } from "lucide-react";
 import { GitHubIcon, TechIcon } from "./Icons";
@@ -9,9 +11,18 @@ const categoryStyle: Record<Category, string> = {
   課外活動: "bg-purple-500/10 text-purple-400 border-purple-500/20",
 };
 
-export default function ExperienceCard({ exp }: { exp: Experience }) {
+export default function ExperienceCard({
+  exp,
+  onClick,
+}: {
+  exp: Experience;
+  onClick?: () => void;
+}) {
   return (
-    <article className="group relative bg-slate-900/40 backdrop-blur-xl border border-slate-700/50 rounded-2xl p-6 md:p-8 flex flex-col gap-5 hover:border-blue-500/50 hover:bg-slate-900/60 transition-all duration-300 shadow-xl shadow-black/20">
+    <article
+      onClick={onClick}
+      className={`${onClick ? "cursor-pointer" : ""} group relative bg-slate-900/40 backdrop-blur-xl border border-slate-700/50 rounded-2xl p-6 md:p-8 flex flex-col gap-5 hover:border-blue-500/50 hover:bg-slate-900/60 transition-all duration-300 shadow-xl shadow-black/20`}
+    >
       {/* Decorative glow on hover */}
       <div className="absolute -inset-px rounded-2xl bg-gradient-to-r from-blue-500/20 to-purple-500/20 opacity-0 group-hover:opacity-100 transition-opacity blur-sm -z-10" />
 
@@ -69,7 +80,10 @@ export default function ExperienceCard({ exp }: { exp: Experience }) {
       </p>
 
       {(exp.officialUrl || exp.githubUrl) && (
-        <div className="flex flex-col sm:flex-row gap-3 pt-2">
+        <div
+          className="flex flex-col sm:flex-row gap-3 pt-2"
+          onClick={(e) => e.stopPropagation()}
+        >
           {exp.officialUrl && exp.officialUrl !== "#" && (
             <a
               href={exp.officialUrl}

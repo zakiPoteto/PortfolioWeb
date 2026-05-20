@@ -1,5 +1,6 @@
 export type Category = "ハッカソン" | "イベント" | "インターン" | "課外活動";
 
+
 export type Experience = {
   title: string;
   date: string;

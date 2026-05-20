@@ -15,6 +15,9 @@ export default function ExperienceCard({
   return (
     <article
       onClick={onClick}
+      role={onClick ? "button" : undefined}
+      tabIndex={onClick ? 0 : undefined}
+      onKeyDown={onClick ? (e) => { if (e.key === "Enter" || e.key === " ") onClick(); } : undefined}
       className={`${onClick ? "cursor-pointer" : ""} group relative bg-slate-900/40 backdrop-blur-xl border border-slate-700/50 rounded-2xl p-6 md:p-8 flex flex-col gap-5 hover:border-blue-500/50 hover:bg-slate-900/60 transition-all duration-300 shadow-xl shadow-black/20`}
     >
       {/* Decorative glow on hover */}

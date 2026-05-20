@@ -50,7 +50,7 @@ export default function ExperiencesSection() {
         </div>
       </div>
 
-      <Modal isOpen={selectedExp !== null} onClose={handleClose}>
+      <Modal isOpen={selectedExp !== null} onClose={handleClose} ariaLabel={selectedExp?.title}>
         {selectedExp && <ExperienceDetailModal exp={selectedExp} />}
       </Modal>
     </section>

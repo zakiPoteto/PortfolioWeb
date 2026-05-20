@@ -1,3 +1,5 @@
+"use client";
+
 import { categoryStyle, type Experience } from "@/data/experiences";
 import { Calendar, Users, Trophy, UserCircle, Globe } from "lucide-react";
 import { GitHubIcon, TechIcon } from "./Icons";

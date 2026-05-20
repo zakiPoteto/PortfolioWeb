@@ -1,12 +1,12 @@
 "use client";
 
-import { useEffect } from "react";
+import { type ReactNode, useEffect } from "react";
 import { X } from "lucide-react";
 
 type Props = {
   isOpen: boolean;
   onClose: () => void;
-  children: React.ReactNode;
+  children: ReactNode;
 };
 
 export default function Modal({ isOpen, onClose, children }: Props) {

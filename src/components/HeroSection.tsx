@@ -69,15 +69,16 @@ export default function HeroSection() {
           </div>
 
           <div className="flex gap-2 mt-auto">
-            <a 
-              href="https://github.com/zakiPoteto" 
-              target="_blank" 
+            <a
+              href="https://github.com/zakiPoteto"
+              target="_blank"
               rel="noopener noreferrer"
+              aria-label="GitHubプロフィールを開く"
               className="p-3 bg-slate-800/50 hover:bg-slate-800 border border-slate-700/50 rounded-2xl text-slate-400 hover:text-white transition-all shadow-lg"
             >
               <GitHubIcon size={20} />
             </a>
-            <button className="flex-1 px-4 py-3 bg-white text-slate-950 text-xs font-black uppercase tracking-widest rounded-2xl hover:bg-blue-50 transition-all flex items-center justify-center gap-2 shadow-xl shadow-white/5 active:scale-95">
+            <button disabled className="flex-1 px-4 py-3 bg-white/30 text-slate-500 text-xs font-black uppercase tracking-widest rounded-2xl flex items-center justify-center gap-2 cursor-not-allowed">
               Resume <ExternalLink size={14} />
             </button>
           </div>
@@ -96,7 +97,7 @@ export default function HeroSection() {
               <Sparkles size={18} />
               <span className="text-[10px] font-black uppercase tracking-[0.2em]">Introduction</span>
             </div>
-            <p className="text-slate-200 text-lg md:text-xl leading-relaxed font-semibold">
+            <p className="text-slate-200 text-lg md:text-xl leading-relaxed font-semibold whitespace-pre-line">
               {ABOUT_ME}
             </p>
           </div>

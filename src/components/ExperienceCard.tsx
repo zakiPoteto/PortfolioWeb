@@ -20,6 +20,7 @@ export default function ExperienceCard({
       tabIndex={onClick ? 0 : undefined}
       aria-haspopup={onClick ? "dialog" : undefined}
       onKeyDown={onClick ? (e) => {
+        if (e.target !== e.currentTarget) return;
         if (e.key === "Enter") onClick();
         if (e.key === " ") { e.preventDefault(); onClick(); }
       } : undefined}

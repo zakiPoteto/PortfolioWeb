@@ -61,6 +61,17 @@ export default function ExperienceDetailModal({ exp }: { exp: Experience }) {
         {exp.summary}
       </p>
 
+      {exp.details && exp.details.length > 0 && (
+        <ul className="space-y-2">
+          {exp.details.map((detail, i) => (
+            <li key={i} className="flex gap-2 text-sm text-slate-400 leading-relaxed">
+              <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-blue-500 shrink-0" />
+              {detail}
+            </li>
+          ))}
+        </ul>
+      )}
+
       {(exp.officialUrl || exp.githubUrl) && (
         <div className="flex flex-col sm:flex-row gap-3 pt-2 border-t border-slate-700/50">
           {exp.officialUrl && exp.officialUrl !== "#" && (

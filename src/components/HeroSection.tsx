@@ -84,44 +84,41 @@ export default function HeroSection() {
           </div>
         </motion.div>
 
-        {/* About Card - Spans 8 columns */}
+        {/* About + Main Stack Card - Spans 8 columns */}
         <motion.div
           variants={item}
-          className="md:col-span-7 lg:col-span-8 bg-slate-900/50 backdrop-blur-xl border border-slate-700/50 rounded-3xl p-8 flex flex-col justify-center relative overflow-hidden"
+          className="md:col-span-7 lg:col-span-8 bg-slate-900/50 backdrop-blur-xl border border-slate-700/50 rounded-3xl p-8 flex flex-col gap-6 relative overflow-hidden"
         >
           <div className="absolute top-0 right-0 p-4 opacity-5">
             <Code2 size={120} />
           </div>
-          <div className="relative z-10">
-            <div className="flex items-center gap-2 mb-4 text-blue-400">
-              <Sparkles size={18} />
-              <span className="text-[10px] font-black uppercase tracking-[0.2em]">Introduction</span>
-            </div>
-            <p className="text-slate-200 text-lg md:text-xl leading-relaxed font-semibold whitespace-pre-line">
-              {ABOUT_ME}
-            </p>
-          </div>
-        </motion.div>
-
-        {/* Main Stack - Spans full width (12 columns) */}
-        <motion.div
-          variants={item}
-          className="md:col-span-12 bg-slate-900/50 backdrop-blur-xl border border-slate-700/50 rounded-3xl p-6"
-        >
-          <div className="flex items-center gap-2 mb-6">
-            <Cpu size={18} className="text-purple-400" />
-            <span className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">Main Stack</span>
-          </div>
-          <div className="flex flex-wrap gap-4">
-            {MAIN_TECHS.map((tech) => (
-              <div
-                key={tech}
-                className="flex items-center gap-3 px-5 py-3 rounded-2xl bg-slate-800/30 border border-slate-700/30 hover:border-blue-500/30 hover:bg-slate-800/50 transition-all cursor-default"
-              >
-                <TechIcon name={tech} size={20} />
-                <span className="text-slate-300 font-bold">{tech}</span>
+          <div className="relative z-10 flex flex-col gap-6">
+            <div>
+              <div className="flex items-center gap-2 mb-4 text-blue-400">
+                <Sparkles size={18} />
+                <span className="text-[10px] font-black uppercase tracking-[0.2em]">Introduction</span>
               </div>
-            ))}
+              <p className="text-slate-200 text-lg md:text-xl leading-relaxed font-semibold whitespace-pre-line">
+                {ABOUT_ME}
+              </p>
+            </div>
+            <div>
+              <div className="flex items-center gap-2 mb-3">
+                <Cpu size={16} className="text-purple-400" />
+                <span className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">Main Stack</span>
+              </div>
+              <div className="flex flex-wrap gap-2.5">
+                {MAIN_TECHS.map((tech) => (
+                  <div
+                    key={tech}
+                    className="flex items-center gap-2 px-4 py-2 rounded-xl bg-slate-800/30 border border-slate-700/30 hover:border-blue-500/30 hover:bg-slate-800/50 transition-all cursor-default"
+                  >
+                    <TechIcon name={tech} size={16} />
+                    <span className="text-slate-300 font-bold text-sm">{tech}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
           </div>
         </motion.div>
       </motion.div>

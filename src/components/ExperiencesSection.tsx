@@ -29,7 +29,7 @@ export default function ExperiencesSection() {
         <div className="relative">
           {/* Timeline line on the left side */}
           <div className="absolute left-4 top-0 bottom-0 w-px bg-gradient-to-b from-blue-500/50 via-slate-800 to-transparent" />
-          
+
           <div className="space-y-8">
             {experiences.map((exp, index) => (
               <motion.div
@@ -42,7 +42,7 @@ export default function ExperiencesSection() {
               >
                 {/* Timeline dot on the left */}
                 <div className="absolute left-4 top-8 w-3.5 h-3.5 rounded-full bg-blue-500 border-4 border-slate-950 shadow-[0_0_10px_rgba(59,130,246,0.5)] -translate-x-1/2 z-10" />
-                
+
                 <ExperienceCard exp={exp} onClick={() => setSelectedExp(exp)} />
               </motion.div>
             ))}

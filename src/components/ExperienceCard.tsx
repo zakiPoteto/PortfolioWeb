@@ -16,9 +16,7 @@ export default function ExperienceCard({
   return (
     <article
       onClick={onClick}
-      role={onClick ? "button" : undefined}
       tabIndex={onClick ? 0 : undefined}
-      aria-haspopup={onClick ? "dialog" : undefined}
       onKeyDown={onClick ? (e) => {
         if (e.target !== e.currentTarget) return;
         if (e.key === "Enter") onClick();

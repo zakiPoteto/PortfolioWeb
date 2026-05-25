@@ -48,6 +48,7 @@ export default function HeroSection() {
                 src="/icon.jpg"
                 alt="zakiPoteto"
                 fill
+                sizes="80px"
                 className="object-cover"
               />
             </div>
@@ -56,7 +57,7 @@ export default function HeroSection() {
               <p className="text-slate-400 text-xs mt-1.5 font-bold uppercase tracking-wider">Mobile & Frontend</p>
             </div>
           </div>
-          
+
           <div className="space-y-3 text-sm font-medium text-slate-400">
             <div className="flex items-center gap-3">
               <MapPin size={16} className="text-slate-600" />

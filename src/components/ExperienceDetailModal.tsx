@@ -5,28 +5,9 @@ import { categoryStyle } from "@/lib/categoryStyle";
 import { Calendar, Users, Trophy, UserCircle, Globe } from "lucide-react";
 import { GitHubIcon, TechIcon } from "./Icons";
 
-
-export default function ExperienceCard({
-  exp,
-  onClick,
-}: {
-  exp: Experience;
-  onClick?: () => void;
-}) {
+export default function ExperienceDetailModal({ exp }: { exp: Experience }) {
   return (
-    <article
-      onClick={onClick}
-      tabIndex={onClick ? 0 : undefined}
-      onKeyDown={onClick ? (e) => {
-        if (e.target !== e.currentTarget) return;
-        if (e.key === "Enter") onClick();
-        if (e.key === " ") { e.preventDefault(); onClick(); }
-      } : undefined}
-      className={`${onClick ? "cursor-pointer" : ""} group relative bg-slate-900/40 backdrop-blur-xl border border-slate-700/50 rounded-2xl p-6 md:p-8 flex flex-col gap-5 hover:border-blue-500/50 hover:bg-slate-900/60 transition-all duration-300 shadow-xl shadow-black/20`}
-    >
-      {/* Decorative glow on hover */}
-      <div className="absolute -inset-px rounded-2xl bg-gradient-to-r from-blue-500/20 to-purple-500/20 opacity-0 group-hover:opacity-100 transition-opacity blur-sm -z-10" />
-
+    <div className="flex flex-col gap-5 pt-2">
       <div className="flex items-start justify-between flex-wrap gap-3">
         <span
           className={`text-xs font-semibold px-3 py-1 rounded-full border ${categoryStyle[exp.category]}`}
@@ -40,7 +21,7 @@ export default function ExperienceCard({
       </div>
 
       <div className="space-y-2">
-        <h3 className="font-bold text-xl md:text-2xl leading-tight text-slate-100 group-hover:text-blue-400 transition-colors">
+        <h3 className="font-bold text-xl leading-tight text-slate-100">
           {exp.title}
         </h3>
         {exp.award && (
@@ -76,15 +57,23 @@ export default function ExperienceCard({
         ))}
       </div>
 
-      <p className="text-slate-400 leading-relaxed text-sm md:text-base line-clamp-4 flex-1">
+      <p className="text-slate-400 leading-relaxed text-sm md:text-base">
         {exp.summary}
       </p>
 
+      {exp.details && exp.details.length > 0 && (
+        <ul className="space-y-2">
+          {exp.details.map((detail, i) => (
+            <li key={i} className="flex gap-2 text-sm text-slate-400 leading-relaxed">
+              <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-blue-500 shrink-0" />
+              {detail}
+            </li>
+          ))}
+        </ul>
+      )}
+
       {(exp.officialUrl || exp.githubUrl) && (
-        <div
-          className="flex flex-col sm:flex-row gap-3 pt-2"
-          onClick={(e) => e.stopPropagation()}
-        >
+        <div className="flex flex-col sm:flex-row gap-3 pt-2 border-t border-slate-700/50">
           {exp.officialUrl && exp.officialUrl !== "#" && (
             <a
               href={exp.officialUrl}
@@ -109,6 +98,6 @@ export default function ExperienceCard({
           )}
         </div>
       )}
-    </article>
+    </div>
   );
 }

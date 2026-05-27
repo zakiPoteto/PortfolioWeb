@@ -40,7 +40,7 @@ export default function ExperienceCard({
         </div>
       </div>
 
-      <div className="space-y-2">
+      <div className="space-y-3">
         <h3 className="font-bold text-xl md:text-2xl leading-tight text-slate-100 group-hover:text-blue-400 transition-colors">
           {exp.title}
         </h3>

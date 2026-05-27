@@ -21,15 +21,11 @@ export default function ExperienceDetailModal({ exp }: { exp: Experience }) {
         </div>
       </div>
 
-      <div className="space-y-2">
-        <h3 className="font-bold text-xl leading-tight text-slate-100">
+      <div className="space-y-3">
+        <h3 className="font-bold text-2xl leading-tight text-slate-100">
           {exp.title}
         </h3>
-        {exp.award && (
-          <div className="p-3 rounded-xl bg-amber-500/5 border border-amber-500/20">
-            <AwardBadge award={exp.award} size="lg" />
-          </div>
-        )}
+        {exp.award && <AwardBadge award={exp.award} size="lg" />}
       </div>
 
       <div className="flex flex-wrap gap-x-5 gap-y-2 text-sm text-slate-400">

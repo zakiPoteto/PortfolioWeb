@@ -2,8 +2,9 @@
 
 import { type Experience } from "@/data/experiences";
 import { categoryStyle } from "@/lib/categoryStyle";
-import { Calendar, Users, Trophy, UserCircle, Globe } from "lucide-react";
+import { Calendar, Users, UserCircle, Globe } from "lucide-react";
 import { GitHubIcon, TechIcon } from "./Icons";
+import AwardBadge from "./AwardBadge";
 
 
 export default function ExperienceCard({
@@ -39,16 +40,11 @@ export default function ExperienceCard({
         </div>
       </div>
 
-      <div className="space-y-2">
+      <div className="space-y-3">
         <h3 className="font-bold text-xl md:text-2xl leading-tight text-slate-100 group-hover:text-blue-400 transition-colors">
           {exp.title}
         </h3>
-        {exp.award && (
-          <div className="flex items-center gap-2 text-amber-500 text-sm font-bold">
-            <Trophy size={16} />
-            <span>{exp.award}</span>
-          </div>
-        )}
+        {exp.award && <AwardBadge award={exp.award} />}
       </div>
 
       <div className="flex flex-wrap gap-x-5 gap-y-2 text-sm text-slate-400">

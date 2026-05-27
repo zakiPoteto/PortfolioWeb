@@ -2,8 +2,9 @@
 
 import { type Experience } from "@/data/experiences";
 import { categoryStyle } from "@/lib/categoryStyle";
-import { Calendar, Users, Trophy, UserCircle, Globe } from "lucide-react";
+import { Calendar, Users, UserCircle, Globe } from "lucide-react";
 import { GitHubIcon, TechIcon } from "./Icons";
+import AwardBadge from "./AwardBadge";
 
 export default function ExperienceDetailModal({ exp }: { exp: Experience }) {
   return (
@@ -25,9 +26,8 @@ export default function ExperienceDetailModal({ exp }: { exp: Experience }) {
           {exp.title}
         </h3>
         {exp.award && (
-          <div className="flex items-center gap-2 text-amber-500 text-sm font-bold">
-            <Trophy size={16} />
-            <span>{exp.award}</span>
+          <div className="p-3 rounded-xl bg-amber-500/5 border border-amber-500/20">
+            <AwardBadge award={exp.award} size="lg" />
           </div>
         )}
       </div>

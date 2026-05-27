@@ -4,6 +4,7 @@ import { motion, type Variants } from "framer-motion";
 import Image from "next/image";
 import { TechIcon, GitHubIcon } from "./Icons";
 import { Mail, MapPin, ExternalLink, Sparkles, Code2, Cpu } from "lucide-react";
+import AwardBadge from "./AwardBadge";
 
 const ABOUT_ME = "モバイルアプリを中心に開発してきました。フルスタックになるためにバックエンドも勉強中。\nユーザーに楽しさや便利さを届けるものを作ることが好きです。";
 
@@ -67,6 +68,10 @@ export default function HeroSection() {
               <Mail size={16} className="text-slate-600" />
               <span>Contact via GitHub</span>
             </div>
+          </div>
+
+          <div>
+            <AwardBadge award="ハッカソン受賞 2件" />
           </div>
 
           <div className="flex gap-2 mt-auto">

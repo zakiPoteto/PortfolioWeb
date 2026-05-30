@@ -5,6 +5,7 @@ import Image from "next/image";
 import { TechIcon, GitHubIcon } from "./Icons";
 import { Mail, MapPin, ExternalLink, Sparkles, Code2, Cpu } from "lucide-react";
 import AwardBadge from "./AwardBadge";
+import StatsCard from "./StatsCard";
 
 const ABOUT_ME = "モバイルアプリを中心に開発してきました。フルスタックになるためにバックエンドも勉強中。\nユーザーに楽しさや便利さを届けるものを作ることが好きです。";
 
@@ -90,7 +91,7 @@ export default function HeroSection() {
           </div>
         </motion.div>
 
-        {/* About + Main Stack Card - Spans 8 columns */}
+        {/* About + Main Stack Card - Spans 7-8 columns */}
         <motion.div
           variants={item}
           className="md:col-span-7 lg:col-span-8 bg-slate-900/50 backdrop-blur-xl border border-slate-700/50 rounded-3xl p-8 flex flex-col gap-6 relative overflow-hidden"
@@ -127,6 +128,10 @@ export default function HeroSection() {
             </div>
           </div>
         </motion.div>
+
+        {/* Stats + GitHub Card - Full width */}
+        <StatsCard />
+
       </motion.div>
     </section>
   );

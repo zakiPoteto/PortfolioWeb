@@ -28,9 +28,12 @@ export default function StatsCard() {
 
   useEffect(() => {
     fetch("/api/github-stats")
-      .then((r) => r.json())
+      .then((r) => {
+        if (!r.ok) throw new Error(`GitHub stats API error: ${r.status}`);
+        return r.json();
+      })
       .then(setStats)
-      .catch(() => {});
+      .catch((e) => console.error("Failed to fetch GitHub stats:", e));
   }, []);
 
   const contributionGrid = stats.contributionGrid;

@@ -5,10 +5,10 @@ const GITHUB_USERNAME = "zakiPoteto";
 const QUERY = `
   query GitHubStats($username: String!) {
     user(login: $username) {
-      repositories(privacy: PUBLIC, ownerAffiliations: OWNER, first: 0) {
+      repositories(privacy: PUBLIC, ownerAffiliations: OWNER, first: 1) {
         totalCount
       }
-      pullRequests(states: MERGED) {
+      pullRequests(states: MERGED, first: 1) {
         totalCount
       }
       contributionsCollection {
@@ -77,8 +77,9 @@ export async function GET() {
 
     if (!res.ok) throw new Error(`GitHub API error: ${res.status}`);
 
-    const { data } = await res.json();
-    const user = data?.user;
+    const json = await res.json();
+    if (json.errors) throw new Error(`GraphQL errors: ${JSON.stringify(json.errors)}`);
+    const user = json.data?.user;
     if (!user) throw new Error("User not found");
 
     const weeks = user.contributionsCollection.contributionCalendar.weeks;

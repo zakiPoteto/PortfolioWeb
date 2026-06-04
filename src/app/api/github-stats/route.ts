@@ -31,8 +31,10 @@ function calcStreak(weeks: { contributionDays: { contributionCount: number; date
     .flatMap((w) => w.contributionDays)
     .sort((a, b) => b.date.localeCompare(a.date));
 
+  // 当日まだ貢献がない場合はスキップして昨日から計算
+  const startIdx = days[0]?.contributionCount === 0 ? 1 : 0;
   let streak = 0;
-  for (const day of days) {
+  for (const day of days.slice(startIdx)) {
     if (day.contributionCount > 0) {
       streak++;
     } else {
@@ -55,7 +57,7 @@ const FALLBACK = {
   totalPRs: 48,
   publicRepos: 15,
   contributionGrid: Array.from({ length: 28 }, () => ({ level: 0 })),
-  lastUpdated: "2024.05.29",
+  lastUpdated: "---",
 };
 
 export async function GET() {

@@ -1,23 +1,39 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { GitHubIcon } from "./Icons";
 import { GitPullRequest, Flame, GitBranch, History, ExternalLink } from "lucide-react";
 
-// 手動更新用のデータ
-const GITHUB_STATS = {
+type GitHubStats = {
+  totalContributions: number;
+  currentStreak: number;
+  totalPRs: number;
+  publicRepos: number;
+  contributionGrid: { level: number }[];
+  lastUpdated: string;
+};
+
+const FALLBACK_STATS: GitHubStats = {
   totalContributions: 842,
   currentStreak: 12,
   totalPRs: 48,
   publicRepos: 15,
-  lastUpdated: "2024.05.29",
+  contributionGrid: Array.from({ length: 28 }, () => ({ level: 0 })),
+  lastUpdated: "---",
 };
 
 export default function StatsCard() {
-  // 装飾用のグリッドデータ（ダミー）
-  const contributionGrid = Array.from({ length: 28 }, (_, i) => ({
-    level: Math.floor(Math.random() * 4),
-  }));
+  const [stats, setStats] = useState<GitHubStats>(FALLBACK_STATS);
+
+  useEffect(() => {
+    fetch("/api/github-stats")
+      .then((r) => r.json())
+      .then(setStats)
+      .catch(() => {});
+  }, []);
+
+  const contributionGrid = stats.contributionGrid;
 
   return (
     <motion.div
@@ -34,7 +50,7 @@ export default function StatsCard() {
           </span>
         </div>
         <div className="hidden sm:block text-[10px] text-slate-500 font-bold uppercase tracking-widest">
-          {GITHUB_STATS.lastUpdated}
+          {stats.lastUpdated}
         </div>
       </div>
 
@@ -42,10 +58,10 @@ export default function StatsCard() {
         {/* Main Stats Grid */}
         <div className="lg:col-span-8 grid grid-cols-2 sm:grid-cols-4 gap-3">
           {[
-            { label: "Contributions", value: GITHUB_STATS.totalContributions, icon: History, color: "text-blue-400", border: "hover:border-blue-500/30", sub: "Total" },
-            { label: "Streak", value: GITHUB_STATS.currentStreak, icon: Flame, color: "text-orange-400", border: "hover:border-orange-500/30", sub: "Days" },
-            { label: "Pull Requests", value: GITHUB_STATS.totalPRs, icon: GitPullRequest, color: "text-purple-400", border: "hover:border-purple-500/30", sub: "Merged" },
-            { label: "Repositories", value: GITHUB_STATS.publicRepos, icon: GitBranch, color: "text-emerald-400", border: "hover:border-emerald-500/30", sub: "Public" },
+            { label: "Contributions", value: stats.totalContributions, icon: History, color: "text-blue-400", border: "hover:border-blue-500/30", sub: "Total" },
+            { label: "Streak", value: stats.currentStreak, icon: Flame, color: "text-orange-400", border: "hover:border-orange-500/30", sub: "Days" },
+            { label: "Pull Requests", value: stats.totalPRs, icon: GitPullRequest, color: "text-purple-400", border: "hover:border-purple-500/30", sub: "Merged" },
+            { label: "Repositories", value: stats.publicRepos, icon: GitBranch, color: "text-emerald-400", border: "hover:border-emerald-500/30", sub: "Public" },
           ].map((stat) => (
             <div 
               key={stat.label}

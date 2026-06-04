@@ -25,6 +25,7 @@ const FALLBACK_STATS: GitHubStats = {
 
 export default function StatsCard() {
   const [stats, setStats] = useState<GitHubStats>(FALLBACK_STATS);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     fetch("/api/github-stats")
@@ -33,10 +34,9 @@ export default function StatsCard() {
         return r.json();
       })
       .then(setStats)
-      .catch((e) => console.error("Failed to fetch GitHub stats:", e));
+      .catch((e) => console.error("Failed to fetch GitHub stats:", e))
+      .finally(() => setIsLoading(false));
   }, []);
-
-  const contributionGrid = stats.contributionGrid;
 
   return (
     <motion.div
@@ -75,8 +75,8 @@ export default function StatsCard() {
                 <span className="text-[9px] font-black uppercase tracking-wider text-slate-500">{stat.label}</span>
               </div>
               <div className="flex items-baseline gap-1">
-                <span className="text-2xl font-black text-white group-hover:scale-105 transition-transform origin-left inline-block">
-                  {stat.value}
+                <span className={`text-2xl font-black text-white group-hover:scale-105 transition-transform origin-left inline-block ${isLoading ? "animate-pulse text-slate-600" : ""}`}>
+                  {isLoading ? "..." : stat.value}
                 </span>
                 <span className="text-[9px] font-bold text-slate-500 uppercase">{stat.sub}</span>
               </div>
@@ -89,13 +89,13 @@ export default function StatsCard() {
           <div className="flex items-center justify-between mb-3">
             <span className="text-[9px] font-black uppercase tracking-wider text-slate-500">Activity Graph</span>
             <div className="flex gap-1">
-              {[1, 2, 3, 4].map((i) => (
-                <div key={i} className={`w-1.5 h-1.5 rounded-[1px] bg-blue-500/${i * 20}`} />
+              {["bg-blue-500/20", "bg-blue-500/40", "bg-blue-500/60", "bg-blue-500/80"].map((cls) => (
+                <div key={cls} className={`w-1.5 h-1.5 rounded-[1px] ${cls}`} />
               ))}
             </div>
           </div>
           <div className="grid grid-cols-7 gap-1.5 mb-1">
-            {contributionGrid.map((day, i) => (
+            {stats.contributionGrid.map((day, i) => (
               <div
                 key={i}
                 className={`aspect-square rounded-[2px] transition-all hover:scale-125 ${

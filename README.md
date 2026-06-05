@@ -7,7 +7,7 @@
 ![TypeScript](https://img.shields.io/badge/TypeScript-5-3178C6?logo=typescript&logoColor=white)
 ![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-v4-06B6D4?logo=tailwindcss&logoColor=white)
 
-**[🔗 Live Demo](https://your-portfolio-url.vercel.app)** <!-- TODO: デプロイ後に更新 -->
+**[🔗 Live Demo](https://project-07kun.vercel.app)**
 
 ---
 
@@ -25,7 +25,8 @@
 
 - 制作実績カード一覧 + 詳細モーダル
 - ハッカソン受賞バッジ（KDDI アジャイル賞 / 優秀賞）
-- GitHub 統計連携（コミット数・使用言語比率）
+- GitHub 統計連携（コントリビューション数・ストリーク・PR 数・公開リポジトリ数）
+- App Store / Google Play リンク（実リリースアプリ「Dotto」）
 - Framer Motion によるアニメーション
 - レスポンシブデザイン（ダークテーマ固定）
 

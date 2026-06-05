@@ -12,6 +12,8 @@ export type Experience = {
   details?: string[];
   githubUrl?: string;
   officialUrl?: string;
+  appStoreUrl?: string;
+  googlePlayUrl?: string;
 };
 
 export const experiences: Experience[] = [
@@ -101,5 +103,7 @@ export const experiences: Experience[] = [
       "モブプログラミングを主体としたチーム開発スタイルで多機能の実装に関与",
     ],
     githubUrl: "https://github.com/fun-dotto/dotto",
+    appStoreUrl: "https://apps.apple.com/jp/app/dotto/id6471561803",
+    googlePlayUrl: "https://play.google.com/store/apps/details?id=jp.ac.fun.dotto",
   },
 ];

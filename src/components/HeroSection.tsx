@@ -3,7 +3,7 @@
 import { motion, type Variants } from "framer-motion";
 import Image from "next/image";
 import { TechIcon, GitHubIcon } from "./Icons";
-import { Mail, MapPin, ExternalLink, Sparkles, Code2, Cpu } from "lucide-react";
+import { Mail, MapPin, Sparkles, Code2, Cpu } from "lucide-react";
 import AwardBadge from "./AwardBadge";
 import StatsCard from "./StatsCard";
 
@@ -85,9 +85,6 @@ export default function HeroSection() {
             >
               <GitHubIcon size={20} />
             </a>
-            <button disabled className="flex-1 px-4 py-3 bg-white/30 text-slate-500 text-xs font-black uppercase tracking-widest rounded-2xl flex items-center justify-center gap-2 cursor-not-allowed">
-              Resume <ExternalLink size={14} />
-            </button>
           </div>
         </motion.div>
 

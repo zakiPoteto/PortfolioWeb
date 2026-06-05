@@ -25,11 +25,11 @@ export const experiences: Experience[] = [
     role: "フロントエンドエンジニア",
     teamSize: 4,
     summary:
-      "UI実装からGoバックエンドとの通信層設計まで担当。キャッシュ戦略によるUX最適化も行った。",
+      "UI実装からGoバックエンドとの通信層設計まで担当。先読みキャッシュでスワイプのラグを解消。",
     details: [
       "ホーム画面・サインアップ/ログイン画面（初期実装・API接続）を実装。プロフィール画面はバグ修正・動作改善を担当",
       "GoバックエンドのREST APIをDart側から繋ぎ込む通信層を設計・実装（ホーム画面JSON送受信・マッチ作品取得、サインアップ/ログインエンドポイント接続）",
-      "precacheImage()で常に2枚先の画像をprefetch（ahead=2）しスワイプ遅延を解消。ResizeImageでデバイスDPR対応のメモリキャッシュ最適化も実施",
+      "スワイプ先の画像を2枚先読みすることでスワイプ遅延を解消。デバイス解像度に応じたキャッシュサイズ指定でメモリ効率を改善",
       "GitHubのIssue・PRテンプレートを整備し、チームの運用フローを改善",
     ],
     githubUrl: "https://github.com/p2hacks2025/pre-12",
@@ -100,7 +100,7 @@ export const experiences: Experience[] = [
       "学内約75%の学生が利用する大学支援アプリに参加し、継続的に機能開発を担当",
       "翌日の学食メニュー表示機能のUI設計からFirebase/Riverpodを用いたデータ取得ロジックまで一貫して実装",
       "コードレビュー・ペアプログラミングを通じたクリーンコード作成技術の向上",
-      "モブプログラミングを主体としたチーム開発スタイルで多機能の実装に関与",
+      "モブプログラミング中心のチーム開発で 継続的に関与",
     ],
     githubUrl: "https://github.com/fun-dotto/dotto",
     appStoreUrl: "https://apps.apple.com/jp/app/dotto/id6471561803",

@@ -81,7 +81,7 @@ export default function ExperienceCard({
           className="flex flex-col sm:flex-row gap-3 pt-2"
           onClick={(e) => e.stopPropagation()}
         >
-          {exp.appStoreUrl && (
+          {exp.appStoreUrl && exp.appStoreUrl !== "#" && (
             <a
               href={exp.appStoreUrl}
               target="_blank"
@@ -92,7 +92,7 @@ export default function ExperienceCard({
               App Store
             </a>
           )}
-          {exp.googlePlayUrl && (
+          {exp.googlePlayUrl && exp.googlePlayUrl !== "#" && (
             <a
               href={exp.googlePlayUrl}
               target="_blank"

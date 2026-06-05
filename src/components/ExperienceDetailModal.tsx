@@ -70,7 +70,7 @@ export default function ExperienceDetailModal({ exp }: { exp: Experience }) {
 
       {(exp.officialUrl || exp.githubUrl || exp.appStoreUrl || exp.googlePlayUrl) && (
         <div className="flex flex-col sm:flex-row gap-3 pt-2 border-t border-slate-700/50">
-          {exp.appStoreUrl && (
+          {exp.appStoreUrl && exp.appStoreUrl !== "#" && (
             <a
               href={exp.appStoreUrl}
               target="_blank"
@@ -81,7 +81,7 @@ export default function ExperienceDetailModal({ exp }: { exp: Experience }) {
               App Store
             </a>
           )}
-          {exp.googlePlayUrl && (
+          {exp.googlePlayUrl && exp.googlePlayUrl !== "#" && (
             <a
               href={exp.googlePlayUrl}
               target="_blank"

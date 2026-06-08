@@ -102,7 +102,7 @@ export const experiences: Experience[] = [
       "コードレビュー・ペアプログラミングを通じたクリーンコード作成技術の向上",
       "モブプログラミング中心のチーム開発で 継続的に関与",
     ],
-    githubUrl: "https://github.com/fun-dotto/dotto",
+    githubUrl: "https://github.com/fun-dotto/app",
     appStoreUrl: "https://apps.apple.com/jp/app/dotto/id6471561803",
     googlePlayUrl: "https://play.google.com/store/apps/details?id=jp.ac.fun.dotto",
   },

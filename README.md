@@ -7,7 +7,7 @@
 ![TypeScript](https://img.shields.io/badge/TypeScript-5-3178C6?logo=typescript&logoColor=white)
 ![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-v4-06B6D4?logo=tailwindcss&logoColor=white)
 
-**[🔗 Live Demo](https://project-07kun.vercel.app)**
+**[🔗 Live Demo](https://www.zaki-potato.dev)**
 
 ---
 

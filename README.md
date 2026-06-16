@@ -1,6 +1,6 @@
 # zakiPoteto | Portfolio
 
-> ハッカソン・インターン・チーム開発の制作実績をまとめたポートフォリオWebサイト
+> ハッカソン受賞・インターン・長期チーム開発など、実際に作ったプロジェクトをまとめた個人サイト
 
 [![CI](https://github.com/zakiPoteto/PortfolioWeb/actions/workflows/ci.yaml/badge.svg)](https://github.com/zakiPoteto/PortfolioWeb/actions/workflows/ci.yaml)
 ![Next.js](https://img.shields.io/badge/Next.js-16-black?logo=nextdotjs&logoColor=white)
@@ -11,26 +11,15 @@
 
 ---
 
-## Overview
-
-山﨑壮馬（zakiPoteto）の制作実績ポートフォリオサイト。
-ハッカソン受賞・企業インターン・長期チーム開発など5プロジェクトをカード形式で一覧し、モーダルで詳細確認できる構成。
-
-## Screenshot
-
-<!-- TODO: スクリーンショットを追加 -->
-<!-- ![screenshot](public/screenshot.png) -->
-
-## Features
+## 機能
 
 - 制作実績カード一覧 + 詳細モーダル
 - ハッカソン受賞バッジ（KDDI アジャイル賞 / 優秀賞）
 - GitHub 統計連携（コントリビューション数・ストリーク・PR 数・公開リポジトリ数）
-- App Store / Google Play リンク（実リリースアプリ「Dotto」）
 - Framer Motion によるアニメーション
 - レスポンシブデザイン（ダークテーマ固定）
 
-## Tech Stack
+## 技術スタック
 
 | カテゴリ | 技術・バージョン |
 |---|---|
@@ -42,9 +31,9 @@
 | パッケージマネージャ | pnpm 11 |
 | Node.js | 22 |
 
-## Getting Started
+## セットアップ
 
-**Prerequisites:** Node.js 22+, pnpm 11+
+**必要なもの:** Node.js 22+, pnpm 11+
 
 ```bash
 git clone https://github.com/zakiPoteto/PortfolioWeb.git
@@ -55,8 +44,6 @@ pnpm dev
 
 [http://localhost:3000](http://localhost:3000) で確認。
 
-### Scripts
-
 ```bash
 pnpm dev      # 開発サーバー起動
 pnpm build    # 本番ビルド
@@ -64,40 +51,10 @@ pnpm start    # 本番サーバー起動
 pnpm lint     # ESLint 実行
 ```
 
-## Project Structure
+## 作者
 
-```
-src/
-├── app/                   # Next.js App Router
-│   ├── layout.tsx
-│   ├── page.tsx
-│   └── api/github-stats/  # GitHub統計取得 API Route
-├── components/            # UIコンポーネント
-│   ├── HeroSection.tsx
-│   ├── ExperiencesSection.tsx
-│   ├── ExperienceCard.tsx
-│   ├── ExperienceDetailModal.tsx
-│   └── ...
-├── data/
-│   └── experiences.ts     # 制作実績データ定義
-└── lib/
-    └── categoryStyle.ts   # カテゴリスタイル定義
-```
+**山﨑壮馬**
 
-## CI
-
-PR・main へのプッシュ時に GitHub Actions で自動実行：
-
-| ステップ | 内容 |
-|---|---|
-| Lint | ESLint |
-| Type check | `tsc --noEmit` |
-| Build | `next build` |
-
-## Author
-
-**山﨑壮馬（zakiPoteto）**
-
-公立はこだて未来大学 複雑系知能学科 3年 / 28卒予定
+公立はこだて未来大学 
 
 - GitHub: [@zakiPoteto](https://github.com/zakiPoteto)

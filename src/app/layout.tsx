@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
 import "./globals.css";
+import HiddenCommands from "@/components/HiddenCommands";
 
 export const metadata: Metadata = {
   title: "zakiPoteto | Portfolio",
@@ -22,6 +23,7 @@ export default function RootLayout({
         <div className="fixed top-[20%] right-[10%] w-[20%] h-[20%] bg-violet-600/5 blur-[100px] rounded-full -z-10 pointer-events-none" />
         
         {children}
+        <HiddenCommands />
       </body>
     </html>
   );

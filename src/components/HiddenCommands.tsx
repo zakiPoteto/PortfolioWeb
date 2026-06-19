@@ -1,7 +1,8 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useCallback } from "react";
 import { useKonamiCode } from "@/hooks/useKonamiCode";
+import { useCommandPalette } from "@/hooks/useCommandPalette";
 import Terminal from "./Terminal";
 import CommandPalette from "./CommandPalette";
 
@@ -12,22 +13,13 @@ export default function HiddenCommands() {
   const openTerminal = useCallback(() => setIsTerminalOpen(true), []);
   const closeTerminal = useCallback(() => setIsTerminalOpen(false), []);
   const closePalette = useCallback(() => setIsPaletteOpen(false), []);
+  const togglePalette = useCallback(() => setIsPaletteOpen((prev) => !prev), []);
 
   // Konami Code opens the terminal (disabled while palette is open)
   useKonamiCode(openTerminal, isPaletteOpen);
 
-  // ⌘K / Ctrl+K toggles the command palette (disabled while terminal is open)
-  useEffect(() => {
-    if (isTerminalOpen) return;
-    const handler = (e: KeyboardEvent) => {
-      if ((e.metaKey || e.ctrlKey) && e.key === "k") {
-        e.preventDefault();
-        setIsPaletteOpen((prev) => !prev);
-      }
-    };
-    window.addEventListener("keydown", handler);
-    return () => window.removeEventListener("keydown", handler);
-  }, [isTerminalOpen]);
+  // ⌘K / ⌘/ (Mac) or Ctrl+/ / Ctrl+Shift+@ (Win/Linux) toggles the palette
+  useCommandPalette(togglePalette, isTerminalOpen);
 
   return (
     <>

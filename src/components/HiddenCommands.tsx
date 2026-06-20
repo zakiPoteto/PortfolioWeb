@@ -20,7 +20,6 @@ export default function HiddenCommands() {
   useKonamiCode(openTerminal, isPaletteOpen);
   useTerminalShortcut(openTerminal, isPaletteOpen);
 
-  // ⌘K / ⌘/ (Mac) or Ctrl+/ / Ctrl+Shift+@ (Win/Linux) toggles the palette
   useCommandPalette(togglePalette, isTerminalOpen);
 
   return (

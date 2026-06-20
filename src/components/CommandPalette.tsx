@@ -3,7 +3,7 @@
 import { useEffect } from "react";
 import { Command } from "cmdk";
 import { AnimatePresence, motion } from "framer-motion";
-import { User, Code2, Briefcase, Mail, ExternalLink, Sun, Search } from "lucide-react";
+import { User, Code2, Briefcase, Mail, ExternalLink, Search } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import { paletteCommands } from "@/data/paletteCommands";
 
@@ -13,7 +13,6 @@ const ICON_MAP: Record<string, LucideIcon> = {
   Briefcase,
   Mail,
   ExternalLink,
-  Sun,
 };
 
 export default function CommandPalette({

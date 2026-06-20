@@ -60,12 +60,4 @@ export const paletteCommands: PaletteCommand[] = [
     keywords: ["email", "mail", "contact", "メール"],
     action: () => window.open("mailto:yamas.jto@gmail.com", "_blank"),
   },
-  {
-    id: "theme",
-    label: "テーマ切り替え",
-    description: "ダークテーマのみ対応",
-    icon: "Sun",
-    keywords: ["theme", "dark", "テーマ"],
-    action: () => undefined,
-  },
 ];

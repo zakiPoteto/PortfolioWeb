@@ -21,6 +21,16 @@ export function useKonamiCode(onActivate: () => void, isDisabled?: boolean) {
     if (isDisabled) return;
 
     const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.repeat) return;
+
+      // Keyboard-layout-independent shortcut for Ctrl+Shift+@
+      if (e.ctrlKey && e.shiftKey && e.code === "BracketLeft") {
+        e.preventDefault();
+        progress.current = 0;
+        onActivate();
+        return;
+      }
+
       const target = e.target as HTMLElement;
       if (
         target.tagName === "INPUT" ||
@@ -31,14 +41,16 @@ export function useKonamiCode(onActivate: () => void, isDisabled?: boolean) {
         return;
       }
 
-      if (e.key === SEQUENCE[progress.current]) {
+      const key = e.key.toLowerCase();
+      const expected = SEQUENCE[progress.current].toLowerCase();
+      if (key === expected) {
         progress.current++;
         if (progress.current === SEQUENCE.length) {
           progress.current = 0;
           onActivate();
         }
       } else {
-        progress.current = e.key === SEQUENCE[0] ? 1 : 0;
+        progress.current = key === SEQUENCE[0].toLowerCase() ? 1 : 0;
       }
     };
 

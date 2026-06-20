@@ -12,6 +12,7 @@ export function useCommandPalette(onToggle: () => void, isDisabled?: boolean) {
   useEffect(() => {
     if (isDisabled) return;
     const handler = (e: KeyboardEvent) => {
+      if (e.repeat) return;
       if (isToggleKey(e)) {
         e.preventDefault();
         onToggle();

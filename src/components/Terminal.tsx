@@ -16,10 +16,6 @@ const WELCOME: string[] = [
   "",
 ];
 
-function createLines(texts: string[], type: Line["type"], startId: number): Line[] {
-  return texts.map((text, i) => ({ id: startId + i, type, text }));
-}
-
 export default function Terminal({
   isOpen,
   onClose,
@@ -27,15 +23,15 @@ export default function Terminal({
   isOpen: boolean;
   onClose: () => void;
 }) {
-  const counter = useRef(0);
+  const counter = useRef(WELCOME.length);
   const nextId = () => counter.current++;
 
   const [lines, setLines] = useState<Line[]>(() =>
-    WELCOME.map((text) => ({ id: counter.current++, type: "welcome" as const, text }))
+    WELCOME.map((text, i) => ({ id: i, type: "welcome" as const, text }))
   );
   const [input, setInput] = useState("");
   const [cmdHistory, setCmdHistory] = useState<string[]>([]);
-  const [historyIdx, setHistoryIdx] = useState(-1);
+  const historyIdx = useRef(-1);
 
   const inputRef = useRef<HTMLInputElement>(null);
   const bottomRef = useRef<HTMLDivElement>(null);
@@ -72,7 +68,7 @@ export default function Terminal({
       counter.current += WELCOME.length;
       setInput("");
       setCmdHistory([]);
-      setHistoryIdx(-1);
+      historyIdx.current = -1;
     }
   }, [isOpen]);
 
@@ -82,7 +78,7 @@ export default function Terminal({
 
     const result = executeCommand(trimmed);
     setCmdHistory((prev) => [trimmed, ...prev]);
-    setHistoryIdx(-1);
+    historyIdx.current = -1;
     setInput("");
 
     if (result.action === "clear") {
@@ -105,25 +101,21 @@ export default function Terminal({
       text,
     }));
     setLines((prev) => [...prev, cmdLine, ...outLines]);
-  }, [input, onClose]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [input, onClose]);
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
       handleSubmit();
     } else if (e.key === "ArrowUp") {
       e.preventDefault();
-      setHistoryIdx((prev) => {
-        const next = Math.min(prev + 1, cmdHistory.length - 1);
-        setInput(cmdHistory[next] ?? "");
-        return next;
-      });
+      const next = Math.min(historyIdx.current + 1, cmdHistory.length - 1);
+      historyIdx.current = next;
+      setInput(cmdHistory[next] ?? "");
     } else if (e.key === "ArrowDown") {
       e.preventDefault();
-      setHistoryIdx((prev) => {
-        const next = Math.max(prev - 1, -1);
-        setInput(next === -1 ? "" : (cmdHistory[next] ?? ""));
-        return next;
-      });
+      const next = Math.max(historyIdx.current - 1, -1);
+      historyIdx.current = next;
+      setInput(next === -1 ? "" : (cmdHistory[next] ?? ""));
     }
   };
 

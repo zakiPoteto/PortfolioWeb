@@ -1,12 +1,17 @@
 import { useEffect } from "react";
 
 // Ctrl+Shift+@ (Win) / ⌘+Shift+@ (Mac)
-// e.code === "BracketLeft" for JIS keyboard layout independence (@  is at [ position)
+
+//   JIS の Ctrl+@ 単体 (e.shiftKey===false) は意図的に除外
+//   e.key!=="{" で US の Ctrl+Shift+[ (→"{") との誤検知を防ぐ
 function isTerminalKey(e: KeyboardEvent): boolean {
   const isMac = /mac/i.test(navigator.userAgent);
-  return isMac
-    ? e.metaKey && e.shiftKey && e.code === "BracketLeft"
-    : e.ctrlKey && e.shiftKey && e.code === "BracketLeft";
+  const mod = isMac ? e.metaKey : e.ctrlKey;
+  return (
+    mod &&
+    e.shiftKey &&
+    (e.key === "@" || (e.code === "BracketLeft" && e.key !== "{"))
+  );
 }
 
 export function useTerminalShortcut(onOpen: () => void, isDisabled?: boolean) {

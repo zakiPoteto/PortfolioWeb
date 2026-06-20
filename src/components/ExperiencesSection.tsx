@@ -12,7 +12,7 @@ export default function ExperiencesSection() {
   const handleClose = useCallback(() => setSelectedExp(null), []);
 
   return (
-    <section className="max-w-3xl mx-auto px-6 pb-32">
+    <section id="experience" className="max-w-3xl mx-auto px-6 pb-32">
       <div className="pt-12">
         <motion.div
           initial={{ opacity: 0, y: 20 }}

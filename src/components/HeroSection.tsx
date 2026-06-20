@@ -32,7 +32,7 @@ const item: Variants = {
 
 export default function HeroSection() {
   return (
-    <section className="max-w-5xl mx-auto px-6 pt-24 pb-16">
+    <section id="about" className="max-w-5xl mx-auto px-6 pt-24 pb-16">
       <motion.div
         variants={container}
         initial="hidden"

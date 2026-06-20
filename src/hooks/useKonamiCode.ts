@@ -23,14 +23,6 @@ export function useKonamiCode(onActivate: () => void, isDisabled?: boolean) {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.repeat) return;
 
-      // Keyboard-layout-independent shortcut for Ctrl+Shift+@
-      if (e.ctrlKey && e.shiftKey && e.code === "BracketLeft") {
-        e.preventDefault();
-        progress.current = 0;
-        onActivate();
-        return;
-      }
-
       const target = e.target as HTMLElement;
       if (
         target.tagName === "INPUT" ||

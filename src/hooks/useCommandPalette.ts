@@ -5,10 +5,7 @@ function isToggleKey(e: KeyboardEvent): boolean {
   if (isMac) {
     return e.metaKey && (e.key === "k" || e.key === "/");
   }
-  return (
-    (e.ctrlKey && e.key === "/") ||
-    (e.ctrlKey && e.shiftKey && e.key === "@")
-  );
+  return e.ctrlKey && e.key === "/";
 }
 
 export function useCommandPalette(onToggle: () => void, isDisabled?: boolean) {

@@ -21,14 +21,6 @@ export const paletteCommands: PaletteCommand[] = [
     action: () => scrollTo("about"),
   },
   {
-    id: "scroll-skills",
-    label: "Skills",
-    description: "技術スタックへ移動",
-    icon: "Code2",
-    keywords: ["skills", "tech", "技術"],
-    action: () => scrollTo("about"),
-  },
-  {
     id: "scroll-experience",
     label: "Experience",
     description: "経験・実績へ移動",

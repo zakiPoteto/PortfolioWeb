@@ -83,16 +83,6 @@ export function executeCommand(raw: string): CommandResult {
       }
       return { lines: [`open: ${sub ?? "(missing argument)"}: not found`] };
 
-    case "contact":
-      return {
-        lines: [
-          "",
-          "  Email:  yamas.jto@gmail.com",
-          "  GitHub: https://github.com/zakiPoteto",
-          "",
-        ],
-      };
-
     case "clear":
       return { lines: [], action: "clear" };
 
@@ -108,7 +98,6 @@ export function executeCommand(raw: string): CommandResult {
           "  cat skills.txt   技術スタック",
           "  cat awards.txt   受賞歴",
           "  open dotto       Dotto の GitHub を開く",
-          "  contact          連絡先",
           "  clear            画面クリア",
           "  exit             ターミナルを閉じる",
           "  help             このヘルプ",

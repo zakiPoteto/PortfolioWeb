@@ -29,27 +29,11 @@ export const paletteCommands: PaletteCommand[] = [
     action: () => scrollTo("experience"),
   },
   {
-    id: "scroll-contact",
-    label: "Contact",
-    description: "連絡先へ移動",
-    icon: "Mail",
-    keywords: ["contact", "mail", "連絡"],
-    action: () => scrollTo("contact"),
-  },
-  {
     id: "open-github",
     label: "GitHub を開く",
     description: "github.com/zakiPoteto",
     icon: "ExternalLink",
     keywords: ["github", "code", "repository"],
     action: () => window.open("https://github.com/zakiPoteto", "_blank", "noopener,noreferrer"),
-  },
-  {
-    id: "open-email",
-    label: "メールを送る",
-    description: "yamas.jto@gmail.com",
-    icon: "Mail",
-    keywords: ["email", "mail", "contact", "メール"],
-    action: () => window.open("mailto:yamas.jto@gmail.com", "_blank"),
   },
 ];

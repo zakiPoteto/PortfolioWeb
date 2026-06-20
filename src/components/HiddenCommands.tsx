@@ -2,6 +2,7 @@
 
 import { useState, useCallback } from "react";
 import { useKonamiCode } from "@/hooks/useKonamiCode";
+import { useTerminalShortcut } from "@/hooks/useTerminalShortcut";
 import { useCommandPalette } from "@/hooks/useCommandPalette";
 import Terminal from "./Terminal";
 import CommandPalette from "./CommandPalette";
@@ -15,8 +16,9 @@ export default function HiddenCommands() {
   const closePalette = useCallback(() => setIsPaletteOpen(false), []);
   const togglePalette = useCallback(() => setIsPaletteOpen((prev) => !prev), []);
 
-  // Konami Code opens the terminal (disabled while palette is open)
+  // Konami Code or Ctrl+Shift+@ (Win) / ⌘+Shift+@ (Mac) opens the terminal
   useKonamiCode(openTerminal, isPaletteOpen);
+  useTerminalShortcut(openTerminal, isPaletteOpen);
 
   // ⌘K / ⌘/ (Mac) or Ctrl+/ / Ctrl+Shift+@ (Win/Linux) toggles the palette
   useCommandPalette(togglePalette, isTerminalOpen);

@@ -1,4 +1,5 @@
 import { experiences } from "./experiences";
+import { skillGroups } from "./skills";
 import { ASCII_ART } from "./asciiArt";
 
 export type CommandResult = {
@@ -104,33 +105,34 @@ export function executeCommand(raw: string): CommandResult {
           : lines;
 
       if (sub === "skills.txt") {
-        return {
-          lines: withLineNums([
-            "",
-            "=== Tech Stack ===",
-            "",
-            "Mobile:   Flutter (Dart)     ████████████ 2年+",
-            "          React Native        ██████░░░░░░ 半年",
-            "",
-            "Frontend: TypeScript          ████████░░░░ 1年+",
-            "          Next.js             ██████░░░░░░ 半年",
-            "",
-            "Backend:  Go                  ████░░░░░░░░ 勉強中",
-            "          Firebase            ██████░░░░░░ 1年+",
-            "",
-            "Tools:    Git / GitHub / Figma / Riverpod / Supabase",
-            "",
-          ]),
-        };
+        const lines: string[] = ["", "=== Tech Stack ==="];
+        for (const group of skillGroups) {
+          lines.push("");
+          const [first, ...rest] = group.skills;
+          const label = `${group.label}:`.padEnd(10);
+          if (first.bar) {
+            lines.push(`${label}  ${first.name.padEnd(20)}  ${first.bar} ${first.note}`);
+          } else {
+            lines.push(`${label}  ${first.name}`);
+          }
+          for (const s of rest) {
+            lines.push(s.bar
+              ? `          ${s.name.padEnd(20)}  ${s.bar} ${s.note}`
+              : `          ${s.name}`
+            );
+          }
+        }
+        lines.push("");
+        return { lines: withLineNums(lines) };
       }
       if (sub === "awards.txt") {
+        const awarded = experiences.filter((e) => e.award);
         return {
           lines: withLineNums([
             "",
             "=== Awards ===",
             "",
-            "  KDDIアジャイル賞  — Callaco  (P2HACKS 2024, 13チーム中)",
-            "  優秀賞           — Touch new (TORNADO 2025)",
+            ...awarded.map((e) => `  ${e.award}  — ${e.title}`),
             "",
           ]),
         };
@@ -208,12 +210,11 @@ export function executeCommand(raw: string): CommandResult {
   }
 }
 
-const PROJECT_LINKS: Record<string, { label: string; url: string }> = {
-  dotto:     { label: "Dotto",     url: "https://github.com/fun-dotto/app" },
-  callaco:   { label: "Callaco",   url: "https://github.com/p2hacks2024/pre-17" },
-  kiratto:   { label: "Kiratto",   url: "https://github.com/p2hacks2025/pre-12" },
-  "touch-new": { label: "Touch new", url: "https://github.com/tornado2025-05-momentum/Touch-new" },
-};
+const PROJECT_LINKS = Object.fromEntries(
+  experiences
+    .filter((e) => e.slug && e.githubUrl)
+    .map((e) => [e.slug!, { label: e.title, url: e.githubUrl! }])
+);
 
 const KNOWN_COMMANDS = ["about", "ls", "cat", "open", "date", "echo", "clear", "exit", "help"];
 

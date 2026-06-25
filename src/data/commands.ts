@@ -10,7 +10,20 @@ export type CommandResult = {
 export function executeCommand(raw: string): CommandResult {
   const parts = raw.trim().split(/\s+/);
   const cmd = parts[0].toLowerCase();
-  const sub = parts[1]?.toLowerCase();
+
+  const flags = new Set<string>();
+  const args: string[] = [];
+  for (const p of parts.slice(1)) {
+    if (p.startsWith("--")) {
+      flags.add(p.slice(2));
+    } else if (p.startsWith("-") && p.length > 1) {
+      for (const ch of p.slice(1)) flags.add(ch);
+    } else {
+      args.push(p.toLowerCase());
+    }
+  }
+  const sub = args[0];
+  const f = (flag: string) => flags.has(flag);
 
   switch (cmd) {
     case "about":
@@ -26,22 +39,73 @@ export function executeCommand(raw: string): CommandResult {
         ],
       };
 
-    case "ls":
+    case "ls": {
+      const long = f("l");
+      const all  = f("a");
+      const one  = f("1");
+      const date = new Date().toLocaleDateString("ja-JP");
+
       if (sub === "projects") {
+        if (long) {
+          return {
+            lines: [
+              "",
+              `total ${experiences.length}`,
+              ...experiences.map(
+                (e) => `drwxr-xr-x  zaki  ${e.date.padEnd(16)}  ${e.title}`
+              ),
+              "",
+            ],
+          };
+        }
+        if (one) {
+          return { lines: ["", ...experiences.map((e) => e.title), ""] };
+        }
+        return {
+          lines: ["", ...experiences.map((e, i) => `  [${i + 1}] ${e.title}`), ""],
+        };
+      }
+
+      const visibleFiles = ["skills.txt", "awards.txt", "projects/"];
+      const hiddenFiles  = [".", "..", ".profile"];
+      const files = all ? [...hiddenFiles, ...visibleFiles] : visibleFiles;
+
+      if (long) {
         return {
           lines: [
             "",
-            ...experiences.map((e, i) => `  [${i + 1}] ${e.title}`),
+            `total ${files.length}`,
+            ...(all
+              ? [
+                  `drwxr-xr-x  zaki  ${date}  .`,
+                  `drwxr-xr-x  zaki  ${date}  ..`,
+                  `-rw-------  zaki  ${date}  .profile`,
+                ]
+              : []),
+            `-rw-r--r--  zaki  ${date}  skills.txt`,
+            `-rw-r--r--  zaki  ${date}  awards.txt`,
+            `drwxr-xr-x  zaki  ${date}  projects/`,
             "",
           ],
         };
       }
-      return { lines: ["projects/  skills.txt  awards.txt"] };
+      if (one) {
+        return { lines: files };
+      }
+      return { lines: [files.join("  ")] };
+    }
 
-    case "cat":
+    case "cat": {
+      const numbered = f("n");
+
+      const withLineNums = (lines: string[]) =>
+        numbered
+          ? lines.map((l, i) => (l === "" ? "" : `${String(i + 1).padStart(4)}  ${l}`))
+          : lines;
+
       if (sub === "skills.txt") {
         return {
-          lines: [
+          lines: withLineNums([
             "",
             "=== Tech Stack ===",
             "",
@@ -56,22 +120,38 @@ export function executeCommand(raw: string): CommandResult {
             "",
             "Tools:    Git / GitHub / Figma / Riverpod / Supabase",
             "",
-          ],
+          ]),
         };
       }
       if (sub === "awards.txt") {
         return {
-          lines: [
+          lines: withLineNums([
             "",
             "=== Awards ===",
             "",
             "  KDDIアジャイル賞  — Callaco  (P2HACKS 2024, 13チーム中)",
             "  優秀賞           — Touch new (TORNADO 2025)",
             "",
-          ],
+          ]),
         };
       }
-      return { lines: [`cat: ${sub ?? "(missing argument)"}: No such file or directory`] };
+      if (sub === ".profile") {
+        return {
+          lines: withLineNums([
+            "",
+            'export NAME="山﨑壮馬"',
+            'export GITHUB="https://github.com/zakiPoteto"',
+            'export UNIVERSITY="公立はこだて未来大学"',
+            'export LANG="Flutter > TypeScript > Go"',
+            'export COFFEE="essential"',
+            "",
+          ]),
+        };
+      }
+      return {
+        lines: [`cat: ${sub ?? "(missing argument)"}: No such file or directory`],
+      };
+    }
 
     case "open": {
       const project = PROJECT_LINKS[sub ?? ""];
@@ -93,7 +173,7 @@ export function executeCommand(raw: string): CommandResult {
     }
 
     case "echo":
-      return { lines: [parts.slice(1).join(" ")] };
+      return { lines: [args.join(" ")] };
 
     case "clear":
       return { lines: [], action: "clear" };
@@ -105,16 +185,15 @@ export function executeCommand(raw: string): CommandResult {
       return {
         lines: [
           "",
-          "  about            自己紹介 + ASCII art",
-          "  ls projects      プロジェクト一覧",
-          "  cat skills.txt   技術スタック",
-          "  cat awards.txt   受賞歴",
-          "  open <project>   プロジェクトの GitHub を開く",
-          "  date             現在日時を表示",
-          "  echo <text>      テキストをそのまま返す",
-          "  clear            画面クリア",
-          "  exit             ターミナルを閉じる",
-          "  help             このヘルプ",
+          "  about              自己紹介 + ASCII art",
+          "  ls [-la1] [dir]    ファイル一覧（-l 詳細 / -a 隠しファイル / -1 縦並び）",
+          "  cat [-n] <file>    ファイル表示（-n 行番号付き）",
+          "  open <project>     プロジェクトの GitHub を開く",
+          "  date               現在日時を表示",
+          "  echo <text>        テキストをそのまま返す",
+          "  clear              画面クリア",
+          "  exit               ターミナルを閉じる",
+          "  help               このヘルプ",
           "",
           "  Tip: ↑ / ↓ で入力履歴を辿れます",
           "",

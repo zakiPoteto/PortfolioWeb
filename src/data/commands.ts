@@ -99,10 +99,11 @@ export function executeCommand(raw: string): CommandResult {
     case "cat": {
       const numbered = f("n");
 
-      const withLineNums = (lines: string[]) =>
-        numbered
-          ? lines.map((l, i) => (l === "" ? "" : `${String(i + 1).padStart(4)}  ${l}`))
-          : lines;
+      const withLineNums = (lines: string[]) => {
+        if (!numbered) return lines;
+        let n = 0;
+        return lines.map((l) => (l === "" ? "" : `${String(++n).padStart(4)}  ${l}`));
+      };
 
       if (sub === "skills.txt") {
         const lines: string[] = ["", "=== Tech Stack ==="];
@@ -174,8 +175,10 @@ export function executeCommand(raw: string): CommandResult {
       return { lines: [now.toLocaleString("ja-JP", { timeZone: "Asia/Tokyo" })] };
     }
 
-    case "echo":
-      return { lines: [args.join(" ")] };
+    case "echo": {
+      const text = raw.trim().slice(cmd.length).trimStart();
+      return { lines: [text] };
+    }
 
     case "clear":
       return { lines: [], action: "clear" };

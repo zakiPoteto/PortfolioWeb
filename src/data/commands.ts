@@ -1,4 +1,5 @@
 import { experiences } from "./experiences";
+import { skillGroups } from "./skills";
 import { ASCII_ART } from "./asciiArt";
 
 export type CommandResult = {
@@ -10,10 +11,23 @@ export type CommandResult = {
 export function executeCommand(raw: string): CommandResult {
   const parts = raw.trim().split(/\s+/);
   const cmd = parts[0].toLowerCase();
-  const sub = parts[1]?.toLowerCase();
+
+  const flags = new Set<string>();
+  const args: string[] = [];
+  for (const p of parts.slice(1)) {
+    if (p.startsWith("--")) {
+      flags.add(p.slice(2));
+    } else if (p.startsWith("-") && p.length > 1) {
+      for (const ch of p.slice(1)) flags.add(ch);
+    } else {
+      args.push(p.toLowerCase());
+    }
+  }
+  const sub = args[0];
+  const f = (flag: string) => flags.has(flag);
 
   switch (cmd) {
-    case "whoami":
+    case "about":
       return {
         lines: [
           ASCII_ART,
@@ -26,62 +40,143 @@ export function executeCommand(raw: string): CommandResult {
         ],
       };
 
-    case "ls":
+    case "ls": {
+      const long = f("l");
+      const all  = f("a");
+      const one  = f("1");
+      const date = new Date().toLocaleDateString("ja-JP");
+
       if (sub === "projects") {
+        if (long) {
+          return {
+            lines: [
+              "",
+              `total ${experiences.length}`,
+              ...experiences.map(
+                (e) => `drwxr-xr-x  zaki  ${e.date.padEnd(16)}  ${e.title}`
+              ),
+              "",
+            ],
+          };
+        }
+        if (one) {
+          return { lines: ["", ...experiences.map((e) => e.title), ""] };
+        }
+        return {
+          lines: ["", ...experiences.map((e, i) => `  [${i + 1}] ${e.title}`), ""],
+        };
+      }
+
+      const visibleFiles = ["skills.txt", "awards.txt", "projects/"];
+      const hiddenFiles  = [".", "..", ".profile"];
+      const files = all ? [...hiddenFiles, ...visibleFiles] : visibleFiles;
+
+      const perms = (name: string) =>
+        name === "." || name === ".." || name.endsWith("/")
+          ? "drwxr-xr-x"
+          : name.startsWith(".")
+          ? "-rw-------"
+          : "-rw-r--r--";
+
+      if (long) {
         return {
           lines: [
             "",
-            ...experiences.map((e, i) => `  [${i + 1}] ${e.title}`),
+            `total ${files.length}`,
+            ...files.map((f) => `${perms(f)}  zaki  ${date}  ${f}`),
             "",
           ],
         };
       }
-      return { lines: ["projects/  skills.txt  awards.txt"] };
+      if (one) {
+        return { lines: files };
+      }
+      return { lines: [files.join("  ")] };
+    }
 
-    case "cat":
+    case "cat": {
+      const numbered = f("n");
+
+      const withLineNums = (lines: string[]) => {
+        if (!numbered) return lines;
+        let n = 0;
+        return lines.map((l) => (l === "" ? "" : `${String(++n).padStart(4)}  ${l}`));
+      };
+
       if (sub === "skills.txt") {
-        return {
-          lines: [
-            "",
-            "=== Tech Stack ===",
-            "",
-            "Mobile:   Flutter (Dart)     ████████████ 2年+",
-            "          React Native        ██████░░░░░░ 半年",
-            "",
-            "Frontend: TypeScript          ████████░░░░ 1年+",
-            "          Next.js             ██████░░░░░░ 半年",
-            "",
-            "Backend:  Go                  ████░░░░░░░░ 勉強中",
-            "          Firebase            ██████░░░░░░ 1年+",
-            "",
-            "Tools:    Git / GitHub / Figma / Riverpod / Supabase",
-            "",
-          ],
-        };
+        const lines: string[] = ["", "=== Tech Stack ==="];
+        for (const group of skillGroups) {
+          lines.push("");
+          const [first, ...rest] = group.skills;
+          const label = `${group.label}:`.padEnd(10);
+          if (first.bar) {
+            lines.push(`${label}  ${first.name.padEnd(20)}  ${first.bar} ${first.note}`);
+          } else {
+            lines.push(`${label}  ${first.name}`);
+          }
+          for (const s of rest) {
+            lines.push(s.bar
+              ? `          ${s.name.padEnd(20)}  ${s.bar} ${s.note}`
+              : `          ${s.name}`
+            );
+          }
+        }
+        lines.push("");
+        return { lines: withLineNums(lines) };
       }
       if (sub === "awards.txt") {
+        const awarded = experiences.filter((e) => e.award);
         return {
-          lines: [
+          lines: withLineNums([
             "",
             "=== Awards ===",
             "",
-            "  KDDIアジャイル賞  — Callaco  (P2HACKS 2024, 13チーム中)",
-            "  優秀賞           — Touch new (TORNADO 2025)",
+            ...awarded.map((e) => `  ${e.award}  — ${e.title}`),
             "",
-          ],
+          ]),
         };
       }
-      return { lines: [`cat: ${sub ?? "(missing argument)"}: No such file or directory`] };
-
-    case "open":
-      if (sub === "dotto") {
+      if (sub === ".profile") {
         return {
-          lines: ["Opening Dotto on GitHub..."],
-          action: "open",
-          openUrl: "https://github.com/fun-dotto/app",
+          lines: withLineNums([
+            "",
+            'export NAME="山﨑壮馬"',
+            'export GITHUB="https://github.com/zakiPoteto"',
+            'export UNIVERSITY="公立はこだて未来大学"',
+            'export LANG="Flutter > TypeScript > Go"',
+            'export COFFEE="essential"',
+            "",
+          ]),
         };
       }
-      return { lines: [`open: ${sub ?? "(missing argument)"}: not found`] };
+      return {
+        lines: [`cat: ${sub ?? "(missing argument)"}: No such file or directory`],
+      };
+    }
+
+    case "open": {
+      const project = PROJECT_LINKS[sub ?? ""];
+      if (project) {
+        return {
+          lines: [`Opening ${project.label} on GitHub...`],
+          action: "open",
+          openUrl: project.url,
+        };
+      }
+      if (!sub) return { lines: ["open: missing argument"] };
+      const projectNames = Object.keys(PROJECT_LINKS).join("  ");
+      return { lines: [`open: ${sub}: not found`, `  Available: ${projectNames}`] };
+    }
+
+    case "date": {
+      const now = new Date();
+      return { lines: [now.toLocaleString("ja-JP", { timeZone: "Asia/Tokyo" })] };
+    }
+
+    case "echo": {
+      const text = raw.trim().slice(cmd.length).trimStart();
+      return { lines: [text] };
+    }
 
     case "clear":
       return { lines: [], action: "clear" };
@@ -93,21 +188,62 @@ export function executeCommand(raw: string): CommandResult {
       return {
         lines: [
           "",
-          "  whoami           自己紹介 + ASCII art",
-          "  ls projects      プロジェクト一覧",
-          "  cat skills.txt   技術スタック",
-          "  cat awards.txt   受賞歴",
-          "  open dotto       Dotto の GitHub を開く",
-          "  clear            画面クリア",
-          "  exit             ターミナルを閉じる",
-          "  help             このヘルプ",
+          "  about              自己紹介 + ASCII art",
+          "  ls [-la1] [dir]    ファイル一覧（-l 詳細 / -a 隠しファイル / -1 縦並び）",
+          "  cat [-n] <file>    ファイル表示（-n 行番号付き）",
+          "  open <project>     プロジェクトの GitHub を開く",
+          "  date               現在日時を表示",
+          "  echo <text>        テキストをそのまま返す",
+          "  clear              画面クリア",
+          "  exit               ターミナルを閉じる",
+          "  help               このヘルプ",
           "",
           "  Tip: ↑ / ↓ で入力履歴を辿れます",
           "",
         ],
       };
 
-    default:
-      return { lines: [`zsh: command not found: ${cmd}`] };
+    default: {
+      const similar = findSimilarCommand(cmd);
+      const hint = similar ? `\n  Did you mean: ${similar}?` : "";
+      return { lines: [`zsh: command not found: ${cmd}${hint}`] };
+    }
   }
+}
+
+const PROJECT_LINKS = Object.fromEntries(
+  experiences
+    .filter((e) => e.slug && e.githubUrl)
+    .map((e) => [e.slug!, { label: e.title, url: e.githubUrl! }])
+);
+
+const KNOWN_COMMANDS = ["about", "ls", "cat", "open", "date", "echo", "clear", "exit", "help"];
+
+function levenshtein(a: string, b: string): number {
+  const dp: number[][] = Array.from({ length: a.length + 1 }, (_, i) =>
+    Array.from({ length: b.length + 1 }, (_, j) => (i === 0 ? j : j === 0 ? i : 0))
+  );
+  for (let i = 1; i <= a.length; i++) {
+    for (let j = 1; j <= b.length; j++) {
+      dp[i][j] =
+        a[i - 1] === b[j - 1]
+          ? dp[i - 1][j - 1]
+          : 1 + Math.min(dp[i - 1][j], dp[i][j - 1], dp[i - 1][j - 1]);
+    }
+  }
+  return dp[a.length][b.length];
+}
+
+function findSimilarCommand(cmd: string): string | null {
+  const threshold = Math.floor(cmd.length / 2);
+  let best: string | null = null;
+  let bestDist = Infinity;
+  for (const known of KNOWN_COMMANDS) {
+    const dist = levenshtein(cmd, known);
+    if (dist < bestDist) {
+      bestDist = dist;
+      best = known;
+    }
+  }
+  return bestDist <= threshold ? best : null;
 }

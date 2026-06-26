@@ -2,6 +2,7 @@ export type Category = "ハッカソン" | "イベント" | "インターン" | 
 
 export type Experience = {
   title: string;
+  slug?: string;
   date: string;
   category: Category;
   techs: string[];
@@ -19,6 +20,7 @@ export type Experience = {
 export const experiences: Experience[] = [
   {
     title: "創作者向け交流プラットフォーム「Kiratto（キラット）」",
+    slug: "kiratto",
     date: "2025年12月",
     category: "ハッカソン",
     techs: ["Flutter", "Dart", "Go", "Supabase", "GitHub Actions"],
@@ -52,6 +54,7 @@ export const experiences: Experience[] = [
   },
   {
     title: "価値観交流アプリ「Touch new」",
+    slug: "touch-new",
     date: "2025年8〜9月",
     category: "ハッカソン",
     techs: ["React Native", "TypeScript", "Firebase", "Spotify API", "Google Maps API"],
@@ -71,6 +74,7 @@ export const experiences: Experience[] = [
   },
   {
     title: "アルコール摂取管理アプリ「Callaco」",
+    slug: "callaco",
     date: "2024年12月",
     category: "ハッカソン",
     techs: ["Flutter", "Dart"],
@@ -90,6 +94,7 @@ export const experiences: Experience[] = [
   },
   {
     title: "大学支援アプリ「Dotto」",
+    slug: "dotto",
     date: "2024年4月〜現在",
     category: "課外活動",
     techs: ["Flutter", "Dart", "Firebase", "Riverpod"],

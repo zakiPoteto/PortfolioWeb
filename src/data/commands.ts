@@ -71,21 +71,19 @@ export function executeCommand(raw: string): CommandResult {
       const hiddenFiles  = [".", "..", ".profile"];
       const files = all ? [...hiddenFiles, ...visibleFiles] : visibleFiles;
 
+      const perms = (name: string) =>
+        name === "." || name === ".." || name.endsWith("/")
+          ? "drwxr-xr-x"
+          : name.startsWith(".")
+          ? "-rw-------"
+          : "-rw-r--r--";
+
       if (long) {
         return {
           lines: [
             "",
             `total ${files.length}`,
-            ...(all
-              ? [
-                  `drwxr-xr-x  zaki  ${date}  .`,
-                  `drwxr-xr-x  zaki  ${date}  ..`,
-                  `-rw-------  zaki  ${date}  .profile`,
-                ]
-              : []),
-            `-rw-r--r--  zaki  ${date}  skills.txt`,
-            `-rw-r--r--  zaki  ${date}  awards.txt`,
-            `drwxr-xr-x  zaki  ${date}  projects/`,
+            ...files.map((f) => `${perms(f)}  zaki  ${date}  ${f}`),
             "",
           ],
         };

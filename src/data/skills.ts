@@ -1,7 +1,7 @@
 export type Skill = {
   name: string;
-  bar: string;
-  note: string;
+  bar?: string;
+  note?: string;
 };
 
 export type SkillGroup = {
@@ -34,7 +34,7 @@ export const skillGroups: SkillGroup[] = [
   {
     label: "Tools",
     skills: [
-      { name: "Git / GitHub / Figma / Riverpod / Supabase", bar: "", note: "" },
+      { name: "Git / GitHub / Figma / Riverpod / Supabase" },
     ],
   },
 ];

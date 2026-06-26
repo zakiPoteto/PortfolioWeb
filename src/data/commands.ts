@@ -237,7 +237,7 @@ function levenshtein(a: string, b: string): number {
 }
 
 function findSimilarCommand(cmd: string): string | null {
-  const threshold = 3;
+  const threshold = Math.floor(cmd.length / 2);
   let best: string | null = null;
   let bestDist = Infinity;
   for (const known of KNOWN_COMMANDS) {

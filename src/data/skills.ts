@@ -34,7 +34,8 @@ export const skillGroups: SkillGroup[] = [
   {
     label: "Tools",
     skills: [
-      { name: "Git / GitHub / Figma / Riverpod / Supabase" },
+      { name: "Git / GitHub / GitLab / Figma / Riverpod / Supabase" },
+      { name: "MySQL / OpenAPI / Docker / Postman" },
     ],
   },
 ];

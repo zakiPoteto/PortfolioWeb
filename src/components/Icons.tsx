@@ -10,6 +10,9 @@ import {
   siSpotify,
   siGooglemaps,
   siGoogleplay,
+  siMysql,
+  siDocker,
+  siOpenapiinitiative,
 } from "simple-icons";
 
 const techIconMap: Record<string, { path: string; hex: string }> = {
@@ -23,6 +26,9 @@ const techIconMap: Record<string, { path: string; hex: string }> = {
   "GitHub Actions": siGithubactions,
   "Spotify API": siSpotify,
   "Google Maps API": siGooglemaps,
+  MySQL: siMysql,
+  Docker: siDocker,
+  OpenAPI: siOpenapiinitiative,
 };
 
 export function TechIcon({

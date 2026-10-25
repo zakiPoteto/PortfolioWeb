@@ -13,6 +13,8 @@ import {
   siMysql,
   siDocker,
   siOpenapiinitiative,
+  siNextdotjs,
+  siTailwindcss,
 } from "simple-icons";
 
 const techIconMap: Record<string, { path: string; hex: string }> = {
@@ -29,6 +31,9 @@ const techIconMap: Record<string, { path: string; hex: string }> = {
   MySQL: siMysql,
   Docker: siDocker,
   OpenAPI: siOpenapiinitiative,
+  React: siReact,
+  "Next.js": { ...siNextdotjs, hex: "FFFFFF" }, // 公式色が黒で、暗いカード上で見えないため白にする
+  "Tailwind CSS": siTailwindcss,
 };
 
 export function TechIcon({

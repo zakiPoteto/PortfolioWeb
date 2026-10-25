@@ -2,7 +2,7 @@
 
 import { type Experience } from "@/data/experiences";
 import { categoryStyle } from "@/lib/categoryStyle";
-import { Calendar, Users, UserCircle, Globe } from "lucide-react";
+import { Calendar, Users, Globe } from "lucide-react";
 import { GitHubIcon, TechIcon, AppleIcon, GooglePlayIcon } from "./Icons";
 import AwardBadge from "./AwardBadge";
 
@@ -28,18 +28,12 @@ export default function ExperienceDetailModal({ exp }: { exp: Experience }) {
         {exp.award && <AwardBadge award={exp.award} size="lg" />}
       </div>
 
-      <div className="flex flex-wrap gap-x-5 gap-y-2 text-sm text-slate-400">
-        <div className="flex items-center gap-1.5">
-          <UserCircle size={16} className="text-slate-500" />
-          <span>{exp.role}</span>
+      {exp.teamSize && (
+        <div className="flex items-center gap-1.5 text-sm text-slate-400">
+          <Users size={16} className="text-slate-500" />
+          <span>{exp.teamSize}人チーム</span>
         </div>
-        {exp.teamSize && (
-          <div className="flex items-center gap-1.5">
-            <Users size={16} className="text-slate-500" />
-            <span>{exp.teamSize}人チーム</span>
-          </div>
-        )}
-      </div>
+      )}
 
       <div className="flex flex-wrap gap-2">
         {exp.techs.map((tech) => (

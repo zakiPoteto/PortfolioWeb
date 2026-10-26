@@ -27,7 +27,7 @@ export const skillGroups: SkillGroup[] = [
   {
     label: "Backend",
     skills: [
-      { name: "Go",       bar: "████░░░░░░░░", note: "実務経験あり" },
+      { name: "Go",       bar: "████░░░░░░░░", note: "インターン5日間" },
       { name: "Firebase", bar: "██████░░░░░░", note: "1年+" },
     ],
   },

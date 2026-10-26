@@ -6,7 +6,6 @@ export type Experience = {
   date: string;
   category: Category;
   techs: string[];
-  role: string;
   teamSize?: number;
   award?: string;
   summary: string;
@@ -19,12 +18,42 @@ export type Experience = {
 
 export const experiences: Experience[] = [
   {
+    title: "大学広報Webアプリ「FUN o'clock」（FISH2026）",
+    date: "2026年10月",
+    category: "ハッカソン",
+    techs: ["Next.js", "React", "TypeScript", "Tailwind CSS"],
+    teamSize: 5,
+    summary:
+      "高校生が時計を見る瞬間を未来大との出会いにする、ホールクロック型の広報Webアプリ。",
+    details: [
+      "仕様の未確定事項をチームで確定し、部品の型・受け入れ条件・担当範囲・依存関係を書いた、AIがそのまま実装できる粒度のIssue約40件に分解",
+      "全PRにAIレビューを通して指摘の採否を判断し、重要な不具合を含む指摘7件をマージ前に修正",
+      "IndexedDBのデータ層を実装。通信が不安定でも表示を続け、使えない環境では同梱データへフォールバックする設計",
+      "上下スワイプ操作を判定ロジック・タッチ検出・状態管理に分けて実装。指への追従、取り消し、2本目の指、操作の中断に対応",
+      "審査基準や賞の性質から逆算せずに企画したため、開発の速さを評価される点に活かせなかった。評価する側が重視する点から逆算して企画する大切さを学んだ",
+    ],
+  },
+  {
+    title: "企業インターンシップ（株式会社オプティム）",
+    date: "2026年8月31日〜9月4日",
+    category: "インターン",
+    techs: ["Go", "MySQL", "OpenAPI", "Docker", "Flutter"],
+    summary:
+      "物品管理SaaSのバックエンドで、一覧の部分一致検索APIを実装。API仕様を先に固める進め方で、実装からレビュー・マージまでを5日間で一通り経験した。",
+    details: [
+      "API仕様を先に定義し、既存の挙動を変えない形でGoのAPIに部分一致検索を実装",
+      "入力チェックを追加し、境界値を含む単体テストを作成。レビュー指摘を受けてDB層のテストも追加",
+      "ローカルDBとPostmanで動作確認。「ヒットする語」と「しない語」を対で試し、機能の問題かデータの問題かを切り分けた",
+      "既存仕様の意図を調査で理解し、安易に直さず原因を切り分ける判断を学んだ",
+      "最終日にはFlutter側の共通入力コンポーネントの拡張にも着手。Merge Requestでレビュー対応まで経験",
+    ],
+  },
+  {
     title: "創作者向け交流プラットフォーム「Kiratto（キラット）」",
     slug: "kiratto",
     date: "2025年12月",
     category: "ハッカソン",
     techs: ["Flutter", "Dart", "Go", "Supabase", "GitHub Actions"],
-    role: "フロントエンドエンジニア",
     teamSize: 4,
     summary:
       "UI実装からGoバックエンドとの通信層設計まで担当。先読みキャッシュでスワイプのラグを解消。",
@@ -42,7 +71,6 @@ export const experiences: Experience[] = [
     date: "2025年9月1日〜9月10日",
     category: "インターン",
     techs: ["Flutter", "Dart"],
-    role: "モバイルエンジニア（インターン）",
     summary:
       "UI修正対応・Web版API連携を担当。VRTやコンポーネント設計など企業レベルの開発手法を習得した。",
     details: [
@@ -58,7 +86,6 @@ export const experiences: Experience[] = [
     date: "2025年8〜9月",
     category: "ハッカソン",
     techs: ["React Native", "TypeScript", "Firebase", "Spotify API", "Google Maps API"],
-    role: "エンジニア / テックリード",
     teamSize: 6,
     award: "優秀賞受賞",
     summary:
@@ -78,7 +105,6 @@ export const experiences: Experience[] = [
     date: "2024年12月",
     category: "ハッカソン",
     techs: ["Flutter", "Dart"],
-    role: "チームリーダー / エンジニア",
     teamSize: 4,
     award: "KDDIアジャイル賞受賞",
     summary:
@@ -97,15 +123,16 @@ export const experiences: Experience[] = [
     slug: "dotto",
     date: "2024年4月〜現在",
     category: "課外活動",
-    techs: ["Flutter", "Dart", "Firebase", "Riverpod"],
-    role: "フロントエンドエンジニア",
+    techs: ["Flutter", "Dart", "Firebase", "Riverpod", "Go", "TypeSpec"],
     summary:
-      "学内約75%が利用する実用アプリ。学食メニュー機能の実装・UI改善を担当し、モブプロ中心のチーム開発を継続中。",
+      "学内約75%が利用する実用アプリ。学食メニュー機能の実装・UI改善を担当し、2026年7月からはサーバーサイド（Go）の新機能設計にも取り組む。モブプロ中心のチーム開発を継続中。",
     details: [
       "学内約75%の学生が利用する大学支援アプリに参加し、継続的に機能開発を担当",
       "翌日の学食メニュー表示機能のUI設計からFirebase/Riverpodを用いたデータ取得ロジックまで一貫して実装",
       "コードレビュー・ペアプログラミングを通じたクリーンコード作成技術の向上",
       "モブプログラミング中心のチーム開発で 継続的に関与",
+      "2026年7月〜：科目登録・時間割改善施策のサーバーサイド（Go）を担当。API・エラーレスポンス設計を含む仕様書を作成し、API定義（TypeSpec）の変更をPR中。実装は進行中",
+      "全体の構成は、Flutterアプリ・Goのマイクロサービス（PostgreSQL）・TypeSpecで一元管理するAPI定義。API定義（OpenAPI）から各リポジトリのコードを生成して開発する",
     ],
     githubUrl: "https://github.com/fun-dotto/app",
     appStoreUrl: "https://apps.apple.com/jp/app/dotto/id6471561803",

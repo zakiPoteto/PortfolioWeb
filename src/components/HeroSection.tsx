@@ -15,6 +15,7 @@ const MAIN_TECHS = [
   "TypeScript",
   "React Native",
   "Firebase",
+  "Go",
 ];
 
 const container = {

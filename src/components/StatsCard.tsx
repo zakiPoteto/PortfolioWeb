@@ -46,6 +46,11 @@ export default function StatsCard() {
         <div className="hidden sm:block text-[10px] text-slate-500 font-bold uppercase tracking-widest">
           {stats?.lastUpdated}
         </div>
+        {!isLoading && !stats && (
+          <div className="text-[10px] text-slate-500 font-bold">
+            GitHubの統計を取得できませんでした
+          </div>
+        )}
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
@@ -85,9 +90,6 @@ export default function StatsCard() {
               ))}
             </div>
           </div>
-          {!isLoading && !stats && (
-            <p className="text-[10px] text-slate-500 mb-1">取得できませんでした</p>
-          )}
           <div className="grid grid-cols-7 gap-1.5 mb-1">
             {(stats?.contributionGrid ?? []).map((day, i) => (
               <div

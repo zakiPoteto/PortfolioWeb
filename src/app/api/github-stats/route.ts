@@ -51,19 +51,15 @@ function toLevel(count: number): number {
   return 3;
 }
 
-const FALLBACK = {
-  totalContributions: 842,
-  currentStreak: 12,
-  totalPRs: 48,
-  publicRepos: 15,
-  contributionGrid: Array.from({ length: 28 }, () => ({ level: 0 })),
-  lastUpdated: "---",
-};
+function unavailable() {
+  return NextResponse.json({ error: "GitHub stats unavailable" }, { status: 503 });
+}
 
 export async function GET() {
   const token = process.env.GITHUB_TOKEN;
   if (!token) {
-    return NextResponse.json(FALLBACK);
+    console.error("GITHUB_TOKEN is not set");
+    return unavailable();
   }
 
   try {
@@ -103,6 +99,6 @@ export async function GET() {
     });
   } catch (e) {
     console.error("GitHub stats fetch failed:", e);
-    return NextResponse.json(FALLBACK);
+    return unavailable();
   }
 }

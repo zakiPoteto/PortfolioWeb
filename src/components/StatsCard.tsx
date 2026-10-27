@@ -14,17 +14,8 @@ type GitHubStats = {
   lastUpdated: string;
 };
 
-const FALLBACK_STATS: GitHubStats = {
-  totalContributions: 842,
-  currentStreak: 12,
-  totalPRs: 48,
-  publicRepos: 15,
-  contributionGrid: Array.from({ length: 28 }, () => ({ level: 0 })),
-  lastUpdated: "---",
-};
-
 export default function StatsCard() {
-  const [stats, setStats] = useState<GitHubStats>(FALLBACK_STATS);
+  const [stats, setStats] = useState<GitHubStats | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -53,18 +44,23 @@ export default function StatsCard() {
           </span>
         </div>
         <div className="hidden sm:block text-[10px] text-slate-500 font-bold uppercase tracking-widest">
-          {stats.lastUpdated}
+          {stats?.lastUpdated}
         </div>
+        {!isLoading && !stats && (
+          <div className="text-[10px] text-slate-500 font-bold">
+            GitHubの統計を取得できませんでした
+          </div>
+        )}
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         {/* Main Stats Grid */}
         <div className="lg:col-span-8 grid grid-cols-2 sm:grid-cols-4 gap-3">
           {[
-            { label: "Contributions", value: stats.totalContributions, icon: History, color: "text-blue-400", border: "hover:border-blue-500/30", sub: "Total" },
-            { label: "Streak", value: stats.currentStreak, icon: Flame, color: "text-orange-400", border: "hover:border-orange-500/30", sub: "Days" },
-            { label: "Pull Requests", value: stats.totalPRs, icon: GitPullRequest, color: "text-purple-400", border: "hover:border-purple-500/30", sub: "Merged" },
-            { label: "Repositories", value: stats.publicRepos, icon: GitBranch, color: "text-emerald-400", border: "hover:border-emerald-500/30", sub: "Public" },
+            { label: "Contributions", value: stats?.totalContributions, icon: History, color: "text-blue-400", border: "hover:border-blue-500/30", sub: "Total" },
+            { label: "Streak", value: stats?.currentStreak, icon: Flame, color: "text-orange-400", border: "hover:border-orange-500/30", sub: "Days" },
+            { label: "Pull Requests", value: stats?.totalPRs, icon: GitPullRequest, color: "text-purple-400", border: "hover:border-purple-500/30", sub: "Merged" },
+            { label: "Repositories", value: stats?.publicRepos, icon: GitBranch, color: "text-emerald-400", border: "hover:border-emerald-500/30", sub: "Public" },
           ].map((stat) => (
             <div 
               key={stat.label}
@@ -76,7 +72,7 @@ export default function StatsCard() {
               </div>
               <div className="flex items-baseline gap-1">
                 <span className={`text-2xl font-black text-white group-hover:scale-105 transition-transform origin-left inline-block ${isLoading ? "animate-pulse text-slate-600" : ""}`}>
-                  {isLoading ? "..." : stat.value}
+                  {isLoading ? "..." : (stat.value ?? "—")}
                 </span>
                 <span className="text-[9px] font-bold text-slate-500 uppercase">{stat.sub}</span>
               </div>
@@ -95,7 +91,7 @@ export default function StatsCard() {
             </div>
           </div>
           <div className="grid grid-cols-7 gap-1.5 mb-1">
-            {stats.contributionGrid.map((day, i) => (
+            {(stats?.contributionGrid ?? []).map((day, i) => (
               <div
                 key={i}
                 className={`aspect-square rounded-[2px] transition-all hover:scale-125 ${

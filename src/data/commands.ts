@@ -8,6 +8,23 @@ export type CommandResult = {
   openUrl?: string;
 };
 
+const PROJECT_LINKS = Object.fromEntries(
+  experiences
+    .filter((e) => e.slug && e.githubUrl)
+    .map((e) => [e.slug!, { label: e.title, url: e.githubUrl! }])
+);
+
+const KNOWN_COMMANDS = ["about", "whoami", "ls", "cat", "open", "date", "echo", "clear", "exit", "help"];
+
+// 全角文字を幅2として数えた表示幅(等幅フォントで列を揃えるため)
+const WIDE_CHAR = /[ᄀ-ᅟ⺀-꓏가-힣豈-﫿︰-﹯＀-｠￠-￦]/;
+
+function displayWidth(s: string): number {
+  let width = 0;
+  for (const ch of s) width += WIDE_CHAR.test(ch) ? 2 : 1;
+  return width;
+}
+
 // フラグを受け付けるコマンドと、許可する短縮フラグ・usage
 const FLAG_SPECS: Record<string, { allowed: string; usage: string }> = {
   ls: { allowed: "la1", usage: "ls [-la1] [dir]" },
@@ -65,12 +82,14 @@ export function executeCommand(raw: string): CommandResult {
 
       if (sub === "projects") {
         if (long) {
+          const dateWidth = Math.max(...experiences.map((e) => displayWidth(e.date)));
           return {
             lines: [
               "",
               `total ${experiences.length}`,
               ...experiences.map(
-                (e) => `drwxr-xr-x  zaki  ${e.date.padEnd(16)}  ${e.title}`
+                (e) =>
+                  `drwxr-xr-x  zaki  ${e.date}${" ".repeat(dateWidth - displayWidth(e.date))}  ${e.title}`
               ),
               "",
             ],
@@ -100,7 +119,7 @@ export function executeCommand(raw: string): CommandResult {
           lines: [
             "",
             `total ${files.length}`,
-            ...files.map((f) => `${perms(f)}  zaki  ${date}  ${f}`),
+            ...files.map((name) => `${perms(name)}  zaki  ${date}  ${name}`),
             "",
           ],
         };
@@ -227,14 +246,6 @@ export function executeCommand(raw: string): CommandResult {
     }
   }
 }
-
-const PROJECT_LINKS = Object.fromEntries(
-  experiences
-    .filter((e) => e.slug && e.githubUrl)
-    .map((e) => [e.slug!, { label: e.title, url: e.githubUrl! }])
-);
-
-const KNOWN_COMMANDS = ["about", "whoami", "ls", "cat", "open", "date", "echo", "clear", "exit", "help"];
 
 function levenshtein(a: string, b: string): number {
   const dp: number[][] = Array.from({ length: a.length + 1 }, (_, i) =>

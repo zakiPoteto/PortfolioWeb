@@ -8,17 +8,33 @@ export type CommandResult = {
   openUrl?: string;
 };
 
+// フラグを受け付けるコマンドと、許可する短縮フラグ・usage
+const FLAG_SPECS: Record<string, { allowed: string; usage: string }> = {
+  ls: { allowed: "la1", usage: "ls [-la1] [dir]" },
+  cat: { allowed: "n", usage: "cat [-n] <file>" },
+  open: { allowed: "", usage: "open <project>" },
+};
+
 export function executeCommand(raw: string): CommandResult {
   const parts = raw.trim().split(/\s+/);
   const cmd = parts[0].toLowerCase();
+  const spec = FLAG_SPECS[cmd];
+
+  const illegalOption = (opt: string): CommandResult => ({
+    lines: [`${cmd}: illegal option -- ${opt}`, `usage: ${spec.usage}`],
+  });
 
   const flags = new Set<string>();
   const args: string[] = [];
   for (const p of parts.slice(1)) {
     if (p.startsWith("--")) {
+      if (spec) return illegalOption(p);
       flags.add(p.slice(2));
     } else if (p.startsWith("-") && p.length > 1) {
-      for (const ch of p.slice(1)) flags.add(ch);
+      for (const ch of p.slice(1)) {
+        if (spec && !spec.allowed.includes(ch)) return illegalOption(ch);
+        flags.add(ch);
+      }
     } else {
       args.push(p.toLowerCase());
     }

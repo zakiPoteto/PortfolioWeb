@@ -28,6 +28,7 @@ export function executeCommand(raw: string): CommandResult {
 
   switch (cmd) {
     case "about":
+    case "whoami":
       return {
         lines: [
           ASCII_ART,
@@ -188,7 +189,7 @@ export function executeCommand(raw: string): CommandResult {
       return {
         lines: [
           "",
-          "  about              自己紹介 + ASCII art",
+          "  about | whoami     自己紹介 + ASCII art",
           "  ls [-la1] [dir]    ファイル一覧（-l 詳細 / -a 隠しファイル / -1 縦並び）",
           "  cat [-n] <file>    ファイル表示（-n 行番号付き）",
           "  open <project>     プロジェクトの GitHub を開く",
@@ -217,7 +218,7 @@ const PROJECT_LINKS = Object.fromEntries(
     .map((e) => [e.slug!, { label: e.title, url: e.githubUrl! }])
 );
 
-const KNOWN_COMMANDS = ["about", "ls", "cat", "open", "date", "echo", "clear", "exit", "help"];
+const KNOWN_COMMANDS = ["about", "whoami", "ls", "cat", "open", "date", "echo", "clear", "exit", "help"];
 
 function levenshtein(a: string, b: string): number {
   const dp: number[][] = Array.from({ length: a.length + 1 }, (_, i) =>

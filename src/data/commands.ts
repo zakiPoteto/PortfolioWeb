@@ -35,21 +35,21 @@ const FLAG_SPECS: Record<string, { allowed: string; usage: string }> = {
 export function executeCommand(raw: string): CommandResult {
   const parts = raw.trim().split(/\s+/);
   const cmd = parts[0].toLowerCase();
-  const spec = FLAG_SPECS[cmd];
+  const spec = Object.hasOwn(FLAG_SPECS, cmd) ? FLAG_SPECS[cmd] : undefined;
 
-  const illegalOption = (opt: string): CommandResult => ({
-    lines: [`${cmd}: illegal option -- ${opt}`, `usage: ${spec.usage}`],
+  const illegalOption = (opt: string, usage: string): CommandResult => ({
+    lines: [`${cmd}: illegal option -- ${opt}`, `usage: ${usage}`],
   });
 
   const flags = new Set<string>();
   const args: string[] = [];
   for (const p of parts.slice(1)) {
     if (p.startsWith("--")) {
-      if (spec) return illegalOption(p);
+      if (spec) return illegalOption(p, spec.usage);
       flags.add(p.slice(2));
     } else if (p.startsWith("-") && p.length > 1) {
       for (const ch of p.slice(1)) {
-        if (spec && !spec.allowed.includes(ch)) return illegalOption(ch);
+        if (spec && !spec.allowed.includes(ch)) return illegalOption(ch, spec.usage);
         flags.add(ch);
       }
     } else {
@@ -191,7 +191,7 @@ export function executeCommand(raw: string): CommandResult {
     }
 
     case "open": {
-      const project = PROJECT_LINKS[sub ?? ""];
+      const project = sub && Object.hasOwn(PROJECT_LINKS, sub) ? PROJECT_LINKS[sub] : undefined;
       if (project) {
         return {
           lines: [`Opening ${project.label} on GitHub...`],

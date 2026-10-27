@@ -8,17 +8,50 @@ export type CommandResult = {
   openUrl?: string;
 };
 
+const PROJECT_LINKS = Object.fromEntries(
+  experiences
+    .filter((e) => e.slug && e.githubUrl)
+    .map((e) => [e.slug!, { label: e.title, url: e.githubUrl! }])
+);
+
+const KNOWN_COMMANDS = ["about", "whoami", "ls", "cat", "open", "date", "echo", "clear", "exit", "help"];
+
+// 全角文字を幅2として数えた表示幅(等幅フォントで列を揃えるため)
+const WIDE_CHAR = /[ᄀ-ᅟ⺀-꓏가-힣豈-﫿︰-﹯＀-｠￠-￦]/;
+
+function displayWidth(s: string): number {
+  let width = 0;
+  for (const ch of s) width += WIDE_CHAR.test(ch) ? 2 : 1;
+  return width;
+}
+
+// フラグを受け付けるコマンドと、許可する短縮フラグ・usage
+const FLAG_SPECS: Record<string, { allowed: string; usage: string }> = {
+  ls: { allowed: "la1", usage: "ls [-la1] [dir]" },
+  cat: { allowed: "n", usage: "cat [-n] <file>" },
+  open: { allowed: "", usage: "open <project>" },
+};
+
 export function executeCommand(raw: string): CommandResult {
   const parts = raw.trim().split(/\s+/);
   const cmd = parts[0].toLowerCase();
+  const spec = Object.hasOwn(FLAG_SPECS, cmd) ? FLAG_SPECS[cmd] : undefined;
+
+  const illegalOption = (opt: string, usage: string): CommandResult => ({
+    lines: [`${cmd}: illegal option -- ${opt}`, `usage: ${usage}`],
+  });
 
   const flags = new Set<string>();
   const args: string[] = [];
   for (const p of parts.slice(1)) {
     if (p.startsWith("--")) {
+      if (spec) return illegalOption(p, spec.usage);
       flags.add(p.slice(2));
     } else if (p.startsWith("-") && p.length > 1) {
-      for (const ch of p.slice(1)) flags.add(ch);
+      for (const ch of p.slice(1)) {
+        if (spec && !spec.allowed.includes(ch)) return illegalOption(ch, spec.usage);
+        flags.add(ch);
+      }
     } else {
       args.push(p.toLowerCase());
     }
@@ -28,6 +61,7 @@ export function executeCommand(raw: string): CommandResult {
 
   switch (cmd) {
     case "about":
+    case "whoami":
       return {
         lines: [
           ASCII_ART,
@@ -48,12 +82,14 @@ export function executeCommand(raw: string): CommandResult {
 
       if (sub === "projects") {
         if (long) {
+          const dateWidth = Math.max(0, ...experiences.map((e) => displayWidth(e.date)));
           return {
             lines: [
               "",
               `total ${experiences.length}`,
               ...experiences.map(
-                (e) => `drwxr-xr-x  zaki  ${e.date.padEnd(16)}  ${e.title}`
+                (e) =>
+                  `drwxr-xr-x  zaki  ${e.date}${" ".repeat(dateWidth - displayWidth(e.date))}  ${e.title}`
               ),
               "",
             ],
@@ -83,7 +119,7 @@ export function executeCommand(raw: string): CommandResult {
           lines: [
             "",
             `total ${files.length}`,
-            ...files.map((f) => `${perms(f)}  zaki  ${date}  ${f}`),
+            ...files.map((name) => `${perms(name)}  zaki  ${date}  ${name}`),
             "",
           ],
         };
@@ -155,7 +191,7 @@ export function executeCommand(raw: string): CommandResult {
     }
 
     case "open": {
-      const project = PROJECT_LINKS[sub ?? ""];
+      const project = sub && Object.hasOwn(PROJECT_LINKS, sub) ? PROJECT_LINKS[sub] : undefined;
       if (project) {
         return {
           lines: [`Opening ${project.label} on GitHub...`],
@@ -188,7 +224,7 @@ export function executeCommand(raw: string): CommandResult {
       return {
         lines: [
           "",
-          "  about              自己紹介 + ASCII art",
+          "  about | whoami     自己紹介 + ASCII art",
           "  ls [-la1] [dir]    ファイル一覧（-l 詳細 / -a 隠しファイル / -1 縦並び）",
           "  cat [-n] <file>    ファイル表示（-n 行番号付き）",
           "  open <project>     プロジェクトの GitHub を開く",
@@ -210,14 +246,6 @@ export function executeCommand(raw: string): CommandResult {
     }
   }
 }
-
-const PROJECT_LINKS = Object.fromEntries(
-  experiences
-    .filter((e) => e.slug && e.githubUrl)
-    .map((e) => [e.slug!, { label: e.title, url: e.githubUrl! }])
-);
-
-const KNOWN_COMMANDS = ["about", "ls", "cat", "open", "date", "echo", "clear", "exit", "help"];
 
 function levenshtein(a: string, b: string): number {
   const dp: number[][] = Array.from({ length: a.length + 1 }, (_, i) =>

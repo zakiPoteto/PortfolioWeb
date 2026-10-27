@@ -82,7 +82,7 @@ export function executeCommand(raw: string): CommandResult {
 
       if (sub === "projects") {
         if (long) {
-          const dateWidth = Math.max(...experiences.map((e) => displayWidth(e.date)));
+          const dateWidth = Math.max(0, ...experiences.map((e) => displayWidth(e.date)));
           return {
             lines: [
               "",

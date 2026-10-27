@@ -51,14 +51,15 @@ function toLevel(count: number): number {
   return 3;
 }
 
-function unavailable(reason: string) {
-  return NextResponse.json({ error: reason }, { status: 503 });
+function unavailable() {
+  return NextResponse.json({ error: "GitHub stats unavailable" }, { status: 503 });
 }
 
 export async function GET() {
   const token = process.env.GITHUB_TOKEN;
   if (!token) {
-    return unavailable("GITHUB_TOKEN is not set");
+    console.error("GITHUB_TOKEN is not set");
+    return unavailable();
   }
 
   try {
@@ -98,6 +99,6 @@ export async function GET() {
     });
   } catch (e) {
     console.error("GitHub stats fetch failed:", e);
-    return unavailable("GitHub stats fetch failed");
+    return unavailable();
   }
 }

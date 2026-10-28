@@ -37,6 +37,11 @@ export default function ExperienceCard({
         <div className="flex items-center gap-1.5 text-xs text-slate-500 font-medium">
           <Calendar size={14} />
           <span>{exp.date}</span>
+          {exp.ongoing && (
+            <span className="ml-1 px-2 py-0.5 rounded-full border border-emerald-500/30 bg-emerald-500/10 text-emerald-400 font-semibold">
+              継続中
+            </span>
+          )}
         </div>
       </div>
 

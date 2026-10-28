@@ -4,6 +4,10 @@ export type Experience = {
   title: string;
   slug?: string;
   date: string;
+  /** 並び替え用の開始日(YYYY-MM-DD) */
+  startDate: string;
+  /** 継続中の活動 */
+  ongoing?: boolean;
   category: Category;
   techs: string[];
   teamSize?: number;
@@ -16,10 +20,11 @@ export type Experience = {
   googlePlayUrl?: string;
 };
 
-export const experiences: Experience[] = [
+const entries: Experience[] = [
   {
     title: "大学広報Webアプリ「FUN o'clock」（FISH2026）",
     date: "2026年10月",
+    startDate: "2026-10-01",
     category: "ハッカソン",
     techs: ["Next.js", "React", "TypeScript", "Tailwind CSS"],
     teamSize: 5,
@@ -36,6 +41,7 @@ export const experiences: Experience[] = [
   {
     title: "企業インターンシップ（株式会社オプティム）",
     date: "2026年8月31日〜9月4日",
+    startDate: "2026-08-31",
     category: "インターン",
     techs: ["Go", "MySQL", "OpenAPI", "Docker", "Flutter"],
     summary:
@@ -52,6 +58,7 @@ export const experiences: Experience[] = [
     title: "創作者向け交流プラットフォーム「Kiratto（キラット）」",
     slug: "kiratto",
     date: "2025年12月",
+    startDate: "2025-12-01",
     category: "ハッカソン",
     techs: ["Flutter", "Dart", "Go", "Supabase", "GitHub Actions"],
     teamSize: 4,
@@ -69,6 +76,7 @@ export const experiences: Experience[] = [
   {
     title: "企業インターンシップ（チームラボ株式会社）",
     date: "2025年9月1日〜9月10日",
+    startDate: "2025-09-01",
     category: "インターン",
     techs: ["Flutter", "Dart"],
     summary:
@@ -84,6 +92,7 @@ export const experiences: Experience[] = [
     title: "価値観交流アプリ「Touch new」",
     slug: "touch-new",
     date: "2025年8〜9月",
+    startDate: "2025-08-01",
     category: "ハッカソン",
     techs: ["React Native", "TypeScript", "Firebase", "Spotify API", "Google Maps API"],
     teamSize: 6,
@@ -103,6 +112,7 @@ export const experiences: Experience[] = [
     title: "アルコール摂取管理アプリ「Callaco」",
     slug: "callaco",
     date: "2024年12月",
+    startDate: "2024-12-01",
     category: "ハッカソン",
     techs: ["Flutter", "Dart"],
     teamSize: 4,
@@ -122,6 +132,8 @@ export const experiences: Experience[] = [
     title: "大学支援アプリ「Dotto」",
     slug: "dotto",
     date: "2024年4月〜現在",
+    startDate: "2024-04-01",
+    ongoing: true,
     category: "課外活動",
     techs: ["Flutter", "Dart", "Firebase", "Riverpod", "Go", "TypeSpec"],
     summary:
@@ -139,3 +151,8 @@ export const experiences: Experience[] = [
     googlePlayUrl: "https://play.google.com/store/apps/details?id=jp.ac.fun.dotto",
   },
 ];
+
+// 開始日の昇順(古い→新しい)。配列の記述順に依存させない
+export const experiences: Experience[] = [...entries].sort((a, b) =>
+  a.startDate.localeCompare(b.startDate),
+);

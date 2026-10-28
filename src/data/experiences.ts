@@ -152,7 +152,7 @@ const entries: Experience[] = [
   },
 ];
 
-// 開始日の昇順(古い→新しい)。配列の記述順に依存させない
+// 開始日の降順(新しい→古い)。配列の記述順に依存させない
 export const experiences: Experience[] = [...entries].sort((a, b) =>
-  a.startDate.localeCompare(b.startDate),
+  b.startDate.localeCompare(a.startDate),
 );

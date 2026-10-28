@@ -37,7 +37,7 @@ export default function ExperienceCard({
           </span>
           {exp.ongoing && (
             <span className="inline-flex items-center gap-1.5 text-xs font-semibold text-emerald-400">
-              <span className="relative flex h-2 w-2">
+              <span aria-hidden="true" className="relative flex h-2 w-2">
                 <span className="absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-60 animate-ping motion-reduce:animate-none" />
                 <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-400" />
               </span>

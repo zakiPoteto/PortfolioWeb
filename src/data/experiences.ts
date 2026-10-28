@@ -152,7 +152,22 @@ const entries: Experience[] = [
   },
 ];
 
-// 開始日の降順(新しい→古い)。配列の記述順に依存させない
-export const experiences: Experience[] = [...entries].sort((a, b) =>
-  b.startDate.localeCompare(a.startDate),
+// 表示用の date と並び替え用の startDate / ongoing のずれを、読み込み時に検出する
+for (const e of entries) {
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(e.startDate)) {
+    throw new Error(`${e.title}: startDate は YYYY-MM-DD で書く (${e.startDate})`);
+  }
+  if (!e.date.startsWith(`${Number(e.startDate.slice(0, 4))}年`)) {
+    throw new Error(`${e.title}: date と startDate の年が一致しない`);
+  }
+  if (Boolean(e.ongoing) !== e.date.includes("現在")) {
+    throw new Error(`${e.title}: ongoing と date の「現在」が一致しない`);
+  }
+}
+
+// 開始日の降順(新しい→古い)。同じ開始日はタイトル順で固定する
+export const experiences: Experience[] = [...entries].sort(
+  (a, b) =>
+    (a.startDate < b.startDate ? 1 : a.startDate > b.startDate ? -1 : 0) ||
+    (a.title < b.title ? -1 : a.title > b.title ? 1 : 0),
 );

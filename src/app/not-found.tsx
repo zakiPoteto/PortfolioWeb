@@ -1,4 +1,5 @@
 import Link from "next/link";
+import PotatoGameLoader from "@/components/PotatoGameLoader";
 
 export default function NotFound() {
   return (
@@ -8,6 +9,9 @@ export default function NotFound() {
       <p className="mt-2 text-sm text-slate-400">
         URLが間違っているか、ページが移動した可能性があります。
       </p>
+      <div className="mt-8 flex w-full justify-center">
+        <PotatoGameLoader autoStart />
+      </div>
       <Link
         href="/"
         className="mt-8 rounded-full border border-slate-700 px-6 py-2 text-sm hover:border-blue-400 hover:text-blue-400 transition-colors"

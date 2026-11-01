@@ -14,7 +14,7 @@ const PROJECT_LINKS = Object.fromEntries(
     .map((e) => [e.slug!, { label: e.title, url: e.githubUrl! }])
 );
 
-const KNOWN_COMMANDS = ["about", "whoami", "ls", "cat", "open", "date", "echo", "dino", "clear", "exit", "help"];
+const KNOWN_COMMANDS = ["about", "whoami", "ls", "cat", "open", "date", "echo", "game", "clear", "exit", "help"];
 
 // 全角文字を幅2として数えた表示幅(等幅フォントで列を揃えるため)
 const WIDE_CHAR = /[ᄀ-ᅟ⺀-꓏가-힣豈-﫿︰-﹯＀-｠￠-￦]/;
@@ -214,7 +214,8 @@ export function executeCommand(raw: string): CommandResult {
       return { lines: [text] };
     }
 
-    case "dino":
+    case "game":
+    case "dino": // 本家の恐竜ゲームにちなんだ別名(helpには載せない)
       return { lines: ["Starting jump potato... (ESC で戻る)"], action: "game" };
 
     case "clear":
@@ -233,7 +234,7 @@ export function executeCommand(raw: string): CommandResult {
           "  open <project>     プロジェクトの GitHub を開く",
           "  date               現在日時を表示",
           "  echo <text>        テキストをそのまま返す",
-          "  dino               ジャンプするポテトで遊ぶ",
+          "  game               ジャンプするポテトで遊ぶ",
           "  clear              画面クリア",
           "  exit               ターミナルを閉じる",
           "  help               このヘルプ",

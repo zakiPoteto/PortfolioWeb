@@ -115,7 +115,7 @@ function saveHighScore(score: number) {
 const pad = (n: number) => String(n).padStart(5, "0");
 const rand = (min: number, max: number) => min + Math.random() * (max - min);
 
-export default function PotatoGame({ autoStart = false }: { autoStart?: boolean }) {
+export default function PotatoGame() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const jumpRef = useRef<() => void>(() => {});
 
@@ -339,9 +339,8 @@ export default function PotatoGame({ autoStart = false }: { autoStart?: boolean 
     const observer = new ResizeObserver(resize);
     observer.observe(canvas);
 
+    // 自動では始めない。Space / ↑ / タップで始まる(本家の恐竜と同じ)
     resize();
-    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (autoStart && !reducedMotion && !document.hidden) start();
 
     return () => {
       // プレイ中に離れても、更新したハイスコアは残す
@@ -352,7 +351,7 @@ export default function PotatoGame({ autoStart = false }: { autoStart?: boolean 
       window.removeEventListener("resize", resize);
       document.removeEventListener("visibilitychange", onVisibilityChange);
     };
-  }, [autoStart]);
+  }, []);
 
   return (
     <canvas

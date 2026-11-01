@@ -11,7 +11,7 @@ export default function NotFound() {
       </p>
       {/* main の左右の余白を打ち消して、画面幅いっぱいに広げる */}
       <div className="mt-8 -mx-6 w-[calc(100%+3rem)]">
-        <PotatoGameLoader autoStart />
+        <PotatoGameLoader />
       </div>
       <Link
         href="/"

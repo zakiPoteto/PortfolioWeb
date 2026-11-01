@@ -340,9 +340,18 @@ export default function PotatoGame() {
       holding = false;
     };
 
+    // 自分以外の操作部品(リンク・ボタン・入力欄など)にフォーカスがあるときは、そのキー操作を邪魔しない
+    const isOtherControl = (t: EventTarget | null) =>
+      t instanceof Element &&
+      t !== canvas &&
+      (t.closest("a, button, input, textarea, select, [role=button], [role=link]") !== null ||
+        (t instanceof HTMLElement && t.isContentEditable));
+
     const onKeyDown = (e: KeyboardEvent) => {
-      if (e.repeat || (e.code !== "Space" && e.code !== "ArrowUp")) return;
-      if (e.target instanceof Element && e.target.closest("a, button, input, textarea, select")) return;
+      // canvas にフォーカスがあるときは Enter でも始められる(キーボードだけの利用者向け)
+      const isStartKey = e.code === "Space" || e.code === "ArrowUp" || (e.code === "Enter" && e.target === canvas);
+      if (e.repeat || !isStartKey) return;
+      if (isOtherControl(e.target)) return;
       if (isBlocked()) return;
       e.preventDefault();
       jump();
@@ -362,7 +371,7 @@ export default function PotatoGame() {
     };
 
     const onKeyUp = (e: KeyboardEvent) => {
-      if (e.code === "Space" || e.code === "ArrowUp") release();
+      if (e.code === "Space" || e.code === "ArrowUp" || e.code === "Enter") release();
     };
 
     window.addEventListener("keydown", onKeyDown);
@@ -398,10 +407,11 @@ export default function PotatoGame() {
   return (
     <canvas
       ref={canvasRef}
-      role="img"
-      aria-label="ジャンプするポテトのゲーム。Space、上矢印キー、またはタップでジャンプします。"
+      role="button"
+      tabIndex={0}
+      aria-label="ジャンプするポテトのゲーム。Enter、Space、上矢印キー、またはタップでスタートとジャンプができます。"
       onPointerDown={() => jumpRef.current()}
-      className={`block touch-none select-none ${POTATO_GAME_SIZE}`}
+      className={`block touch-none select-none focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-blue-400 ${POTATO_GAME_SIZE}`}
     />
   );
 }

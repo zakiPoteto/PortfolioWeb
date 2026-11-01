@@ -169,6 +169,11 @@ export default function PotatoGame() {
       saveHighScore(highScore);
     };
 
+    // ゲームオーバー以外でページを離れる・止まるときも、更新したハイスコアは残す
+    const commitIfPlaying = () => {
+      if (status === "running" || status === "paused") commitScore();
+    };
+
     // 画面外にあるときや、ターミナルなど別の要素が上に重なっているときは、キー入力を受けない
     const isBlocked = () => {
       const rect = canvas.getBoundingClientRect();
@@ -345,7 +350,10 @@ export default function PotatoGame() {
 
     // タブが非表示の間は止める
     const onVisibilityChange = () => {
-      if (document.hidden) release();
+      if (document.hidden) {
+        release();
+        commitIfPlaying();
+      }
       if (document.hidden && status === "running") {
         cancelAnimationFrame(raf);
         status = "paused";
@@ -363,6 +371,7 @@ export default function PotatoGame() {
     window.addEventListener("pointercancel", release);
     // 別ウィンドウでキーを離すと keyup が届かないので、フォーカスを失ったら離した扱いにする
     window.addEventListener("blur", release);
+    window.addEventListener("pagehide", commitIfPlaying);
     window.addEventListener("resize", resize);
     document.addEventListener("visibilitychange", onVisibilityChange);
     const observer = new ResizeObserver(resize);
@@ -372,8 +381,7 @@ export default function PotatoGame() {
     resize();
 
     return () => {
-      // プレイ中に離れても、更新したハイスコアは残す
-      if (status === "running" || status === "paused") commitScore();
+      commitIfPlaying();
       cancelAnimationFrame(raf);
       observer.disconnect();
       window.removeEventListener("keydown", onKeyDown);
@@ -381,6 +389,7 @@ export default function PotatoGame() {
       window.removeEventListener("pointerup", release);
       window.removeEventListener("pointercancel", release);
       window.removeEventListener("blur", release);
+      window.removeEventListener("pagehide", commitIfPlaying);
       window.removeEventListener("resize", resize);
       document.removeEventListener("visibilitychange", onVisibilityChange);
     };

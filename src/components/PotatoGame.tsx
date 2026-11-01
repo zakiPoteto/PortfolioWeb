@@ -345,6 +345,7 @@ export default function PotatoGame() {
 
     // タブが非表示の間は止める
     const onVisibilityChange = () => {
+      if (document.hidden) release();
       if (document.hidden && status === "running") {
         cancelAnimationFrame(raf);
         status = "paused";
@@ -360,6 +361,8 @@ export default function PotatoGame() {
     window.addEventListener("keyup", onKeyUp);
     window.addEventListener("pointerup", release);
     window.addEventListener("pointercancel", release);
+    // 別ウィンドウでキーを離すと keyup が届かないので、フォーカスを失ったら離した扱いにする
+    window.addEventListener("blur", release);
     window.addEventListener("resize", resize);
     document.addEventListener("visibilitychange", onVisibilityChange);
     const observer = new ResizeObserver(resize);
@@ -377,6 +380,7 @@ export default function PotatoGame() {
       window.removeEventListener("keyup", onKeyUp);
       window.removeEventListener("pointerup", release);
       window.removeEventListener("pointercancel", release);
+      window.removeEventListener("blur", release);
       window.removeEventListener("resize", resize);
       document.removeEventListener("visibilitychange", onVisibilityChange);
     };

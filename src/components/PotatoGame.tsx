@@ -73,6 +73,13 @@ export default function PotatoGame({ autoStart = false }: { autoStart?: boolean 
       saveHighScore(highScore);
     };
 
+    // ターミナルなど別の要素が上に重なっているときは、キー入力を受けない
+    const isCovered = () => {
+      const rect = canvas.getBoundingClientRect();
+      const top = document.elementFromPoint(rect.left + rect.width / 2, rect.top + rect.height / 2);
+      return top !== null && top !== canvas;
+    };
+
     const drawPotato = () => {
       const { x, w, h } = POTATO;
       const cx = x + w / 2;
@@ -260,6 +267,7 @@ export default function PotatoGame({ autoStart = false }: { autoStart?: boolean 
     const onKeyDown = (e: KeyboardEvent) => {
       if (e.repeat || (e.code !== "Space" && e.code !== "ArrowUp")) return;
       if (e.target instanceof Element && e.target.closest("a, button, input, textarea, select")) return;
+      if (isCovered()) return;
       e.preventDefault();
       jump();
     };

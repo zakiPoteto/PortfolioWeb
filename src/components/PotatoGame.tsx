@@ -2,7 +2,7 @@
 
 import { useEffect, useRef } from "react";
 
-const W = 600;
+// 論理座標(高さ固定、幅は画面に合わせて変わる)
 const H = 200;
 const GROUND = 170;
 const GRAVITY = 2400;
@@ -10,13 +10,90 @@ const JUMP_V = -750;
 const BASE_SPEED = 380;
 const MAX_SPEED = 800;
 const ACCEL = 8;
-const POTATO = { x: 50, w: 34, h: 30 };
-const FORK_W = 18;
+const PX = 2; // ドット絵1マスの大きさ
+const POTATO = { x: 50, w: 16 * PX, h: 14 * PX };
+const FORK_W = 7 * PX;
+const FORK_GAP = 2 * PX;
 const RETRY_DELAY_MS = 400;
 const HIGH_SCORE_KEY = "potato-jump-high-score";
 
 type Status = "idle" | "running" | "paused" | "over";
-type Obstacle = { x: number; w: number; h: number };
+type Obstacle = { x: number; w: number; h: number; rows: number };
+
+// ドット絵。1文字=1マス、"." は透明
+const PALETTE: Record<string, string> = {
+  o: "#6b4a1f",
+  b: "#d9a84e",
+  l: "#f2d189",
+  s: "#b5853a",
+  e: "#2b1b08",
+  x: "#cbd5e1",
+  d: "#8b9bb0",
+  c: "#1e293b",
+};
+
+const POTATO_BODY = [
+  "....oooooooo....",
+  "..oollllllbboo..",
+  ".oollbbbbbbbbbo.",
+  ".olbbbbbbbbbbbo.",
+  "obbbbbsbbbbbbbbo",
+  "obbbbbbbbbbbbbbo",
+  "obbbsbbbbbbsbbbo",
+  "obbbbbbbbbbbbbbo",
+  ".obbbbbbsbbbbbo.",
+  ".obbbbbbbbbbbbo.",
+  "..oobbbbbbbboo..",
+  "....oooooooo....",
+];
+
+// 足: 走り(左上げ・右上げ)とジャンプ中
+const POTATO_LEGS = [
+  ["....oo....oo....", "....oo.........."],
+  ["....oo....oo....", "..........oo...."],
+  ["....oo....oo....", "................"],
+];
+
+const CLOUD = ["...cccc....", ".ccccccc.cc", "ccccccccccc"];
+
+function makeSprite(rows: string[]): HTMLCanvasElement {
+  const c = document.createElement("canvas");
+  c.width = rows[0].length;
+  c.height = rows.length;
+  const g = c.getContext("2d");
+  if (!g) return c;
+  rows.forEach((row, y) => {
+    [...row].forEach((ch, x) => {
+      const color = PALETTE[ch];
+      if (!color) return;
+      g.fillStyle = color;
+      g.fillRect(x, y, 1, 1);
+    });
+  });
+  return c;
+}
+
+function setPixel(rows: string[], x: number, y: number, ch: string) {
+  rows[y] = rows[y].slice(0, x) + ch + rows[y].slice(x + 1);
+}
+
+function makePotato(legs: number, dead: boolean): HTMLCanvasElement {
+  const rows = [...POTATO_BODY, ...POTATO_LEGS[legs]];
+  if (dead) {
+    for (const [x, y] of [[10, 3], [12, 3], [11, 4], [10, 5], [12, 5]]) setPixel(rows, x, y, "e");
+  } else {
+    setPixel(rows, 11, 3, "e");
+    setPixel(rows, 11, 4, "e");
+  }
+  return makeSprite(rows);
+}
+
+// 障害物のフォーク。持ち手の長さだけ段数を変える
+function makeFork(rows: number): HTMLCanvasElement {
+  const head = ["x..x..x", "x..x..x", "x..x..x", "x..x..x", "ddddddd", ".xxxxx.", "..xxx.."];
+  const handle = Array.from({ length: rows - head.length }, () => "...x...");
+  return makeSprite([...head, ...handle]);
+}
 
 function loadHighScore(): number {
   try {
@@ -47,11 +124,23 @@ export default function PotatoGame({ autoStart = false }: { autoStart?: boolean 
     const ctx = canvas?.getContext("2d");
     if (!canvas || !ctx) return;
 
-    const dpr = window.devicePixelRatio || 1;
-    canvas.width = W * dpr;
-    canvas.height = H * dpr;
-    ctx.scale(dpr, dpr);
+    const potatoSprites = {
+      run: [makePotato(0, false), makePotato(1, false)],
+      air: makePotato(2, false),
+      dead: makePotato(0, true),
+    };
+    const cloudSprite = makeSprite(CLOUD);
+    const forkSprites = new Map<number, HTMLCanvasElement>();
+    const forkSprite = (rows: number) => {
+      let sprite = forkSprites.get(rows);
+      if (!sprite) {
+        sprite = makeFork(rows);
+        forkSprites.set(rows, sprite);
+      }
+      return sprite;
+    };
 
+    let W = 600;
     const groundY = GROUND - POTATO.h;
     let status: Status = "idle";
     let y = groundY;
@@ -81,100 +170,46 @@ export default function PotatoGame({ autoStart = false }: { autoStart?: boolean 
     };
 
     const drawPotato = () => {
-      const { x, w, h } = POTATO;
-      const cx = x + w / 2;
-      const cy = y + (h - 6) / 2;
       const grounded = y >= groundY;
-
-      // 足(走っている間だけ交互に動かす)
-      ctx.strokeStyle = "#8a6a2f";
-      ctx.lineWidth = 3;
-      ctx.lineCap = "round";
-      const step = status === "running" && grounded && Math.floor(distance / 12) % 2 === 0;
-      const legs: [number, number][] = grounded ? (step ? [[-6, 4], [6, 0]] : [[-6, 0], [6, 4]]) : [[-6, 2], [6, 2]];
-      for (const [dx, lift] of legs) {
-        ctx.beginPath();
-        ctx.moveTo(cx + dx, y + h - 6);
-        ctx.lineTo(cx + dx, y + h - lift);
-        ctx.stroke();
+      let sprite = potatoSprites.air;
+      if (status === "over") sprite = potatoSprites.dead;
+      else if (grounded) {
+        const step = status === "running" ? Math.floor(distance / 12) % 2 : 0;
+        sprite = potatoSprites.run[step];
       }
-
-      // 体
-      ctx.fillStyle = "#d4a85f";
-      ctx.lineWidth = 2;
-      ctx.beginPath();
-      ctx.ellipse(cx, cy, w / 2, (h - 6) / 2, 0, 0, Math.PI * 2);
-      ctx.fill();
-      ctx.stroke();
-
-      // 斑点
-      ctx.fillStyle = "#b08a45";
-      ctx.beginPath();
-      ctx.arc(cx - 7, cy + 3, 2, 0, Math.PI * 2);
-      ctx.arc(cx + 1, cy + 6, 1.5, 0, Math.PI * 2);
-      ctx.fill();
-
-      // 目(ゲームオーバー時は×)
-      ctx.strokeStyle = "#3b2a12";
-      ctx.fillStyle = "#3b2a12";
-      ctx.lineWidth = 1.5;
-      if (status === "over") {
-        ctx.beginPath();
-        ctx.moveTo(cx + 3, cy - 6);
-        ctx.lineTo(cx + 9, cy - 1);
-        ctx.moveTo(cx + 9, cy - 6);
-        ctx.lineTo(cx + 3, cy - 1);
-        ctx.stroke();
-      } else {
-        ctx.beginPath();
-        ctx.arc(cx + 6, cy - 3, 2, 0, Math.PI * 2);
-        ctx.fill();
-      }
-    };
-
-    // 障害物はフォーク(ポテトの天敵)
-    const drawFork = (fx: number, h: number) => {
-      const top = GROUND - h;
-      ctx.beginPath();
-      ctx.moveTo(fx + 3, top);
-      ctx.lineTo(fx + 3, top + 14);
-      ctx.moveTo(fx + 9, top);
-      ctx.lineTo(fx + 9, GROUND);
-      ctx.moveTo(fx + 15, top);
-      ctx.lineTo(fx + 15, top + 14);
-      ctx.moveTo(fx + 3, top + 14);
-      ctx.lineTo(fx + 15, top + 14);
-      ctx.stroke();
+      ctx.drawImage(sprite, POTATO.x, Math.round(y), POTATO.w, POTATO.h);
     };
 
     const draw = () => {
       ctx.clearRect(0, 0, W, H);
 
-      ctx.strokeStyle = "#475569";
-      ctx.lineWidth = 2;
-      ctx.beginPath();
-      ctx.moveTo(0, GROUND + 1);
-      ctx.lineTo(W, GROUND + 1);
-      ctx.stroke();
-
-      // 地面の目印(速度感を出す)
-      ctx.fillStyle = "#334155";
-      for (let i = 0; i < 8; i++) {
-        const gx = (((i * 97 - distance) % W) + W) % W;
-        ctx.fillRect(gx, GROUND + 10, 10, 2);
+      // 雲(ゆっくり流す)
+      const span = W + 80;
+      for (let i = 0; i < 3; i++) {
+        const cx = ((((i * 260 - distance * 0.15) % span) + span) % span) - 40;
+        ctx.drawImage(cloudSprite, Math.round(cx), 28 + i * 22, 33, 9);
       }
 
-      ctx.strokeStyle = "#cbd5e1";
-      ctx.lineWidth = 3;
-      ctx.lineCap = "butt";
+      // 地面と目印(速度感を出す)
+      ctx.fillStyle = "#64748b";
+      ctx.fillRect(0, GROUND, W, 2);
+      ctx.fillStyle = "#334155";
+      for (let i = 0; i < Math.ceil(W / 97) + 1; i++) {
+        const gx = ((((i * 97 - distance) % span) + span) % span) - 40;
+        ctx.fillRect(Math.round(gx / 2) * 2, GROUND + 10, i % 2 ? 6 : 12, 2);
+      }
+
       for (const o of obstacles) {
-        for (let i = 0; i * (FORK_W + 4) < o.w; i++) drawFork(o.x + i * (FORK_W + 4), o.h);
+        const sprite = forkSprite(o.rows);
+        for (let i = 0; i * (FORK_W + FORK_GAP) < o.w; i++) {
+          ctx.drawImage(sprite, Math.round(o.x + i * (FORK_W + FORK_GAP)), GROUND - o.h, FORK_W, o.h);
+        }
       }
 
       drawPotato();
 
       ctx.fillStyle = "#94a3b8";
-      ctx.font = "14px ui-monospace, monospace";
+      ctx.font = "bold 14px ui-monospace, monospace";
       ctx.textAlign = "right";
       ctx.fillText(`HI ${pad(highScore)}  ${pad(score())}`, W - 16, 24);
 
@@ -187,11 +222,27 @@ export default function PotatoGame({ autoStart = false }: { autoStart?: boolean 
         ctx.font = "14px ui-sans-serif, system-ui, sans-serif";
         ctx.fillText("一時停止中 — Space / タップで再開", W / 2, 80);
       } else if (status === "over") {
-        ctx.font = "bold 22px ui-sans-serif, system-ui, sans-serif";
+        ctx.font = "bold 22px ui-monospace, monospace";
         ctx.fillText("GAME OVER", W / 2, 72);
         ctx.font = "14px ui-sans-serif, system-ui, sans-serif";
         ctx.fillText("Space / ↑ / タップでリトライ", W / 2, 98);
       }
+    };
+
+    // 画面幅に合わせて描画サイズを決める(大きい画面ほど拡大。幅は論理座標で伸びる)
+    const resize = () => {
+      const cssW = canvas.clientWidth;
+      if (cssW === 0) return;
+      const dpr = window.devicePixelRatio || 1;
+      const viewScale = Math.max(0.75, Math.min(cssW / 640, 2.4, (window.innerHeight * 0.6) / H));
+      const cssH = Math.round(H * viewScale);
+      canvas.style.height = `${cssH}px`;
+      canvas.width = Math.round(cssW * dpr);
+      canvas.height = Math.round(cssH * dpr);
+      W = cssW / viewScale;
+      ctx.setTransform((canvas.width / cssW) * viewScale, 0, 0, (canvas.height / cssH) * viewScale, 0, 0);
+      ctx.imageSmoothingEnabled = false; // ドット絵をぼかさない
+      draw();
     };
 
     const collides = () => {
@@ -218,8 +269,9 @@ export default function PotatoGame({ autoStart = false }: { autoStart?: boolean 
       spawnIn -= speed * dt;
       if (spawnIn <= 0) {
         const count = Math.random() < 0.3 ? 2 : 1;
-        const w = FORK_W * count + 4 * (count - 1);
-        obstacles.push({ x: W, w, h: rand(34, 46) });
+        const w = FORK_W * count + FORK_GAP * (count - 1);
+        const rows = 17 + Math.floor(Math.random() * 7);
+        obstacles.push({ x: W, w, h: rows * PX, rows });
         spawnIn = w + speed * rand(0.9, 1.6);
       }
     };
@@ -282,9 +334,12 @@ export default function PotatoGame({ autoStart = false }: { autoStart?: boolean 
     };
 
     window.addEventListener("keydown", onKeyDown);
+    window.addEventListener("resize", resize);
     document.addEventListener("visibilitychange", onVisibilityChange);
+    const observer = new ResizeObserver(resize);
+    observer.observe(canvas);
 
-    draw();
+    resize();
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (autoStart && !reducedMotion && !document.hidden) start();
 
@@ -292,7 +347,9 @@ export default function PotatoGame({ autoStart = false }: { autoStart?: boolean 
       // プレイ中に離れても、更新したハイスコアは残す
       if (status === "running" || status === "paused") commitScore();
       cancelAnimationFrame(raf);
+      observer.disconnect();
       window.removeEventListener("keydown", onKeyDown);
+      window.removeEventListener("resize", resize);
       document.removeEventListener("visibilitychange", onVisibilityChange);
     };
   }, [autoStart]);
@@ -303,7 +360,7 @@ export default function PotatoGame({ autoStart = false }: { autoStart?: boolean 
       role="img"
       aria-label="ジャンプするポテトのゲーム。Space、上矢印キー、またはタップでジャンプします。"
       onPointerDown={() => jumpRef.current()}
-      className="w-full max-w-[600px] aspect-[3/1] touch-none select-none rounded-xl border border-slate-800 bg-slate-900/50"
+      className="block w-full touch-none select-none border-y border-slate-800 bg-slate-900/50"
     />
   );
 }

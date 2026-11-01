@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { executeCommand } from "@/data/commands";
+import PotatoGameLoader from "./PotatoGameLoader";
 
 type Line = {
   id: number;
@@ -31,6 +32,7 @@ export default function Terminal({
   );
   const [input, setInput] = useState("");
   const [cmdHistory, setCmdHistory] = useState<string[]>([]);
+  const [isGameOpen, setIsGameOpen] = useState(false);
   const historyIdx = useRef(-1);
 
   const inputRef = useRef<HTMLInputElement>(null);
@@ -39,23 +41,25 @@ export default function Terminal({
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = "hidden";
-      setTimeout(() => inputRef.current?.focus(), 50);
+      if (!isGameOpen) setTimeout(() => inputRef.current?.focus(), 50);
     } else {
       document.body.style.overflow = "";
     }
     return () => {
       document.body.style.overflow = "";
     };
-  }, [isOpen]);
+  }, [isOpen, isGameOpen]);
 
   useEffect(() => {
     if (!isOpen) return;
     const handler = (e: KeyboardEvent) => {
-      if (e.key === "Escape") onClose();
+      if (e.key !== "Escape") return;
+      if (isGameOpen) setIsGameOpen(false);
+      else onClose();
     };
     window.addEventListener("keydown", handler);
     return () => window.removeEventListener("keydown", handler);
-  }, [isOpen, onClose]);
+  }, [isOpen, isGameOpen, onClose]);
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -68,6 +72,7 @@ export default function Terminal({
       counter.current += WELCOME.length;
       setInput("");
       setCmdHistory([]);
+      setIsGameOpen(false);
       historyIdx.current = -1;
     }
   }, [isOpen]);
@@ -92,6 +97,7 @@ export default function Terminal({
     if (result.action === "open" && result.openUrl) {
       window.open(result.openUrl, "_blank", "noopener,noreferrer");
     }
+    if (result.action === "game") setIsGameOpen(true);
 
     const baseId = nextId();
     const cmdLine: Line = { id: baseId, type: "cmd", text: trimmed };
@@ -148,6 +154,21 @@ export default function Terminal({
             </kbd>
           </div>
 
+          {isGameOpen ? (
+            <div className="flex-1 flex flex-col items-center justify-center gap-4 py-4">
+              <div className="w-full">
+                <PotatoGameLoader />
+              </div>
+              <button
+                type="button"
+                onClick={() => setIsGameOpen(false)}
+                className="text-xs text-zinc-500 hover:text-zinc-300 transition-colors"
+              >
+                ターミナルに戻る (ESC)
+              </button>
+            </div>
+          ) : (
+          <>
           {/* Output */}
           <div
             className="flex-1 overflow-y-auto p-4 space-y-0.5"
@@ -194,6 +215,8 @@ export default function Terminal({
               aria-label="Terminal input"
             />
           </div>
+          </>
+          )}
         </motion.div>
       )}
     </AnimatePresence>

@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import { POTATO_GAME_SIZE } from "./potatoGameLayout";
 
 // 論理座標(高さ固定、幅は画面に合わせて変わる)
 const H = 220;
@@ -244,14 +245,13 @@ export default function PotatoGame() {
       }
     };
 
-    // 画面幅に合わせて描画サイズを決める(大きい画面ほど拡大。幅は論理座標で伸びる)
+    // 表示サイズ(CSS の POTATO_GAME_SIZE)に合わせて描画サイズを決める(大きい画面ほど拡大。幅は論理座標で伸びる)
     const resize = () => {
       const cssW = canvas.clientWidth;
-      if (cssW === 0) return;
+      const cssH = canvas.clientHeight;
+      if (cssW === 0 || cssH === 0) return;
       const dpr = window.devicePixelRatio || 1;
-      const viewScale = Math.max(0.75, Math.min(cssW / 640, 2.4, (window.innerHeight * 0.6) / H));
-      const cssH = Math.round(H * viewScale);
-      canvas.style.height = `${cssH}px`;
+      const viewScale = cssH / H;
       canvas.width = Math.round(cssW * dpr);
       canvas.height = Math.round(cssH * dpr);
       W = cssW / viewScale;
@@ -401,7 +401,7 @@ export default function PotatoGame() {
       role="img"
       aria-label="ジャンプするポテトのゲーム。Space、上矢印キー、またはタップでジャンプします。"
       onPointerDown={() => jumpRef.current()}
-      className="block w-full touch-none select-none border-y border-slate-800 bg-slate-900/50"
+      className={`block touch-none select-none ${POTATO_GAME_SIZE}`}
     />
   );
 }

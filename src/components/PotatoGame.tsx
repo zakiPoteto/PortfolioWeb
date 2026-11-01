@@ -169,11 +169,14 @@ export default function PotatoGame() {
       saveHighScore(highScore);
     };
 
-    // ターミナルなど別の要素が上に重なっているときは、キー入力を受けない
-    const isCovered = () => {
+    // 画面外にあるときや、ターミナルなど別の要素が上に重なっているときは、キー入力を受けない
+    const isBlocked = () => {
       const rect = canvas.getBoundingClientRect();
-      const top = document.elementFromPoint(rect.left + rect.width / 2, rect.top + rect.height / 2);
-      return top !== null && top !== canvas;
+      if (rect.bottom <= 0 || rect.top >= window.innerHeight) return true;
+      const clamp = (v: number, max: number) => Math.min(Math.max(v, 0), max - 1);
+      const cx = clamp(rect.left + rect.width / 2, window.innerWidth);
+      const cy = clamp(rect.top + rect.height / 2, window.innerHeight);
+      return document.elementFromPoint(cx, cy) !== canvas;
     };
 
     const drawPotato = () => {
@@ -335,7 +338,7 @@ export default function PotatoGame() {
     const onKeyDown = (e: KeyboardEvent) => {
       if (e.repeat || (e.code !== "Space" && e.code !== "ArrowUp")) return;
       if (e.target instanceof Element && e.target.closest("a, button, input, textarea, select")) return;
-      if (isCovered()) return;
+      if (isBlocked()) return;
       e.preventDefault();
       jump();
     };

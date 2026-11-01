@@ -157,7 +157,13 @@ export default function Terminal({
           {isGameOpen ? (
             <div className="flex-1 flex flex-col items-center justify-center gap-4 p-4">
               <PotatoGameLoader autoStart />
-              <p className="text-xs text-zinc-500">ESC でターミナルに戻る</p>
+              <button
+                type="button"
+                onClick={() => setIsGameOpen(false)}
+                className="text-xs text-zinc-500 hover:text-zinc-300 transition-colors"
+              >
+                ターミナルに戻る (ESC)
+              </button>
             </div>
           ) : (
           <>

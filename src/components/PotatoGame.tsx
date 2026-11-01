@@ -3,17 +3,23 @@
 import { useEffect, useRef } from "react";
 
 // 論理座標(高さ固定、幅は画面に合わせて変わる)
-const H = 200;
-const GROUND = 170;
+const H = 220;
+const GROUND = 190;
 const GRAVITY = 2400;
-const JUMP_V = -750;
+// ジャンプは押した長さで変わる(本家の恐竜と同じ)。短押しは約50、長押しは約90の高さ
+const JUMP_V = -660;
+const CUT_V = 320; // キーを離したとき、上昇速度をここまで落とす
+const MIN_JUMP_HEIGHT = 30; // この高さまでは、離しても上昇を止めない
 const BASE_SPEED = 380;
 const MAX_SPEED = 800;
-const ACCEL = 8;
-const PX = 2; // ドット絵1マスの大きさ
+const ACCEL = 6;
+const PX = 3; // ドット絵1マスの大きさ
 const POTATO = { x: 50, w: 16 * PX, h: 14 * PX };
 const FORK_W = 7 * PX;
 const FORK_GAP = 2 * PX;
+const SMALL_FORK_ROWS = 13; // 小ジャンプでも越えられる高さ
+const BIG_FORK_ROWS = 20; // 大ジャンプでないと越えられない高さ
+const BIG_FORK_FROM = 1000; // 大きいフォークが出始める走行距離
 const RETRY_DELAY_MS = 400;
 const HIGH_SCORE_KEY = "potato-jump-high-score";
 
@@ -151,6 +157,7 @@ export default function PotatoGame() {
     let obstacles: Obstacle[] = [];
     let highScore = loadHighScore();
     let overAt = 0;
+    let holding = false;
     let last = 0;
     let raf = 0;
 
@@ -246,12 +253,12 @@ export default function PotatoGame() {
     };
 
     const collides = () => {
-      const px = POTATO.x + 4;
-      const pw = POTATO.w - 8;
-      const py = y + 4;
-      const ph = POTATO.h - 8;
+      const px = POTATO.x + 6;
+      const pw = POTATO.w - 12;
+      const py = y + 6;
+      const ph = POTATO.h - 12;
       return obstacles.some(
-        (o) => px < o.x + o.w - 3 && px + pw > o.x + 3 && py + ph > GROUND - o.h
+        (o) => px < o.x + o.w - 4 && px + pw > o.x + 4 && py + ph > GROUND - o.h
       );
     };
 
@@ -262,15 +269,19 @@ export default function PotatoGame() {
       vy += GRAVITY * dt;
       y = Math.min(groundY, y + vy * dt);
       if (y >= groundY) vy = 0;
+      // 最低限の高さに届いたあとにキーを離していたら、上昇を弱めて小ジャンプにする
+      else if (!holding && vy < -CUT_V && groundY - y >= MIN_JUMP_HEIGHT) vy = -CUT_V;
 
       for (const o of obstacles) o.x -= speed * dt;
       obstacles = obstacles.filter((o) => o.x + o.w > 0);
 
       spawnIn -= speed * dt;
       if (spawnIn <= 0) {
-        const count = Math.random() < 0.3 ? 2 : 1;
+        const big = distance > BIG_FORK_FROM && Math.random() < 0.4;
+        const r = Math.random();
+        const count = big ? (r < 0.7 ? 1 : 2) : r < 0.5 ? 1 : r < 0.8 ? 2 : 3;
         const w = FORK_W * count + FORK_GAP * (count - 1);
-        const rows = 17 + Math.floor(Math.random() * 7);
+        const rows = big ? BIG_FORK_ROWS : SMALL_FORK_ROWS;
         obstacles.push({ x: W, w, h: rows * PX, rows });
         spawnIn = w + speed * rand(0.9, 1.6);
       }
@@ -308,6 +319,7 @@ export default function PotatoGame() {
     };
 
     const jump = () => {
+      holding = true;
       if (status === "idle") start();
       else if (status === "over") {
         if (performance.now() - overAt > RETRY_DELAY_MS) start();
@@ -315,6 +327,10 @@ export default function PotatoGame() {
       else if (y >= groundY) vy = JUMP_V;
     };
     jumpRef.current = jump;
+
+    const release = () => {
+      holding = false;
+    };
 
     const onKeyDown = (e: KeyboardEvent) => {
       if (e.repeat || (e.code !== "Space" && e.code !== "ArrowUp")) return;
@@ -333,7 +349,14 @@ export default function PotatoGame() {
       }
     };
 
+    const onKeyUp = (e: KeyboardEvent) => {
+      if (e.code === "Space" || e.code === "ArrowUp") release();
+    };
+
     window.addEventListener("keydown", onKeyDown);
+    window.addEventListener("keyup", onKeyUp);
+    window.addEventListener("pointerup", release);
+    window.addEventListener("pointercancel", release);
     window.addEventListener("resize", resize);
     document.addEventListener("visibilitychange", onVisibilityChange);
     const observer = new ResizeObserver(resize);
@@ -348,6 +371,9 @@ export default function PotatoGame() {
       cancelAnimationFrame(raf);
       observer.disconnect();
       window.removeEventListener("keydown", onKeyDown);
+      window.removeEventListener("keyup", onKeyUp);
+      window.removeEventListener("pointerup", release);
+      window.removeEventListener("pointercancel", release);
       window.removeEventListener("resize", resize);
       document.removeEventListener("visibilitychange", onVisibilityChange);
     };

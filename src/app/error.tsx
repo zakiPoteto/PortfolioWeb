@@ -14,5 +14,5 @@ export default function Error({
     console.error(error);
   }, [error]);
 
-  return <ErrorView onRetry={() => unstable_retry()} />;
+  return <ErrorView digest={error.digest} onRetry={() => unstable_retry()} />;
 }

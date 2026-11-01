@@ -212,7 +212,8 @@ export default function PotatoGame({ autoStart = false }: { autoStart?: boolean 
     };
 
     const loop = (now: number) => {
-      const dt = Math.min((now - last) / 1000, 0.05);
+      // 最初のフレームは now が last より前になることがあるので、負にしない
+      const dt = Math.max(0, Math.min((now - last) / 1000, 0.05));
       last = now;
       update(dt);
 

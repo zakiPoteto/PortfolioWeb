@@ -67,6 +67,12 @@ export default function PotatoGame({ autoStart = false }: { autoStart?: boolean 
 
     const score = () => Math.floor(distance / 10);
 
+    const commitScore = () => {
+      if (score() <= highScore) return;
+      highScore = score();
+      saveHighScore(highScore);
+    };
+
     const drawPotato = () => {
       const { x, w, h } = POTATO;
       const cx = x + w / 2;
@@ -220,10 +226,7 @@ export default function PotatoGame({ autoStart = false }: { autoStart?: boolean 
       if (collides()) {
         status = "over";
         overAt = now;
-        if (score() > highScore) {
-          highScore = score();
-          saveHighScore(highScore);
-        }
+        commitScore();
       }
       draw();
       if (status === "running") raf = requestAnimationFrame(loop);
@@ -278,6 +281,8 @@ export default function PotatoGame({ autoStart = false }: { autoStart?: boolean 
     if (autoStart && !reducedMotion && !document.hidden) start();
 
     return () => {
+      // プレイ中に離れても、更新したハイスコアは残す
+      if (status === "running" || status === "paused") commitScore();
       cancelAnimationFrame(raf);
       window.removeEventListener("keydown", onKeyDown);
       document.removeEventListener("visibilitychange", onVisibilityChange);

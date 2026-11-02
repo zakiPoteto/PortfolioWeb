@@ -72,7 +72,6 @@ export default function Terminal({
       counter.current += WELCOME.length;
       setInput("");
       setCmdHistory([]);
-      setIsGameOpen(false);
       historyIdx.current = -1;
     }
   }, [isOpen]);
@@ -126,7 +125,8 @@ export default function Terminal({
   };
 
   return (
-    <AnimatePresence>
+    // ゲーム表示のリセットは、閉じるアニメが終わってから行う(途中で画面が切り替わらないように)
+    <AnimatePresence onExitComplete={() => setIsGameOpen(false)}>
       {isOpen && (
         <motion.div
           initial={{ y: "100%" }}

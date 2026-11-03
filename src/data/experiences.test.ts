@@ -39,9 +39,9 @@ test("開始日を YYYY-MM-DD にする", () => {
   assert.equal(toStartDate({ year: 2026, month: 8, day: 31 }), "2026-08-31");
 });
 
-test("開始日の降順に並ぶ", () => {
+test("開始日の昇順(古い→新しい)に並ぶ", () => {
   const dates = experiences.map((e) => e.startDate);
-  assert.deepEqual(dates, [...dates].sort().reverse());
+  assert.deepEqual(dates, [...dates].sort());
 });
 
 test("継続中は period の end が ongoing のものだけ", () => {

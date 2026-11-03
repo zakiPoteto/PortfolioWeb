@@ -1,13 +1,17 @@
 export type Category = "ハッカソン" | "イベント" | "インターン" | "課外活動";
 
-export type Experience = {
+/**
+ * 活動期間。表示用の文字列と並び替え用の開始日は、ここから作る。
+ * end の年は start と同じ。省略すると単月(day があれば単日)、"ongoing" は継続中。
+ */
+export type Period = {
+  start: { year: number; month: number; day?: number };
+  end?: { month: number; day?: number } | "ongoing";
+};
+
+type ExperienceFields = {
   title: string;
   slug?: string;
-  date: string;
-  /** 並び替え用の開始日(YYYY-MM-DD) */
-  startDate: string;
-  /** 継続中の活動 */
-  ongoing?: boolean;
   category: Category;
   techs: string[];
   teamSize?: number;
@@ -20,11 +24,39 @@ export type Experience = {
   googlePlayUrl?: string;
 };
 
-const entries: Experience[] = [
+/** データファイルに書く形 */
+export type ExperienceEntry = ExperienceFields & { period: Period };
+
+/** 画面が受け取る形(period から作った値つき) */
+export type Experience = ExperienceFields & {
+  /** 表示用(例: 2025年8〜9月) */
+  date: string;
+  /** 並び替え用の開始日(YYYY-MM-DD) */
+  startDate: string;
+  /** 継続中の活動 */
+  ongoing: boolean;
+};
+
+export function formatPeriod({ start, end }: Period): string {
+  const day = (d?: number) => (d === undefined ? "" : `${d}日`);
+  const from = `${start.year}年${start.month}月${day(start.day)}`;
+  if (!end) return from;
+  if (end === "ongoing") return `${from}〜現在`;
+  // 日付なしの複数月は「8〜9月」と月を1回だけ書く
+  if (start.day === undefined && end.day === undefined) {
+    return `${start.year}年${start.month}〜${end.month}月`;
+  }
+  return `${from}〜${end.month}月${day(end.day)}`;
+}
+
+export function toStartDate({ year, month, day = 1 }: Period["start"]): string {
+  return [year, month, day].map((n, i) => String(n).padStart(i ? 2 : 4, "0")).join("-");
+}
+
+export const entries: ExperienceEntry[] = [
   {
     title: "大学広報Webアプリ「FUN o'clock」（FISH2026）",
-    date: "2026年10月",
-    startDate: "2026-10-01",
+    period: { start: { year: 2026, month: 10 } },
     category: "ハッカソン",
     techs: ["Next.js", "React", "TypeScript", "Tailwind CSS"],
     teamSize: 5,
@@ -40,8 +72,7 @@ const entries: Experience[] = [
   },
   {
     title: "企業インターンシップ（株式会社オプティム）",
-    date: "2026年8月31日〜9月4日",
-    startDate: "2026-08-31",
+    period: { start: { year: 2026, month: 8, day: 31 }, end: { month: 9, day: 4 } },
     category: "インターン",
     techs: ["Go", "MySQL", "OpenAPI", "Docker", "Flutter"],
     summary:
@@ -57,8 +88,7 @@ const entries: Experience[] = [
   {
     title: "創作者向け交流プラットフォーム「Kiratto（キラット）」",
     slug: "kiratto",
-    date: "2025年12月",
-    startDate: "2025-12-01",
+    period: { start: { year: 2025, month: 12 } },
     category: "ハッカソン",
     techs: ["Flutter", "Dart", "Go", "Supabase", "GitHub Actions"],
     teamSize: 4,
@@ -75,8 +105,7 @@ const entries: Experience[] = [
   },
   {
     title: "企業インターンシップ（チームラボ株式会社）",
-    date: "2025年9月1日〜9月10日",
-    startDate: "2025-09-01",
+    period: { start: { year: 2025, month: 9, day: 1 }, end: { month: 9, day: 10 } },
     category: "インターン",
     techs: ["Flutter", "Dart"],
     summary:
@@ -91,8 +120,7 @@ const entries: Experience[] = [
   {
     title: "価値観交流アプリ「Touch new」",
     slug: "touch-new",
-    date: "2025年8〜9月",
-    startDate: "2025-08-01",
+    period: { start: { year: 2025, month: 8 }, end: { month: 9 } },
     category: "ハッカソン",
     techs: ["React Native", "TypeScript", "Firebase", "Spotify API", "Google Maps API"],
     teamSize: 6,
@@ -111,8 +139,7 @@ const entries: Experience[] = [
   {
     title: "アルコール摂取管理アプリ「Callaco」",
     slug: "callaco",
-    date: "2024年12月",
-    startDate: "2024-12-01",
+    period: { start: { year: 2024, month: 12 } },
     category: "ハッカソン",
     techs: ["Flutter", "Dart"],
     teamSize: 4,
@@ -131,9 +158,7 @@ const entries: Experience[] = [
   {
     title: "大学支援アプリ「Dotto」",
     slug: "dotto",
-    date: "2024年4月〜現在",
-    startDate: "2024-04-01",
-    ongoing: true,
+    period: { start: { year: 2024, month: 4 }, end: "ongoing" },
     category: "課外活動",
     techs: ["Flutter", "Dart", "Firebase", "Riverpod", "Go", "TypeSpec"],
     summary:
@@ -152,22 +177,12 @@ const entries: Experience[] = [
   },
 ];
 
-// 表示用の date と並び替え用の startDate / ongoing のずれを、読み込み時に検出する
-for (const e of entries) {
-  if (!/^\d{4}-\d{2}-\d{2}$/.test(e.startDate)) {
-    throw new Error(`${e.title}: startDate は YYYY-MM-DD で書く (${e.startDate})`);
-  }
-  if (!e.date.startsWith(`${Number(e.startDate.slice(0, 4))}年`)) {
-    throw new Error(`${e.title}: date と startDate の年が一致しない`);
-  }
-  if (Boolean(e.ongoing) !== e.date.includes("現在")) {
-    throw new Error(`${e.title}: ongoing と date の「現在」が一致しない`);
-  }
-}
-
 // 開始日の降順(新しい→古い)。同じ開始日はタイトル順で固定する
-export const experiences: Experience[] = [...entries].sort(
-  (a, b) =>
-    (a.startDate < b.startDate ? 1 : a.startDate > b.startDate ? -1 : 0) ||
-    (a.title < b.title ? -1 : a.title > b.title ? 1 : 0),
-);
+export const experiences: Experience[] = entries
+  .map(({ period, ...rest }) => ({
+    ...rest,
+    date: formatPeriod(period),
+    startDate: toStartDate(period.start),
+    ongoing: period.end === "ongoing",
+  }))
+  .sort((a, b) => b.startDate.localeCompare(a.startDate) || a.title.localeCompare(b.title, "ja"));

@@ -28,24 +28,33 @@ export default function ExperiencesSection() {
 
         <div className="relative">
           {/* Timeline line on the left side */}
-          <div className="absolute left-4 top-0 bottom-0 w-px bg-gradient-to-b from-blue-500/50 via-slate-800 to-transparent" />
+          <div className="absolute left-4 top-0 bottom-0 w-px bg-gradient-to-b from-transparent via-slate-800 to-blue-500/50" />
 
           <div className="space-y-8">
-            {experiences.map((exp, index) => (
-              <motion.div
-                key={exp.title}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-50px" }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                className="relative pl-12"
-              >
-                {/* Timeline dot on the left */}
-                <div className="absolute left-4 top-8 w-3.5 h-3.5 rounded-full bg-blue-500 border-4 border-slate-950 shadow-[0_0_10px_rgba(59,130,246,0.5)] -translate-x-1/2 z-10" />
+            {experiences.map((exp, index) => {
+              const isLatest = index === experiences.length - 1;
+              return (
+                <motion.div
+                  key={exp.title}
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: "-50px" }}
+                  transition={{ duration: 0.5, delay: index * 0.1 }}
+                  className="relative pl-12"
+                >
+                  {/* Timeline dot on the left。最新(末尾)は光らせて目立たせる */}
+                  <div
+                    className={`absolute left-4 top-8 w-3.5 h-3.5 rounded-full bg-blue-500 border-4 border-slate-950 -translate-x-1/2 z-10 ${
+                      isLatest
+                        ? "shadow-[0_0_16px_rgba(59,130,246,0.9)] ring-2 ring-blue-400/40"
+                        : "shadow-[0_0_10px_rgba(59,130,246,0.5)]"
+                    }`}
+                  />
 
-                <ExperienceCard exp={exp} onClick={() => setSelectedExp(exp)} />
-              </motion.div>
-            ))}
+                  <ExperienceCard exp={exp} onClick={() => setSelectedExp(exp)} />
+                </motion.div>
+              );
+            })}
           </div>
         </div>
       </div>

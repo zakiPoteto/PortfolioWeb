@@ -177,7 +177,7 @@ export const entries: ExperienceEntry[] = [
   },
 ];
 
-// 開始日の降順(新しい→古い)。同じ開始日はタイトル順で固定する
+// 開始日の昇順(古い→新しい)。同じ開始日はタイトル順で固定する
 export const experiences: Experience[] = entries
   .map(({ period, ...rest }) => ({
     ...rest,
@@ -185,4 +185,4 @@ export const experiences: Experience[] = entries
     startDate: toStartDate(period.start),
     ongoing: period.end === "ongoing",
   }))
-  .sort((a, b) => b.startDate.localeCompare(a.startDate) || a.title.localeCompare(b.title, "ja"));
+  .sort((a, b) => a.startDate.localeCompare(b.startDate) || a.title.localeCompare(b.title, "ja"));

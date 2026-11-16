@@ -31,8 +31,8 @@ export default function StatsCard() {
 
   return (
     <motion.div
-      initial={{ opacity: 0, scale: 0.95, y: 10 }}
-      animate={{ opacity: 1, scale: 1, y: 0 }}
+      initial={{ y: 10 }}
+      animate={{ y: 0 }}
       transition={{ duration: 0.4, ease: "easeOut", delay: 0.2 }}
       className="md:col-span-12 border border-slate-800 rounded-2xl p-6 lg:p-8 flex flex-col gap-6"
     >

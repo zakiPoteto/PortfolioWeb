@@ -18,17 +18,17 @@ const MAIN_TECHS = [
   "Go",
 ];
 
-const container = {
-  hidden: { opacity: 0 },
+// opacity は 1 のまま y だけ動かす(JS 読み込み前・LCP でも内容が見える)
+const container: Variants = {
+  hidden: {},
   show: {
-    opacity: 1,
     transition: { staggerChildren: 0.1 },
   },
 };
 
 const item: Variants = {
-  hidden: { opacity: 0, scale: 0.95, y: 10 },
-  show: { opacity: 1, scale: 1, y: 0, transition: { duration: 0.4, ease: "easeOut" } },
+  hidden: { y: 10 },
+  show: { y: 0, transition: { duration: 0.4, ease: "easeOut" } },
 };
 
 export default function HeroSection() {

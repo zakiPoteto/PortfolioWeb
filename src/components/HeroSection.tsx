@@ -2,7 +2,7 @@
 
 import { motion, type Variants } from "framer-motion";
 import Image from "next/image";
-import { GitHubIcon } from "./Icons";
+import { TechIcon, GitHubIcon } from "./Icons";
 import { Mail, MapPin, Sparkles, Code2, Cpu } from "lucide-react";
 import AwardBadge from "./AwardBadge";
 import StatsCard from "./StatsCard";
@@ -112,9 +112,14 @@ export default function HeroSection() {
                 <Cpu size={16} className="text-slate-500" />
                 <span className="text-sm font-bold text-slate-400">主に使う技術</span>
               </div>
-              <p className="text-slate-300 text-sm md:text-base leading-relaxed">
-                {MAIN_TECHS.join(" / ")}
-              </p>
+              <ul className="flex flex-wrap gap-x-5 gap-y-2">
+                {MAIN_TECHS.map((tech) => (
+                  <li key={tech} className="flex items-center gap-2 text-slate-300 text-sm md:text-base">
+                    <TechIcon name={tech} size={16} />
+                    <span>{tech}</span>
+                  </li>
+                ))}
+              </ul>
             </div>
           </div>
         </motion.div>

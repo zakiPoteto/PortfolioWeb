@@ -30,7 +30,7 @@ export default function ExperiencesSection() {
           {/* Timeline line on the left side */}
           <div className="absolute left-4 top-0 bottom-0 w-px bg-gradient-to-b from-transparent via-slate-800 to-blue-500/50" />
 
-          <div className="space-y-8">
+          <div className="group/list space-y-8">
             {experiences.map((exp, index) => {
               const isLatest = index === experiences.length - 1;
               return (

@@ -57,14 +57,14 @@ export default function StatsCard() {
         {/* Main Stats Grid */}
         <div className="lg:col-span-8 grid grid-cols-2 sm:grid-cols-4 gap-3">
           {[
-            { label: "Contributions", value: stats?.totalContributions, icon: History, color: "text-blue-400", border: "hover:border-blue-500/30", sub: "Total" },
-            { label: "Streak", value: stats?.currentStreak, icon: Flame, color: "text-orange-400", border: "hover:border-orange-500/30", sub: "Days" },
-            { label: "Pull Requests", value: stats?.totalPRs, icon: GitPullRequest, color: "text-purple-400", border: "hover:border-purple-500/30", sub: "Merged" },
-            { label: "Repositories", value: stats?.publicRepos, icon: GitBranch, color: "text-emerald-400", border: "hover:border-emerald-500/30", sub: "Public" },
+            { label: "Contributions", value: stats?.totalContributions, icon: History, color: "text-blue-200", sub: "Total" },
+            { label: "Streak", value: stats?.currentStreak, icon: Flame, color: "text-blue-300", sub: "Days" },
+            { label: "Pull Requests", value: stats?.totalPRs, icon: GitPullRequest, color: "text-blue-400", sub: "Merged" },
+            { label: "Repositories", value: stats?.publicRepos, icon: GitBranch, color: "text-blue-500", sub: "Public" },
           ].map((stat) => (
             <div 
               key={stat.label}
-              className={`group bg-slate-800/20 border border-slate-700/40 rounded-2xl p-4 transition-all hover:bg-slate-800/40 ${stat.border}`}
+              className={`group bg-slate-800/20 border border-slate-700/40 rounded-2xl p-4 transition-all hover:bg-slate-800/40 hover:border-blue-500/30`}
             >
               <div className={`flex items-center gap-2 mb-2 ${stat.color}`}>
                 <stat.icon size={14} />

@@ -2,7 +2,7 @@
 
 import { motion, type Variants } from "framer-motion";
 import Image from "next/image";
-import { TechIcon, GitHubIcon } from "./Icons";
+import { GitHubIcon } from "./Icons";
 import { Mail, MapPin, Sparkles, Code2, Cpu } from "lucide-react";
 import AwardBadge from "./AwardBadge";
 import StatsCard from "./StatsCard";
@@ -108,21 +108,13 @@ export default function HeroSection() {
               </p>
             </div>
             <div>
-              <div className="flex items-center gap-2 mb-3">
-                <Cpu size={16} className="text-purple-400" />
-                <span className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">Main Stack</span>
+              <div className="flex items-center gap-2 mb-2">
+                <Cpu size={16} className="text-slate-500" />
+                <span className="text-sm font-bold text-slate-400">主に使う技術</span>
               </div>
-              <div className="flex flex-wrap gap-2.5">
-                {MAIN_TECHS.map((tech) => (
-                  <div
-                    key={tech}
-                    className="flex items-center gap-2 px-4 py-2 rounded-xl bg-slate-800/30 border border-slate-700/30 hover:border-blue-500/30 hover:bg-slate-800/50 transition-all cursor-default"
-                  >
-                    <TechIcon name={tech} size={16} />
-                    <span className="text-slate-300 font-bold text-sm">{tech}</span>
-                  </div>
-                ))}
-              </div>
+              <p className="text-slate-300 text-sm md:text-base leading-relaxed">
+                {MAIN_TECHS.join(" / ")}
+              </p>
             </div>
           </div>
         </motion.div>

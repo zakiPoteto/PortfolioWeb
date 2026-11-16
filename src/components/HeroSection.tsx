@@ -43,7 +43,7 @@ export default function HeroSection() {
         {/* Profile Card - Spans 4 columns */}
         <motion.div
           variants={item}
-          className="md:col-span-5 lg:col-span-4 bg-slate-900/50 backdrop-blur-xl border border-slate-700/50 rounded-3xl p-6 flex flex-col gap-6"
+          className="md:col-span-5 lg:col-span-4 p-2 flex flex-col gap-6"
         >
           <div className="flex items-center gap-4">
             <div className="relative w-20 h-20 rounded-2xl overflow-hidden ring-1 ring-slate-700 shadow-xl shrink-0">
@@ -92,7 +92,7 @@ export default function HeroSection() {
         {/* About + Main Stack Card - Spans 7-8 columns */}
         <motion.div
           variants={item}
-          className="md:col-span-7 lg:col-span-8 bg-slate-900/50 backdrop-blur-xl border border-slate-700/50 rounded-3xl p-8 flex flex-col gap-6 relative overflow-hidden"
+          className="md:col-span-7 lg:col-span-8 bg-slate-900 border border-slate-800 rounded-2xl p-8 flex flex-col gap-6 relative overflow-hidden"
         >
           <div className="absolute top-0 right-0 p-4 opacity-5">
             <Code2 size={120} />

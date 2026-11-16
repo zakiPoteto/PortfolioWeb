@@ -23,7 +23,7 @@ export default function ExperienceCard({
         if (e.key === "Enter") onClick();
         if (e.key === " ") { e.preventDefault(); onClick(); }
       } : undefined}
-      className={`${onClick ? "cursor-pointer" : ""} group relative bg-slate-900/40 backdrop-blur-xl border border-slate-700/50 rounded-2xl p-6 md:p-8 flex flex-col gap-5 hover:border-blue-500/50 hover:bg-slate-900/60 transition-all duration-300 shadow-xl shadow-black/20`}
+      className={`${onClick ? "cursor-pointer" : ""} group relative bg-slate-900 border border-slate-800 rounded-2xl p-6 md:p-8 flex flex-col gap-5 hover:border-blue-500/50 transition-colors duration-300`}
     >
       {/* Decorative glow on hover */}
       <div className="absolute -inset-px rounded-2xl bg-gradient-to-r from-blue-500/20 to-purple-500/20 opacity-0 group-hover:opacity-100 transition-opacity blur-sm -z-10" />

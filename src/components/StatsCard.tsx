@@ -34,7 +34,7 @@ export default function StatsCard() {
       initial={{ opacity: 0, scale: 0.95, y: 10 }}
       animate={{ opacity: 1, scale: 1, y: 0 }}
       transition={{ duration: 0.4, ease: "easeOut", delay: 0.2 }}
-      className="md:col-span-12 bg-slate-900/50 backdrop-blur-xl border border-slate-700/50 rounded-3xl p-6 lg:p-8 flex flex-col gap-6"
+      className="md:col-span-12 border border-slate-800 rounded-2xl p-6 lg:p-8 flex flex-col gap-6"
     >
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2 text-slate-400">

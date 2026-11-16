@@ -19,7 +19,7 @@ export default async function Image() {
           display: "flex",
           alignItems: "center",
           justifyContent: "space-between",
-          padding: "0 96px",
+          padding: "0 160px 0 96px",
           background: "linear-gradient(135deg, #020617 0%, #1e1b4b 100%)",
           color: "#f1f5f9",
         }}

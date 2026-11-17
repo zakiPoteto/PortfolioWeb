@@ -44,7 +44,7 @@ export default function ExperienceCard({
         </div>
         <div className="flex items-center gap-1.5 text-xs text-slate-500 font-medium">
           <Calendar size={14} />
-          <span>{exp.date}</span>
+          <span className="font-mono">{exp.date}</span>
         </div>
       </div>
 

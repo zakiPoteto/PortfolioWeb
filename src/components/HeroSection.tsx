@@ -57,7 +57,7 @@ export default function HeroSection() {
             </div>
             <div className="flex flex-col">
               <h1 className="text-2xl font-black text-white leading-none">zakiPoteto</h1>
-              <p className="text-slate-400 text-xs mt-1.5 font-bold uppercase tracking-wider">Mobile & Frontend</p>
+              <p className="text-slate-400 text-xs mt-1.5 font-mono">Mobile & Frontend</p>
             </div>
           </div>
 
@@ -101,7 +101,7 @@ export default function HeroSection() {
             <div>
               <div className="flex items-center gap-2 mb-4 text-blue-400">
                 <Sparkles size={18} />
-                <span className="text-[10px] font-black uppercase tracking-[0.2em]">Introduction</span>
+                <span className="text-sm font-bold">自己紹介</span>
               </div>
               <p className="text-slate-200 text-lg md:text-xl leading-relaxed font-semibold whitespace-pre-line">
                 {ABOUT_ME}

@@ -1,7 +1,21 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
+import { Noto_Sans_JP, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import HiddenCommands from "@/components/HiddenCommands";
+
+const sans = Noto_Sans_JP({
+  variable: "--font-noto",
+  weight: ["400", "500", "700"],
+  display: "swap",
+  preload: false,
+});
+
+const mono = Geist_Mono({
+  variable: "--font-geist-mono",
+  subsets: ["latin"],
+  display: "swap",
+});
 
 const siteUrl = "https://www.zaki-potato.dev";
 const title = "zakiPoteto | Portfolio";
@@ -41,8 +55,8 @@ export default function RootLayout({
   children: ReactNode;
 }) {
   return (
-    <html lang="ja">
-      <body className="bg-slate-950 text-slate-100 antialiased overflow-x-hidden relative">
+    <html lang="ja" className={`${sans.variable} ${mono.variable}`}>
+      <body className="font-sans bg-slate-950 text-slate-100 antialiased overflow-x-hidden relative">
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(personJsonLd) }}

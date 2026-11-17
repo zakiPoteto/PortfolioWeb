@@ -1,1 +1,13 @@
 @import 'tailwindcss';
+
+@theme inline {
+  --font-sans: var(--font-noto), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
+}
+
+h1,
+h2,
+h3 {
+  font-feature-settings: "palt";
+  word-break: auto-phrase;
+}

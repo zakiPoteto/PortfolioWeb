@@ -58,7 +58,7 @@ export default function StatsCard() {
         <div className="lg:col-span-8 grid grid-cols-2 sm:grid-cols-4 gap-3">
           {[
             { label: "Contributions", value: stats?.totalContributions, icon: History, color: "text-blue-200", sub: "Total" },
-            { label: "Streak", value: stats?.currentStreak, icon: Flame, color: "text-blue-300", sub: "Days" },
+            { label: "連続活動日数", value: stats?.currentStreak, icon: Flame, color: "text-blue-300", sub: "日" },
             { label: "Pull Requests", value: stats?.totalPRs, icon: GitPullRequest, color: "text-blue-400", sub: "Merged" },
             { label: "Repositories", value: stats?.publicRepos, icon: GitBranch, color: "text-blue-500", sub: "Public" },
           ].map((stat) => (

@@ -18,17 +18,17 @@ const MAIN_TECHS = [
   "Go",
 ];
 
-const container = {
-  hidden: { opacity: 0 },
+// opacity は 1 のまま y だけ動かす(JS 読み込み前・LCP でも内容が見える)
+const container: Variants = {
+  hidden: {},
   show: {
-    opacity: 1,
     transition: { staggerChildren: 0.1 },
   },
 };
 
 const item: Variants = {
-  hidden: { opacity: 0, scale: 0.95, y: 10 },
-  show: { opacity: 1, scale: 1, y: 0, transition: { duration: 0.4, ease: "easeOut" } },
+  hidden: { y: 10 },
+  show: { y: 0, transition: { duration: 0.4, ease: "easeOut" } },
 };
 
 export default function HeroSection() {
@@ -43,7 +43,7 @@ export default function HeroSection() {
         {/* Profile Card - Spans 4 columns */}
         <motion.div
           variants={item}
-          className="md:col-span-5 lg:col-span-4 bg-slate-900/50 backdrop-blur-xl border border-slate-700/50 rounded-3xl p-6 flex flex-col gap-6"
+          className="md:col-span-5 lg:col-span-4 p-2 flex flex-col gap-6"
         >
           <div className="flex items-center gap-4">
             <div className="relative w-20 h-20 rounded-2xl overflow-hidden ring-1 ring-slate-700 shadow-xl shrink-0">
@@ -92,7 +92,7 @@ export default function HeroSection() {
         {/* About + Main Stack Card - Spans 7-8 columns */}
         <motion.div
           variants={item}
-          className="md:col-span-7 lg:col-span-8 bg-slate-900/50 backdrop-blur-xl border border-slate-700/50 rounded-3xl p-8 flex flex-col gap-6 relative overflow-hidden"
+          className="md:col-span-7 lg:col-span-8 bg-slate-900 border border-slate-800 rounded-2xl p-8 flex flex-col gap-6 relative overflow-hidden"
         >
           <div className="absolute top-0 right-0 p-4 opacity-5">
             <Code2 size={120} />
@@ -108,21 +108,18 @@ export default function HeroSection() {
               </p>
             </div>
             <div>
-              <div className="flex items-center gap-2 mb-3">
-                <Cpu size={16} className="text-purple-400" />
-                <span className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">Main Stack</span>
+              <div className="flex items-center gap-2 mb-2">
+                <Cpu size={16} className="text-slate-500" />
+                <span className="text-sm font-bold text-slate-400">主に使う技術</span>
               </div>
-              <div className="flex flex-wrap gap-2.5">
+              <ul className="flex flex-wrap gap-x-5 gap-y-2">
                 {MAIN_TECHS.map((tech) => (
-                  <div
-                    key={tech}
-                    className="flex items-center gap-2 px-4 py-2 rounded-xl bg-slate-800/30 border border-slate-700/30 hover:border-blue-500/30 hover:bg-slate-800/50 transition-all cursor-default"
-                  >
+                  <li key={tech} className="flex items-center gap-2 text-slate-300 text-sm md:text-base">
                     <TechIcon name={tech} size={16} />
-                    <span className="text-slate-300 font-bold text-sm">{tech}</span>
-                  </div>
+                    <span>{tech}</span>
+                  </li>
                 ))}
-              </div>
+              </ul>
             </div>
           </div>
         </motion.div>

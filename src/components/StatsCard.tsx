@@ -39,15 +39,15 @@ export default function StatsCard() {
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2 text-slate-400">
           <GitHubIcon size={18} />
-          <span className="text-xs font-black uppercase tracking-[0.2em]">
-            GitHub Ecosystem
+          <span className="text-sm font-bold">
+            GitHubの活動
           </span>
         </div>
-        <div className="hidden sm:block text-[10px] text-slate-500 font-bold uppercase tracking-widest">
+        <div className="hidden sm:block text-xs text-slate-500 font-mono">
           {stats?.lastUpdated}
         </div>
         {!isLoading && !stats && (
-          <div className="text-[10px] text-slate-500 font-bold">
+          <div className="text-xs text-slate-500">
             GitHubの統計を取得できませんでした
           </div>
         )}
@@ -57,10 +57,10 @@ export default function StatsCard() {
         {/* Main Stats Grid */}
         <div className="lg:col-span-8 grid grid-cols-2 sm:grid-cols-4 gap-3">
           {[
-            { label: "Contributions", value: stats?.totalContributions, icon: History, color: "text-blue-200", sub: "Total" },
-            { label: "Streak", value: stats?.currentStreak, icon: Flame, color: "text-blue-300", sub: "Days" },
-            { label: "Pull Requests", value: stats?.totalPRs, icon: GitPullRequest, color: "text-blue-400", sub: "Merged" },
-            { label: "Repositories", value: stats?.publicRepos, icon: GitBranch, color: "text-blue-500", sub: "Public" },
+            { label: "コントリビューション", value: stats?.totalContributions, icon: History, color: "text-blue-200", sub: "合計" },
+            { label: "連続日数", value: stats?.currentStreak, icon: Flame, color: "text-blue-300", sub: "日" },
+            { label: "プルリクエスト", value: stats?.totalPRs, icon: GitPullRequest, color: "text-blue-400", sub: "マージ済" },
+            { label: "リポジトリ", value: stats?.publicRepos, icon: GitBranch, color: "text-blue-500", sub: "公開" },
           ].map((stat) => (
             <div 
               key={stat.label}
@@ -68,13 +68,13 @@ export default function StatsCard() {
             >
               <div className={`flex items-center gap-2 mb-2 ${stat.color}`}>
                 <stat.icon size={14} />
-                <span className="text-[9px] font-black uppercase tracking-wider text-slate-500">{stat.label}</span>
+                <span className="text-xs font-bold text-slate-400">{stat.label}</span>
               </div>
               <div className="flex items-baseline gap-1">
-                <span className={`text-2xl font-black text-white group-hover:scale-105 transition-transform origin-left inline-block ${isLoading ? "animate-pulse text-slate-600" : ""}`}>
+                <span className={`text-2xl font-mono font-bold text-white group-hover:scale-105 transition-transform origin-left inline-block ${isLoading ? "animate-pulse text-slate-600" : ""}`}>
                   {isLoading ? "..." : (stat.value ?? "—")}
                 </span>
-                <span className="text-[9px] font-bold text-slate-500 uppercase">{stat.sub}</span>
+                <span className="text-xs text-slate-500">{stat.sub}</span>
               </div>
             </div>
           ))}
@@ -83,7 +83,7 @@ export default function StatsCard() {
         {/* Decorative Contribution Wall */}
         <div className="lg:col-span-4 bg-slate-800/20 border border-slate-700/40 rounded-2xl p-4 flex flex-col justify-between overflow-hidden">
           <div className="flex items-center justify-between mb-3">
-            <span className="text-[9px] font-black uppercase tracking-wider text-slate-500">Activity Graph</span>
+            <span className="text-xs font-bold text-slate-400">アクティビティ</span>
             <div className="flex gap-1">
               {["bg-blue-500/20", "bg-blue-500/40", "bg-blue-500/60", "bg-blue-500/80"].map((cls) => (
                 <div key={cls} className={`w-1.5 h-1.5 rounded-[1px] ${cls}`} />
@@ -107,9 +107,9 @@ export default function StatsCard() {
             href="https://github.com/zakiPoteto"
             target="_blank"
             rel="noopener noreferrer"
-            className="mt-3 flex items-center justify-between text-[9px] font-black uppercase tracking-widest text-slate-500 hover:text-white transition-colors group"
+            className="mt-3 flex items-center justify-between text-xs font-bold text-slate-500 hover:text-white transition-colors group"
           >
-            Full Profile
+            プロフィールを見る
             <ExternalLink size={10} className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
           </a>
         </div>

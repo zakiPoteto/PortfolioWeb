@@ -57,10 +57,10 @@ export default function StatsCard() {
         {/* Main Stats Grid */}
         <div className="lg:col-span-8 grid grid-cols-2 sm:grid-cols-4 gap-3">
           {[
-            { label: "コントリビューション", value: stats?.totalContributions, icon: History, color: "text-blue-200", sub: "合計" },
-            { label: "連続日数", value: stats?.currentStreak, icon: Flame, color: "text-blue-300", sub: "日" },
-            { label: "プルリクエスト", value: stats?.totalPRs, icon: GitPullRequest, color: "text-blue-400", sub: "マージ済" },
-            { label: "リポジトリ", value: stats?.publicRepos, icon: GitBranch, color: "text-blue-500", sub: "公開" },
+            { label: "Contributions", value: stats?.totalContributions, icon: History, color: "text-blue-200", sub: "Total" },
+            { label: "Streak", value: stats?.currentStreak, icon: Flame, color: "text-blue-300", sub: "Days" },
+            { label: "Pull Requests", value: stats?.totalPRs, icon: GitPullRequest, color: "text-blue-400", sub: "Merged" },
+            { label: "Repositories", value: stats?.publicRepos, icon: GitBranch, color: "text-blue-500", sub: "Public" },
           ].map((stat) => (
             <div 
               key={stat.label}
@@ -83,7 +83,7 @@ export default function StatsCard() {
         {/* Decorative Contribution Wall */}
         <div className="lg:col-span-4 bg-slate-800/20 border border-slate-700/40 rounded-2xl p-4 flex flex-col justify-between overflow-hidden">
           <div className="flex items-center justify-between mb-3">
-            <span className="text-xs font-bold text-slate-400">アクティビティ</span>
+            <span className="text-xs font-bold text-slate-400">Activity</span>
             <div className="flex gap-1">
               {["bg-blue-500/20", "bg-blue-500/40", "bg-blue-500/60", "bg-blue-500/80"].map((cls) => (
                 <div key={cls} className={`w-1.5 h-1.5 rounded-[1px] ${cls}`} />
@@ -109,7 +109,7 @@ export default function StatsCard() {
             rel="noopener noreferrer"
             className="mt-3 flex items-center justify-between text-xs font-bold text-slate-500 hover:text-white transition-colors group"
           >
-            プロフィールを見る
+            Full Profile
             <ExternalLink size={10} className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
           </a>
         </div>
